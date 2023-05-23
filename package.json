@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "json-server --watch db.json",
+    "startArea": "json-server --watch area.json --port=3001"
   },
   "dependencies": {
     "axios": "^1.4.0",

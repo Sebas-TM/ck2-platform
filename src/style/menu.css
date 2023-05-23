@@ -35,7 +35,6 @@
 @media (min-width:768px) {
 
     .contenedor-usuario:hover {
-        transform: scale(1.1);
         cursor: pointer;
     }
 }

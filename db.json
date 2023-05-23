@@ -15,6 +15,14 @@
             "nombre":"Miguel",
             "username": "mflores",
             "password": "01cfcd4f6b8770febfb40cb906715822"
+        },
+        {
+            "id":3,
+            "apellido_paterno": "Alvarez",
+            "apellido_materno": "Yamunaque",
+            "nombre":"Alonso",
+            "username": "aalvarez",
+            "password": "e10adc3949ba59abbe56e057f20f883e"
         }
     ]
 }

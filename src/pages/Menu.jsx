@@ -25,7 +25,7 @@ const Menu = () => {
         consultarAreas()
     }, [])
 
-    console.log(areas)
+    // console.log(areas)
 
     const [menuToggle, setMenuToggle] = useState(false)
 
@@ -86,7 +86,7 @@ const Menu = () => {
             </header>
             <section className='contenedor-modulo'>
                 {areas.map(area => (
-                    <ModuloCard imagen={area_rrhh} texto={`Área de ${area.nombre}`} />
+                    <ModuloCard key={area.id} imagen={area_rrhh} texto={`Área de ${area.nombre}`} />
                 ))}
             </section>
             <div className='outlet'>
