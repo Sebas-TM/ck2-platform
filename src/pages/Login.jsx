@@ -1,17 +1,22 @@
 import '../style/login.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import md5 from 'md5'
 import Cookies from 'universal-cookie'
 import { Toaster, toast } from 'sonner'
 
-const url = "http://localhost:3000/usuarios"
+const url = "http://127.0.0.1:8000/api/users/list"
 const cookies = new Cookies()
 const Login = () => {
 
     const [usuario, setUsuario] = useState('')
     const [contraseña, setContraseña] = useState('')
 
+    const datos = {
+        username: usuario,
+        password: md5(contraseña)
+    }
+    // console.log(datos)
     const iniciarSesion = async () => {
         await axios.get(url, {
             params: {
@@ -21,24 +26,32 @@ const Login = () => {
         }).then(response => {
             return response.data;
         }).then(response => {
-            if (response.length > 0) {
-                var respuesta = response[0]
-                cookies.set('id', respuesta.id, { path: "/" })
-                cookies.set('apellido_paterno', respuesta.apellido_paterno, { path: "/" })
-                cookies.set('apellido_materno', respuesta.apellido_materno, { path: "/" })
-                cookies.set('nombre', respuesta.nombre, { path: "/" })
-                cookies.set('username', respuesta.username, { path: "/" })
-                // alert(`Bienvenido ${respuesta.nombre} ${respuesta.apellido_paterno}`)
-                // toast.success('Ingreso correcto')
-                window.location.href = "./menu"
-            } else if(usuario=='' || contraseña==''){                
+            if (usuario == '' || contraseña == '') {
                 toast.error('Rellenar todos los campos')
-            } else{
+            }
+
+            if (response.length > 0 && usuario !=  '' && contraseña !='') {
+                for (let i = 0; response.length > i; i++) {
+                    if (response[i].username == datos.username && response[i].password == datos.password) {
+                        console.log(`Ingreso correcto ${response[i].nombre} ${response[i].apellido_paterno}`)
+                        var respuesta = response[i]
+                        cookies.set('id', respuesta.id, { path: "/" })
+                        cookies.set('apellido_paterno', respuesta.apellido_paterno, { path: "/" })
+                        cookies.set('apellido_materno', respuesta.apellido_materno, { path: "/" })
+                        cookies.set('nombre', respuesta.nombre, { path: "/" })
+                        cookies.set('username', respuesta.username, { path: "/" })
+                        cookies.set('isAdmin', respuesta.isAdmin, { path: "/" })
+                        // alert(`Bienvenido ${respuesta.nombre} ${respuesta.apellido_paterno}`)
+                        toast.success('Ingreso correcto')
+                        window.location.href = "./menu"
+                        return
+                    }
+                }
                 toast.error('El usuario y/o la contraseña son incorrectos')
+            } else {
             }
         }).catch(error => {
             console.log(error)
-
         })
     }
 
@@ -72,7 +85,7 @@ const Login = () => {
                             placeholder='Ingrese su contraseña'
                             onChange={(e) => setContraseña(e.target.value)} />
                     </div>
-                    <button className='form-group__boton' onClick={iniciarSesion}>Ingresar</button>
+                    <button className='form-group__boton' onClick={iniciarSesion} >Ingresar</button>
                 </div>
             </div>
         </div>

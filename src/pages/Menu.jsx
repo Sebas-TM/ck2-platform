@@ -53,6 +53,7 @@ const Menu = () => {
     // console.log('apellido_materno: ' + cookies.get('apellido_materno'))
     // console.log('nombre: ' + cookies.get('nombre'))
     // console.log('username: ' + cookies.get('username'))
+    // console.log('isAdmin: ' + cookies.get('isAdmin'))
 
     const id = cookies.get('id')
     const apellido_paterno = cookies.get('apellido_paterno')
