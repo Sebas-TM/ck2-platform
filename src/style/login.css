@@ -56,9 +56,14 @@
 .form-group__boton{
     padding:  1rem 2rem;
     border: none;
-    background-color: brown;
+    background-color: #E62838;
     color: white;
     border-radius: .3rem;
     cursor: pointer;
     margin: 1rem 0 0 0 ;
+    transition: all .3s ease;
+}
+
+.form-group__boton:hover{
+    background-color: #f82b3c;
 }

@@ -33,7 +33,6 @@ const Login = () => {
             if (response.length > 0 && usuario !=  '' && contraseña !='') {
                 for (let i = 0; response.length > i; i++) {
                     if (response[i].username == datos.username && response[i].password == datos.password) {
-                        console.log(`Ingreso correcto ${response[i].nombre} ${response[i].apellido_paterno}`)
                         var respuesta = response[i]
                         cookies.set('id', respuesta.id, { path: "/" })
                         cookies.set('apellido_paterno', respuesta.apellido_paterno, { path: "/" })

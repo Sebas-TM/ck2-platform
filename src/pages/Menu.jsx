@@ -3,11 +3,13 @@ import { FiMenu } from "react-icons/fi";
 import '../style/menu.css'
 import { useState, useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { FiUser, FiChevronDown, FiSettings } from "react-icons/fi";
+import { FiUsers, FiChevronDown, FiSettings } from "react-icons/fi";
 import { GiEntryDoor } from "react-icons/gi";
 import axios from 'axios';
 import ModuloCard from '../components/ModuloCard';
 import area_rrhh from '../image/area_rrhh.jpg'
+import logo_texto_blanco from '../image/logo_texto_blanco.webp'
+import logo_blanco from '../image/logo_blanco.png'
 const cookies = new Cookies()
 
 const Menu = () => {
@@ -60,12 +62,14 @@ const Menu = () => {
     const apelllido_materno = cookies.get('apellido_materno')
     const nombre = cookies.get('nombre')
     const username = cookies.get('username')
+    const isAdmin = cookies.get('isAdmin')
 
     return (
         <div>
             <header className='header'>
                 <div className='contenedor-logo-menu'>
-                    <img src="" alt="logo" />
+                    <img className='logo1' src={logo_texto_blanco} alt="logo" />
+                    <img className='logo2' src={logo_blanco} alt="logo" />
                 </div>
                 <div className='contenedor-usuario' onClick={openMenu}>
                     <p className='usuario'>{nombre + ' ' + apellido_paterno}</p>
@@ -74,6 +78,10 @@ const Menu = () => {
                 {
                     menuToggle &&
                     <ul className='contenedor-menu__user'>
+                        <li className={isAdmin==0 ? 'isNotAdmin' : 'list'}>
+                            <FiUsers className='icono-li' />
+                            <p>Administrar usuarios</p>
+                        </li>
                         <li className='list'>
                             <FiSettings className='icono-li' />
                             <p>Configuración</p>

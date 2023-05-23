@@ -1,6 +1,6 @@
 .header {
     height: 5rem;
-    background-color: brown;
+    background-color: #E62838;
     display: flex;
     /* flex-direction: column; */
     align-items: center;
@@ -22,7 +22,24 @@
 .contenedor-logo-menu {
     display: flex;
     align-items: center;
-    justify-content: center;
+}
+
+.logo2{
+    width: 5rem;
+}
+.logo1{
+    width: 15rem;
+    display: none;
+}
+
+
+@media (min-width:768px){
+    .logo2{
+        display: none;
+    }
+    .logo1{
+        display: block;
+    }
 }
 
 .contenedor-usuario {
@@ -66,6 +83,10 @@
     transition: all .2s ease;
 }
 
+.isNotAdmin{
+    display: none;
+}
+
 .list:hover {
     color: white;
 }
@@ -80,7 +101,7 @@
 }
 
 .contenedor-modulo {
-    padding:  3rem;
+    padding:  4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
