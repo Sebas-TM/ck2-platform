@@ -1,0 +1,55 @@
+.usuarios{
+    width: 100%;
+    height: 100vh;
+}
+
+.form-group{
+    width: 100%;
+}
+
+.form-group-header{
+    width: 70%;
+    height: 6rem;
+    margin-top: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.busqueda{
+    padding: 1rem 1rem;
+    border-radius: .8rem;
+    border: 1px solid gray;
+    outline: none;
+    width: 20rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+@media (min-width:768px){
+    .busqueda{
+        width: 50rem;
+    }
+}
+
+.contenedor-tabla{
+    width: 70%;
+    margin-top: 5rem;
+}
+
+.tabla{
+    width: 100%;
+    font-size: 1.7rem;
+    overflow: hidden;
+    border-radius: .8rem;
+
+}
+
+.tabla thead{
+    text-align: center;
+    height: 4rem;
+    background-color: rgb(211, 211, 211);    
+}
+
+.tabla tbody tr td{
+    height: 5rem;
+}
