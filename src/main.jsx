@@ -5,7 +5,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login'
 import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
-import Usuarios from './pages/Usuarios'
+import {action as nuevoUsuarioAction} from './components/NuevoUsuario'
+import Usuarios,{loader as usuariosLoader} from './pages/Usuarios'
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,9 @@ const router = createBrowserRouter([
       },
       {
         path:'/menu/usuarios',
-        element: <Usuarios/>
+        element: <Usuarios/>,
+        action: nuevoUsuarioAction,
+        loader: usuariosLoader
       }
     ]
   }

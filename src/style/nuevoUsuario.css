@@ -1,0 +1,76 @@
+.contenedor-nuevo_usuario {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.contenedor-nuevo_usuario button {
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+@media (min-width:768px) {
+    .contenedor-nuevo_usuario button {
+        top: 8rem;
+    }
+}
+
+.contenedor-nuevo_usuario button .icono {
+    font-size: 3rem;
+    color: white;
+
+}
+
+.contenedor-form {
+    background-color: white;
+    padding: 2rem;
+    width: 30rem;
+    border-radius: .8rem;
+}
+
+@media (min-width:768px) {
+    .contenedor-form {
+        width: 40rem;
+    }
+}
+
+.contenedor-form__texto {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 3rem;
+}
+
+.form-group__input-group input {
+    font-family: 'Poppins', sans-serif;
+}
+
+.select_admin{
+    padding: .5rem 1rem;
+    margin: 1.5rem 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn_registrar {
+    margin: auto;
+    padding: 1rem 2rem;
+    border: none;
+    background-color: #E62838;
+    color: white;
+    border-radius: .3rem;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.btn_registrar:hover {
+    background-color: #f82b3c;
+}
+

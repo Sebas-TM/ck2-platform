@@ -1,49 +1,74 @@
 import '../style/usuarios.css'
 import { useEffect, useState } from 'react'
+import Spinner from '../components/Spinner'
+import Cookies from 'universal-cookie'
+import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
+import { useLoaderData } from 'react-router-dom';
+import { getUsers } from '../services/users';
+import NuevoUsuario from '../components/NuevoUsuario'
+
+const cookies = new Cookies()
+
+export function loader() {
+    const users = getUsers()
+    return users
+}
+
 const Usuarios = () => {
-
-    const [datos, setDatos] = useState({})
-
-    const consultarDatos = async () => {
-        const url = "http://127.0.0.1:8000/api/users/list"
-        const respuesta = await fetch(url)
-        const resultado = await respuesta.json()
-
-        setDatos(resultado)
+    if (!cookies.get('username')) {
+        window.location.href = "/"
+    }
+    if(cookies.get('isAdmin')!=1){
+        window.location.href = "/menu"
     }
 
-    useEffect(() => {
-        consultarDatos()
-    }, [])
-
+    const users = useLoaderData()
+    const [openModal, setOpenModal] = useState(false)
+    
+    const openModalClick = () =>{
+        setOpenModal(!openModal)
+    }
+    
     return (
-        <div className="usuarios">
+        <>
+            {!users.length && <Spinner/>}
+            {openModal && <NuevoUsuario openModal={openModal} setOpenModal={setOpenModal}/>}
             <div className="form-group">
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
-                    <input className='busqueda' type="text" placeholder="Realizar búsqueda" />
+                    <div className='contenedor-input'>
+                        <input className='busqueda' type="text" placeholder="Realizar búsqueda" />
+                        <button className='btn_add' onClick={openModalClick}><FiUserPlus className='icon'/></button>
+                    </div>
                 </div>
                 <div className='contenedor-tabla'>
-                    <table cellspacing="0" cellpadding="0" className='tabla'>
+                    <table cellSpacing="0" cellPadding="0" className='tabla'>
                         <thead>
                             <tr>
                                 <td>ID</td>
                                 <td>Nombre</td>
                                 <td>Apellido paterno</td>
                                 <td>Apellido materno</td>
+                                <td>DNI</td>
                                 <td>Username</td>
                                 <td>Admin</td>
+                                <td>Opciones</td>
                             </tr>
                         </thead>
                         <tbody>
-                            {datos.map(dato => (
-                                <tr key={dato.id}>
-                                    <td>{dato.id}</td>
-                                    <td>{dato.nombre}</td>
-                                    <td>{dato.apellido_paterno}</td>
-                                    <td>{dato.apellido_materno}</td>
-                                    <td>{dato.username}</td>
-                                    <td>{dato.isAdmin == 1 ? 'SI' : 'NO'}</td>
+                            {users.map(user => (
+                                <tr key={user.id}>
+                                    <td className='data data_id'>{user.id}</td>
+                                    <td className='data data_nombre'>{user.nombre}</td>
+                                    <td className='data data_apaterno'>{user.apellido_paterno}</td>
+                                    <td className='data data_amaterno'>{user.apellido_materno}</td>
+                                    <td className='data data_amaterno'>{user.dni}</td>
+                                    <td className='data data_username'>{user.username}</td>
+                                    <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
+                                    <td className='data data_opciones'>
+                                        <button className='btn_option edit'><FiEdit className='icon' /></button>
+                                        <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -51,7 +76,7 @@ const Usuarios = () => {
 
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 export default Usuarios

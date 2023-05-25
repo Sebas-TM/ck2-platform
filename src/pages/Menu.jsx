@@ -24,12 +24,12 @@ const Menu = () => {
         cookies.remove('apellido_materno', { path: "/" })
         cookies.remove('nombre', { path: "/" })
         cookies.remove('username', { path: "/" })
-        window.location.href = './'
+        window.location.href = '/'
     }
 
 
     if (!cookies.get('username')) {
-        window.location.href = "./"
+        window.location.href = "/"
     }
 
 

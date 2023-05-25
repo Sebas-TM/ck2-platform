@@ -25,10 +25,22 @@
     font-family: 'Poppins', sans-serif;
 }
 
-@media (min-width:768px){
-    .busqueda{
-        width: 50rem;
-    }
+.contenedor-input{
+    display: flex;
+}
+
+.btn_add{
+    background-color: rgb(43, 163, 43);
+    border: none;
+    border-radius: .3rem;
+    margin-left: 2rem;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.btn_add:hover{
+    background-color:rgb(27, 104, 27);
 }
 
 .contenedor-tabla{
@@ -52,4 +64,48 @@
 
 .tabla tbody tr td{
     height: 5rem;
+    border: 1px solid #8080801b;
+}
+
+.data{
+    padding:0 1rem;
+}
+
+.data_id{
+    text-align: center;
+}
+
+.data_opciones{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.btn_option{
+    padding: .5rem 1rem;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: .3rem;
+}
+
+
+.icon{
+    font-size: 1.8rem;
+    color: white;
+}
+
+.edit{
+    background-color: rgb(57, 57, 222);
+    transition: all .3s ease;
+}
+.edit:hover{
+    background-color: rgb(41, 41, 154);
+}
+.delete{
+    background-color: rgb(217, 46, 46);
+}
+
+.delete:hover{
+    background-color: rgb(172, 38, 38);
 }
