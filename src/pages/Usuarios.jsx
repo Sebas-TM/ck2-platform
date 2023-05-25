@@ -10,35 +10,62 @@ import NuevoUsuario from '../components/NuevoUsuario'
 const cookies = new Cookies()
 
 export function loader() {
-    const users = getUsers()
-    return users
+    const usuarios = getUsers()
+    return usuarios
 }
 
 const Usuarios = () => {
     if (!cookies.get('username')) {
         window.location.href = "/"
     }
-    if(cookies.get('isAdmin')!=1){
+    if (cookies.get('isAdmin') != 1) {
         window.location.href = "/menu"
     }
-
-    const users = useLoaderData()
-    const [openModal, setOpenModal] = useState(false)
     
-    const openModalClick = () =>{
+    const usuarios = useLoaderData()
+    const [openModal, setOpenModal] = useState(false)
+    const [users, setUsers] = useState(usuarios)
+    const [tabla, setTabla] = useState(users)
+
+    // setUsers(usuarios)
+    // console.log(tabla);
+
+
+
+    const openModalClick = () => {
         setOpenModal(!openModal)
     }
-    
+
+    const handleChange = e => {
+        filtrar(e.target.value)
+    }
+
+    const filtrar = terminoBusqueda => {
+        var resultadoBusqueda = tabla.filter((elemento)=>{
+            if(elemento.id.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
+            elemento.nombre.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
+            elemento.apellido_paterno.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
+            elemento.apellido_materno.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
+            elemento.dni.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
+            elemento.username.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
+            elemento.isAdmin.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())){
+                return elemento
+            }
+        })
+        setUsers(resultadoBusqueda)
+    }    
+
+
     return (
         <>
-            {!users.length && <Spinner/>}
-            {openModal && <NuevoUsuario openModal={openModal} setOpenModal={setOpenModal}/>}
+            {!users.length && <Spinner />}
+            {openModal && <NuevoUsuario openModal={openModal} setOpenModal={setOpenModal} />}
             <div className="form-group">
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
                     <div className='contenedor-input'>
-                        <input className='busqueda' type="text" placeholder="Realizar búsqueda" />
-                        <button className='btn_add' onClick={openModalClick}><FiUserPlus className='icon'/></button>
+                        <input className='busqueda' type="text" onChange={handleChange} placeholder="Realizar búsqueda" />
+                        <button className='btn_add' onClick={openModalClick}><FiUserPlus className='icon' /></button>
                     </div>
                 </div>
                 <div className='contenedor-tabla'>

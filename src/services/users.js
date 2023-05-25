@@ -22,4 +22,5 @@ export const addUser = async (datos)=>{
     }catch(error){
         console.log(error);
     }
+    // console.log(datos)
 }

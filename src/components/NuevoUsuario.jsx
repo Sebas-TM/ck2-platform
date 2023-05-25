@@ -9,7 +9,6 @@ export async function action({request}){
     const formData = await request.formData()
     const datos = Object.fromEntries(formData)
     await addUser(datos)
-    console.log('usuario agregado')
     return redirect('/menu/usuarios')
 }
 
@@ -21,6 +20,7 @@ const NuevoUsuario = ({ openModal, setOpenModal }) => {
     const [dni, setDni] = useState('')
     const [usuario, setUsuario] = useState('')
     const [contraseña, setContraseña] = useState('')
+    const [admin, setAdmin] = useState('')
 
 
     return (
@@ -77,31 +77,38 @@ const NuevoUsuario = ({ openModal, setOpenModal }) => {
                         <label htmlFor="username">Usuario</label>
                         <input
                             type="text"
-                            name='usuario'
-                            id='usuario'
+                            name='username'
+                            id='username'
                             placeholder='Ingrese su usuario'
                             onChange={(e) => setUsuario(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
-                        <label htmlFor="contraseña">Contraseña</label>
+                        <label htmlFor="password">Contraseña</label>
                         <input
                             type="password"
-                            name='contraseña'
-                            id='contraseña'
+                            name='password'
+                            id='password'
                             placeholder='Ingrese su contraseña'
                             onChange={(e) => setContraseña(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
-                        <label htmlFor="admin">Administrador</label>
-                        <select
+                        <label htmlFor="isAdmin">Administrador</label>
+                        {/* <select
                             className='select_admin'
                         >
                             <option value="" disabled>--Seleccione--</option>
                             <option value="1">1</option>
                             <option value="0">0</option>
-                        </select>
+                        </select> */}
+                        <input
+                            type="text"
+                            name='isAdmin'
+                            id='isAdmin'
+                            placeholder='¿Es admin?'
+                            onChange={(e) => setAdmin(e.target.value)}
+                        />
                     </div>
                     <div className='form-group__input-group'>
                         <input
