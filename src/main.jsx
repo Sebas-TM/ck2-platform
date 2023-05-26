@@ -5,8 +5,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login'
 import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
-import {action as nuevoUsuarioAction} from './components/NuevoUsuario'
-import Usuarios,{loader as usuariosLoader} from './pages/Usuarios'
+import NuevoUsuario,{action as nuevoUsuarioAction} from './components/NuevoUsuario'
+import Usuarios,{loader as usuariosLoader, action as eliminarUsuarioAction} from './pages/Usuarios'
+import EditarUsuario, {loader as usuarioLoader} from './components/EditarUsuario'
 
 const router = createBrowserRouter([
   {
@@ -23,8 +24,21 @@ const router = createBrowserRouter([
       {
         path:'/menu/usuarios',
         element: <Usuarios/>,
-        action: nuevoUsuarioAction,
         loader: usuariosLoader
+      },
+      {
+        path:'/menu/usuarios/crear',
+        element:<NuevoUsuario/>,
+        action: nuevoUsuarioAction,
+      },
+      {
+        path:'/menu/usuarios/:usuarioId/editar',
+        element:<EditarUsuario/>,
+        loader:usuarioLoader
+      },
+      {
+        path: '/menu/usuarios/:usuarioId/eliminar',
+        action: eliminarUsuarioAction
       }
     ]
   }

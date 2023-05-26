@@ -11,6 +11,10 @@
     top: 0;
 }
 
+.outlet{
+    height: 100vh;
+}
+
 .icono-user {
     color: white;
     font-size: 2rem;

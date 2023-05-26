@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react'
 import Spinner from '../components/Spinner'
 import Cookies from 'universal-cookie'
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
-import { useLoaderData } from 'react-router-dom';
-import { getUsers } from '../services/users';
+import { useLoaderData, useNavigate, Form, redirect } from 'react-router-dom';
+import { getUsers, deleteUser } from '../services/users';
 import NuevoUsuario from '../components/NuevoUsuario'
+import EditarUsuario from '../components/EditarUsuario'
+import { Toaster, toast } from 'sonner'
+
 
 const cookies = new Cookies()
 
@@ -14,6 +17,13 @@ export function loader() {
     return usuarios
 }
 
+export const action = async ({ params }) => {
+    await deleteUser(params.usuarioId)
+    return redirect('/menu')
+}
+
+
+
 const Usuarios = () => {
     if (!cookies.get('username')) {
         window.location.href = "/"
@@ -21,51 +31,56 @@ const Usuarios = () => {
     if (cookies.get('isAdmin') != 1) {
         window.location.href = "/menu"
     }
-    
+
     const usuarios = useLoaderData()
-    const [openModal, setOpenModal] = useState(false)
+    const [openModalNuevoUsuario, setOpenModalNuevoUsuario] = useState(false)
+    const [openModalEditarUsuario, setOpenModalEditarUsuario] = useState(false)
     const [users, setUsers] = useState(usuarios)
     const [tabla, setTabla] = useState(users)
 
     // setUsers(usuarios)
     // console.log(tabla);
+    const navigate = useNavigate()
 
 
-
-    const openModalClick = () => {
-        setOpenModal(!openModal)
+    const openModalNuevo = () => {
+        setOpenModalNuevoUsuario(!openModalNuevoUsuario)
     }
-
+    const openModalEditar = () => {
+        setOpenModalEditarUsuario(!openModalEditarUsuario)
+    }
     const handleChange = e => {
         filtrar(e.target.value)
     }
 
     const filtrar = terminoBusqueda => {
-        var resultadoBusqueda = tabla.filter((elemento)=>{
-            if(elemento.id.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
-            elemento.nombre.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
-            elemento.apellido_paterno.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
-            elemento.apellido_materno.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
-            elemento.dni.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
-            elemento.username.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())||
-            elemento.isAdmin.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())){
+        var resultadoBusqueda = tabla.filter((elemento) => {
+            if (elemento.id.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.nombre.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.apellido_paterno.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.apellido_materno.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.dni.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.username.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+                elemento.isAdmin.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())) {
                 return elemento
             }
         })
         setUsers(resultadoBusqueda)
-    }    
+    }
 
 
     return (
         <>
             {!users.length && <Spinner />}
-            {openModal && <NuevoUsuario openModal={openModal} setOpenModal={setOpenModal} />}
+            {openModalNuevoUsuario && <NuevoUsuario openModalNuevoUsuario={openModalNuevoUsuario} setOpenModalNuevoUsuario={setOpenModalNuevoUsuario} />}
+            {openModalEditarUsuario && <EditarUsuario openModalEditarUsuario={openModalEditarUsuario} setOpenModalEditarUsuario={setOpenModalEditarUsuario} />}
             <div className="form-group">
+                <Toaster/>
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
                     <div className='contenedor-input'>
                         <input className='busqueda' type="text" onChange={handleChange} placeholder="Realizar búsqueda" />
-                        <button className='btn_add' onClick={openModalClick}><FiUserPlus className='icon' /></button>
+                        <button className='btn_add' onClick={() => navigate(`/menu/usuarios/crear`)}><FiUserPlus className='icon' /></button>
                     </div>
                 </div>
                 <div className='contenedor-tabla'>
@@ -93,8 +108,19 @@ const Usuarios = () => {
                                     <td className='data data_username'>{user.username}</td>
                                     <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
                                     <td className='data data_opciones'>
-                                        <button className='btn_option edit'><FiEdit className='icon' /></button>
-                                        <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                        <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
+                                        <Form
+                                            method='post'
+                                            action={`/menu/usuarios/${user.id}/eliminar`}
+                                            onSubmit={(e) => {
+                                                if (!confirm('¿Deseas eliminar este registro?')) {
+                                                    e.preventDefault()
+                                                }
+                                            }}
+                                        >
+                                            <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                        </Form>
+
                                     </td>
                                 </tr>
                             ))}
