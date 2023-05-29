@@ -1,6 +1,6 @@
-import { getUser } from "../services/users"
+import { getUser, updateUser } from "../services/users"
 import Formulario from "./Formulario"
-import { Form, useLoaderData } from 'react-router-dom'
+import { Form, useLoaderData, useActionData, redirect } from 'react-router-dom'
 import { Toaster, toast } from 'sonner'
 
 export async function loader({ params }) {
@@ -14,6 +14,15 @@ export async function loader({ params }) {
     return user
 }
 
+export const action = async ({request, params}) =>{
+    const formData = await request.formData()
+    const datos = Object.fromEntries(formData)
+
+    await updateUser(params.usuarioId,datos)
+
+    return redirect('/menu/usuarios')
+}
+
 const EditarUsuario = () => {
 
     const user = useLoaderData()
@@ -21,12 +30,12 @@ const EditarUsuario = () => {
     return (
         <section className='contenedor_usuario'>
             <Toaster />            
-            {/* <Form
+            <Form
                 method="post"
                 noValidate
-            > */}
+            >
                 <Formulario user={user}/>
-            {/* </Form> */}
+            </Form>
         </section>
     )
 }

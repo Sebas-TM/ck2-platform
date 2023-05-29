@@ -1,17 +1,29 @@
 import '../style/formulario.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FiChevronLeft } from "react-icons/fi";
+import { Toaster, toast } from 'sonner';
+import { useState } from "react"
 
-const Formulario = ({ user }) => {
+const Formulario = ({ user, nombre, apellidoPaterno, apellidoMaterno }) => {
 
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
+
+    const [nombre, setNombre] = useState('')
+    const [apellidoPaterno, setApellidoPaterno] = useState('')
+    const [apellidoMaterno, setApellidoMaterno] = useState('')
 
     return (
         <div className='contenedor-form'>
+            <Toaster />
             <div className='contenedor-form-header'>
-                <button className='btn_regresar'>
+                <button onClick={() => navigate(-1)} className='btn_regresar'>
                     <FiChevronLeft />
-                    <Link className='btn_regresar_texto' to='/menu/usuarios'>Regresar</Link>
+                    <Link
+                        className='btn_regresar_texto'
+                    // to='/menu/usuarios'
+                    >
+                        Regresar
+                    </Link>
                 </button>
                 <h1 className='contenedor-form__texto'>{user?.nombre ? 'Editar usuario' : 'Nuevo usuario'}</h1>
             </div>
@@ -25,7 +37,7 @@ const Formulario = ({ user }) => {
                             id='nombre'
                             placeholder='Ingrese su nombre'
                             defaultValue={user?.nombre}
-                        // onChange={(e) => setNombre(e.target.value)}
+                            onChange={(e) => setNombre(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -36,7 +48,7 @@ const Formulario = ({ user }) => {
                             id='apellido_paterno'
                             placeholder='Ingrese su apellido paterno'
                             defaultValue={user?.apellido_paterno}
-                        // onChange={(e) => setApellidoPaterno(e.target.value)}
+                            onChange={(e) => setApellidoPaterno(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -47,7 +59,7 @@ const Formulario = ({ user }) => {
                             id='apellido_materno'
                             placeholder='Ingrese su apellido materno'
                             defaultValue={user?.apellido_materno}
-                        // onChange={(e) => setApellidoMaterno(e.target.value)}
+                            onChange={(e) => setApellidoMaterno(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -58,7 +70,7 @@ const Formulario = ({ user }) => {
                             id='dni'
                             placeholder='Ingrese su DNI'
                             defaultValue={user?.dni}
-                        // onChange={(e) => setDni(e.target.value)}
+                            onChange={(e) => setDni(e.target.value)}
                         />
                     </div>
                 </div>
@@ -71,7 +83,7 @@ const Formulario = ({ user }) => {
                             id='username'
                             placeholder='Ingrese su usuario'
                             defaultValue={user?.username}
-                        // onChange={(e) => setUsuario(e.target.value)}
+                            onChange={(e) => setUsuario(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -82,7 +94,7 @@ const Formulario = ({ user }) => {
                             id='password'
                             placeholder='Ingrese su contraseña'
                             defaultValue={user?.password}
-                        // onChange={(e) => setContraseña(e.target.value)}
+                            onChange={(e) => setContraseña(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -100,7 +112,7 @@ const Formulario = ({ user }) => {
                             id='isAdmin'
                             placeholder='¿Es admin?'
                             defaultValue={user?.isAdmin}
-                        // onChange={(e) => setAdmin(e.target.value)}
+                            onChange={(e) => setAdmin(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>

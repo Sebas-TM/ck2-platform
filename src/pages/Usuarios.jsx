@@ -5,8 +5,6 @@ import Cookies from 'universal-cookie'
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
 import { useLoaderData, useNavigate, Form, redirect } from 'react-router-dom';
 import { getUsers, deleteUser } from '../services/users';
-import NuevoUsuario from '../components/NuevoUsuario'
-import EditarUsuario from '../components/EditarUsuario'
 import { Toaster, toast } from 'sonner'
 
 
@@ -19,7 +17,9 @@ export function loader() {
 
 export const action = async ({ params }) => {
     await deleteUser(params.usuarioId)
-    return redirect('/menu')
+    location.reload()
+    
+    return toast.success('Eliminado correctamente')
 }
 
 
@@ -32,9 +32,7 @@ const Usuarios = () => {
         window.location.href = "/menu"
     }
 
-    const usuarios = useLoaderData()
-    const [openModalNuevoUsuario, setOpenModalNuevoUsuario] = useState(false)
-    const [openModalEditarUsuario, setOpenModalEditarUsuario] = useState(false)
+    const usuarios = useLoaderData()    
     const [users, setUsers] = useState(usuarios)
     const [tabla, setTabla] = useState(users)
 
@@ -42,13 +40,8 @@ const Usuarios = () => {
     // console.log(tabla);
     const navigate = useNavigate()
 
-
-    const openModalNuevo = () => {
-        setOpenModalNuevoUsuario(!openModalNuevoUsuario)
-    }
-    const openModalEditar = () => {
-        setOpenModalEditarUsuario(!openModalEditarUsuario)
-    }
+    
+    
     const handleChange = e => {
         filtrar(e.target.value)
     }
@@ -72,10 +65,8 @@ const Usuarios = () => {
     return (
         <>
             {!users.length && <Spinner />}
-            {openModalNuevoUsuario && <NuevoUsuario openModalNuevoUsuario={openModalNuevoUsuario} setOpenModalNuevoUsuario={setOpenModalNuevoUsuario} />}
-            {openModalEditarUsuario && <EditarUsuario openModalEditarUsuario={openModalEditarUsuario} setOpenModalEditarUsuario={setOpenModalEditarUsuario} />}
             <div className="form-group">
-                <Toaster/>
+                <Toaster position='top-center'/>
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
                     <div className='contenedor-input'>
@@ -87,7 +78,7 @@ const Usuarios = () => {
                     <table cellSpacing="0" cellPadding="0" className='tabla'>
                         <thead>
                             <tr>
-                                <td>ID</td>
+                                <td>#</td>
                                 <td>Nombre</td>
                                 <td>Apellido paterno</td>
                                 <td>Apellido materno</td>
@@ -98,9 +89,9 @@ const Usuarios = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => (
+                            {users.map((user,index) => (
                                 <tr key={user.id}>
-                                    <td className='data data_id'>{user.id}</td>
+                                    <td className='data data_id'>{index+1}</td>
                                     <td className='data data_nombre'>{user.nombre}</td>
                                     <td className='data data_apaterno'>{user.apellido_paterno}</td>
                                     <td className='data data_amaterno'>{user.apellido_materno}</td>

@@ -7,7 +7,7 @@ import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
 import NuevoUsuario,{action as nuevoUsuarioAction} from './components/NuevoUsuario'
 import Usuarios,{loader as usuariosLoader, action as eliminarUsuarioAction} from './pages/Usuarios'
-import EditarUsuario, {loader as usuarioLoader} from './components/EditarUsuario'
+import EditarUsuario, {loader as usuarioLoader, action as updateActionLoader} from './components/EditarUsuario'
 
 const router = createBrowserRouter([
   {
@@ -34,7 +34,8 @@ const router = createBrowserRouter([
       {
         path:'/menu/usuarios/:usuarioId/editar',
         element:<EditarUsuario/>,
-        loader:usuarioLoader
+        loader:usuarioLoader,
+        action: updateActionLoader
       },
       {
         path: '/menu/usuarios/:usuarioId/eliminar',

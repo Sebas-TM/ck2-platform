@@ -34,6 +34,21 @@ export const addUser = async (datos) => {
     // console.log(datos)
 }
 
+export async function updateUser(id, datos){
+    try{
+        const respuesta = await fetch(`${config.API_URL}users/update/${id}`,{
+            method: 'POST',
+            body: JSON.stringify(datos),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        await respuesta.json()
+    }catch(error){
+        console.log(error)
+    }
+    // console.log(datos)
+}
 
 export async function deleteUser(id) {
     try {
