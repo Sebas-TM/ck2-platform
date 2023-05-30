@@ -1,26 +1,38 @@
 import { useState, useEffect } from "react"
 import ModuloCard from '../components/ModuloCard';
 import area_rrhh from '../image/area_rrhh.jpg'
+import { Link } from "react-router-dom";
+import '../style/modulos.css'
 const Modulos = () => {
 
-    const urlAreas = 'http://localhost:3001/areas'
-    const [areas, setAreas] = useState([])
-
-    const consultarAreas = async () => {
-        const respuesta = await fetch(urlAreas)
-        const resultado = await respuesta.json()
-        setAreas(resultado)
-    }
-
-    useEffect(() => {
-        consultarAreas()
-    }, [])
+    
     return (
 
         <section className='contenedor-modulo'>
-            {areas.map(area => (
-                <ModuloCard key={area.id} imagen={area_rrhh} texto={`Área de ${area.nombre}`} />
-            ))}
+                <Link to='/menu/recursos_humanos'>
+                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Ventas'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Administración'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Cobranzas'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+                </Link>
+                <Link>
+                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+                </Link>
         </section>
     )
 }

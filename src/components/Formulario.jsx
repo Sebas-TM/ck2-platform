@@ -4,7 +4,7 @@ import { FiChevronLeft } from "react-icons/fi";
 import { Toaster, toast } from 'sonner';
 import { useState } from "react"
 
-const Formulario = ({ user, nombre, apellidoPaterno, apellidoMaterno }) => {
+const Formulario = ({ user }) => {
 
     const navigate = useNavigate()
 

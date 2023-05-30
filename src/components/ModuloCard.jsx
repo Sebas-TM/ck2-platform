@@ -5,7 +5,7 @@ const ModuloCard = ({imagen, texto}) => {
     <div className='card'>
       <img src={imagen} alt="imagen_area" />
       <div className='card-group'>
-        <p className='card-texto'>{texto}</p>
+        <p className='card-texto'>{`Área de ${texto}`}</p>
       </div>
     </div>
   )
