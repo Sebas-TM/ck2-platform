@@ -1,4 +1,11 @@
 .contenedor-modulo a{
     text-decoration: none;
     color: black;
+    margin-bottom: 4rem;
+}
+
+@media (min-width:768px){
+    .contenedor-modulo a{
+        margin-bottom: 0;
+    }
 }
