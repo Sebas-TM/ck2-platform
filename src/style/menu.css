@@ -54,6 +54,7 @@
     align-items: center;
     justify-content: center;
     transition: all .3s ease;
+    cursor: pointer;
 }
 
 @media (min-width:768px) {
@@ -68,6 +69,7 @@
     font-size: 1.5rem;
     color: white;
 }
+
 
 .contenedor-menu__user {
     position: absolute;

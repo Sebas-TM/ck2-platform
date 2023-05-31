@@ -18,7 +18,7 @@ export function loader() {
 export const action = async ({ params }) => {
     await deleteUser(params.usuarioId)
     location.reload()
-    
+
     return toast.success('Eliminado correctamente')
 }
 
@@ -32,7 +32,7 @@ const Usuarios = () => {
         window.location.href = "/menu"
     }
 
-    const usuarios = useLoaderData()    
+    const usuarios = useLoaderData()
     const [users, setUsers] = useState(usuarios)
     const [tabla, setTabla] = useState(users)
 
@@ -40,8 +40,8 @@ const Usuarios = () => {
     // console.log(tabla);
     const navigate = useNavigate()
 
-    
-    
+
+
     const handleChange = e => {
         filtrar(e.target.value)
     }
@@ -66,7 +66,7 @@ const Usuarios = () => {
         <>
             {!users.length && <Spinner />}
             <div className="form-group">
-                <Toaster position='top-center'/>
+                <Toaster position='top-center' />
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
                     <div className='contenedor-input'>
@@ -84,44 +84,90 @@ const Usuarios = () => {
                                 <td>Apellido materno</td>
                                 <td>DNI</td>
                                 <td>Username</td>
-                                <td>Admin</td>
+                                <td>Administrador</td>
                                 <td>Opciones</td>
                             </tr>
                         </thead>
                         <tbody>
-                            {users.length ?(
-                                users.map((user,index) => (
-                                    <tr key={user.id}>
-                                        <td className='data data_id'>{index+1}</td>
-                                        <td className='data data_nombre'>{user.nombre}</td>
-                                        <td className='data data_apaterno'>{user.apellido_paterno}</td>
-                                        <td className='data data_amaterno'>{user.apellido_materno}</td>
-                                        <td className='data data_amaterno'>{user.dni}</td>
-                                        <td className='data data_username'>{user.username}</td>
-                                        <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
-                                        <td className='data data_opciones'>
-                                            <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
-                                            <Form
-                                                method='post'
-                                                action={`/menu/usuarios/${user.id}/eliminar`}
-                                                onSubmit={(e) => {
-                                                    if (!confirm('¿Deseas eliminar este registro?')) {
-                                                        e.preventDefault()
-                                                    }
-                                                }}
-                                            >
-                                                <button className='btn_option delete'><FiTrash className='icon' /></button>
-                                            </Form>
-    
-                                        </td>
-                                    </tr>
-                                ))
-                            ):(
-                                <h2>No hay resultados</h2>
-                            )}
+                            {users.map((user, index) => (
+                                <tr key={user.id}>
+                                    <td className='data data_id'>{index + 1}</td>
+                                    <td className='data data_nombre'>{user.nombre}</td>
+                                    <td className='data data_apaterno'>{user.apellido_paterno}</td>
+                                    <td className='data data_amaterno'>{user.apellido_materno}</td>
+                                    <td className='data data_amaterno'>{user.dni}</td>
+                                    <td className='data data_username'>{user.username}</td>
+                                    <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
+                                    <td className='data data_opciones'>
+                                        <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
+                                        <Form
+                                            method='post'
+                                            action={`/menu/usuarios/${user.id}/eliminar`}
+                                            onSubmit={(e) => {
+                                                if (!confirm('¿Deseas eliminar este registro?')) {
+                                                    e.preventDefault()
+                                                }
+                                            }}
+                                        >
+                                            <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                        </Form>
+
+                                    </td>
+                                </tr>
+                            ))
+                            }
                         </tbody>
                     </table>
 
+                </div>
+                <div className="contenedor-general-cards">
+                    {
+                        users.map((user, index) => (
+                            <div key={index} className="contenedor-cards">
+                                <div className="cards">
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Nombre:</p>
+                                        <p className="dato-info">{user.nombre}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Apellido paterno:</p>
+                                        <p className="dato-info">{user.apellido_paterno}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Apellido materno:</p>
+                                        <p className="dato-info">{user.apellido_materno}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">DNI:</p>
+                                        <p className="dato-info">{user.dni}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Usuario:</p>
+                                        <p className="dato-info">{user.username}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Administrador:</p>
+                                        <p className="dato-info">{user.isAdmin == 1 ? 'SI' : 'NO'}</p>
+                                    </div>
+                                </div>
+                                <div className='data data_opciones'>
+                                    <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
+                                    <Form
+                                        method='post'
+                                        action={`/menu/usuarios/${user.id}/eliminar`}
+                                        onSubmit={(e) => {
+                                            if (!confirm('¿Deseas eliminar este registro?')) {
+                                                e.preventDefault()
+                                            }
+                                        }}
+                                    >
+                                        <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                    </Form>
+
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </>
