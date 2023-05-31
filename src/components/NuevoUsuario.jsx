@@ -2,13 +2,26 @@ import '../style/nuevoUsuario.css'
 import { FiX } from "react-icons/fi";
 import { Toaster, toast } from 'sonner'
 import { useState } from 'react';
-import { addUser} from '../services/users';
+import { addUser } from '../services/users';
 import { Form, useActionData, redirect, useLoaderData } from 'react-router-dom';
 import Formulario from './Formulario';
+import Error from './Error';
 
 export async function action({ request }) {
     const formData = await request.formData()
     const datos = Object.fromEntries(formData)
+
+    const errores = []
+
+    if (Object.values(datos).includes('')) {
+        errores.push('Todos los campos son obligatorios')
+    }
+
+    if (Object.keys(errores).length) {
+        return errores
+    }
+
+
     await addUser(datos)
     return redirect('/menu/usuarios')
 }
@@ -16,10 +29,14 @@ export async function action({ request }) {
 
 
 const NuevoUsuario = () => {
+    const errores = useActionData()
+    console.log(errores)
 
     return (
         <section className='contenedor_nuevo-dato'>
-            
+            {/* {errores?.length && errores.map((error, i) => <Error key={i}>{error}</Error>)} */}
+            <Error>{errores}</Error>
+
             <Form
                 method="post"
                 noValidate
