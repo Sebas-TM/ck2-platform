@@ -6,7 +6,7 @@
     margin-top: 5rem;
 }
 
-.contenedor-form .btn_regresar {
+.btn_regresar {
     display: flex;
     align-items: center;
     justify-content: space-between;

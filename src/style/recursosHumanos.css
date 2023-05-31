@@ -1,0 +1,25 @@
+.contenedor-navegacion{
+    background-color: rgb(211, 211, 211);
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.navegacion{
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+@media (min-width:768px){
+    .navegacion{
+        justify-content: space-evenly;
+        gap: 0;
+    }
+}
+
+.navegacion .link_rrhh{
+    font-size: 1.5rem;
+    color: black;
+}

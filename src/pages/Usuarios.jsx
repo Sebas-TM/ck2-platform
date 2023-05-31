@@ -89,32 +89,36 @@ const Usuarios = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user,index) => (
-                                <tr key={user.id}>
-                                    <td className='data data_id'>{index+1}</td>
-                                    <td className='data data_nombre'>{user.nombre}</td>
-                                    <td className='data data_apaterno'>{user.apellido_paterno}</td>
-                                    <td className='data data_amaterno'>{user.apellido_materno}</td>
-                                    <td className='data data_amaterno'>{user.dni}</td>
-                                    <td className='data data_username'>{user.username}</td>
-                                    <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
-                                    <td className='data data_opciones'>
-                                        <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
-                                        <Form
-                                            method='post'
-                                            action={`/menu/usuarios/${user.id}/eliminar`}
-                                            onSubmit={(e) => {
-                                                if (!confirm('¿Deseas eliminar este registro?')) {
-                                                    e.preventDefault()
-                                                }
-                                            }}
-                                        >
-                                            <button className='btn_option delete'><FiTrash className='icon' /></button>
-                                        </Form>
-
-                                    </td>
-                                </tr>
-                            ))}
+                            {users.length ?(
+                                users.map((user,index) => (
+                                    <tr key={user.id}>
+                                        <td className='data data_id'>{index+1}</td>
+                                        <td className='data data_nombre'>{user.nombre}</td>
+                                        <td className='data data_apaterno'>{user.apellido_paterno}</td>
+                                        <td className='data data_amaterno'>{user.apellido_materno}</td>
+                                        <td className='data data_amaterno'>{user.dni}</td>
+                                        <td className='data data_username'>{user.username}</td>
+                                        <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
+                                        <td className='data data_opciones'>
+                                            <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
+                                            <Form
+                                                method='post'
+                                                action={`/menu/usuarios/${user.id}/eliminar`}
+                                                onSubmit={(e) => {
+                                                    if (!confirm('¿Deseas eliminar este registro?')) {
+                                                        e.preventDefault()
+                                                    }
+                                                }}
+                                            >
+                                                <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                            </Form>
+    
+                                        </td>
+                                    </tr>
+                                ))
+                            ):(
+                                <h2>No hay resultados</h2>
+                            )}
                         </tbody>
                     </table>
 

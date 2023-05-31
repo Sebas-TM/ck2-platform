@@ -1,0 +1,64 @@
+.contenedor-ver-empleado{
+    width: 100%;
+    height: 40rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* padding: 0 2rem; */
+    gap: 2rem;
+    margin-top: 10rem;
+}
+
+.contenedor-ver-empleado__contenedor-boton{
+    width: 35rem;
+    display: flex;
+    justify-content: start;
+    padding: 2rem;
+}
+
+.ver-empleado-card{
+    border: 1px solid gray;
+    padding: 2rem;
+    border-radius: .6rem;
+    width: 30rem;
+}
+
+.ver-empleado-card p{
+    font-size: 1.5rem;
+}
+
+@media (min-width:768px){
+    .ver-empleado-card p{
+        font-size: 2rem;
+    }
+    .ver-empleado-card{
+        width: 50rem;
+    }
+    .contenedor-ver-empleado__contenedor-boton{
+        width: 55rem;
+    }
+    .contenedor-ver-empleado{
+        margin-top: 5rem;
+    }
+}
+
+.contenedor-datos{
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (min-width:768px){
+    .contenedor-datos{
+        display: flex;
+    }
+}
+
+.contenedor-datos .dato{
+    font-weight: normal;
+}
+
+.contenedor-datos .dato-info{
+    font-weight: bold;
+}

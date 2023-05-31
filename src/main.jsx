@@ -8,8 +8,9 @@ import Modulos from './pages/Modulos'
 import NuevoUsuario,{action as nuevoUsuarioAction} from './components/NuevoUsuario'
 import Usuarios,{loader as usuariosLoader, action as eliminarUsuarioAction} from './pages/Usuarios'
 import EditarUsuario, {loader as usuarioLoader, action as updateActionLoader} from './components/EditarUsuario'
-import RecursosHumanos from './pages/RecursosHumanos'
-
+import RecursosHumanos  from './pages/RecursosHumanos'
+import Empleados, {loader as empleadosLoader} from './pages/Empleados'
+import VerEmpleado, {loader as verEmpleadoLoader} from './components/VerEmpleado'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -44,7 +45,18 @@ const router = createBrowserRouter([
       },
       {
         path: '/menu/recursos_humanos',
-        element: <RecursosHumanos/>
+        element: <RecursosHumanos/>, children:[
+          {
+            index:true,
+            element: <Empleados/>,
+            loader: empleadosLoader
+          },
+          {
+            path: '/menu/recursos_humanos/empleado/:empleadoId',
+            element: <VerEmpleado/>,
+            loader: verEmpleadoLoader
+          }
+        ]
       }
     ]
   }
