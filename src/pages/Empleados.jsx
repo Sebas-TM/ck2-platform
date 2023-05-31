@@ -1,11 +1,18 @@
-import { useActionData, useLoaderData, Form, Link, Outlet, useNavigate } from "react-router-dom"
-import { getEmployees } from "../services/employees"
+import { useLoaderData, Form, Link, Outlet, useNavigate } from "react-router-dom"
+import { deleteEmployee, getEmployees } from "../services/employees"
 import { useState } from 'react'
+import {Toaster, toast} from 'sonner'
 import { FiUserPlus, FiTrash, FiEdit, FiEye } from "react-icons/fi";
 
 export function loader() {
     const empleados = getEmployees()
     return empleados
+}
+
+export const action = async ({params}) => {
+    await deleteEmployee(params.empleadoId)
+    location.reload()
+    return toast.success('Eliminado correctamente')
 }
 
 const Empleados = () => {
@@ -40,7 +47,7 @@ const Empleados = () => {
                         type="text"
                         onChange={handleChange}
                         placeholder="Realizar búsqueda" />
-                    <button className='btn_add' onClick={() => navigate(`/menu/usuarios/crear`)}><FiUserPlus className='icon' /></button>
+                    <button className='btn_add' onClick={() => navigate(`/menu/recursos_humanos/empleado/crear`)}><FiUserPlus className='icon' /></button>
                 </div>
             </div>
             <div className='contenedor-tabla '>
@@ -69,11 +76,11 @@ const Empleados = () => {
                                     <td align="center" className='data data_opciones'>
                                         <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
                                         <button
-                                            // onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} 
+                                            onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)} 
                                             className='btn_option edit'><FiEdit className='icon' /></button>
                                         <Form
                                             method='post'
-                                            // action={`/menu/usuarios/${user.id}/eliminar`}
+                                            action={`menu/recursos_humanos/empleado/${employee.id}/editar`}
                                             onSubmit={(e) => {
                                                 if (!confirm('¿Deseas eliminar este registro?')) {
                                                     e.preventDefault()
@@ -120,11 +127,11 @@ const Empleados = () => {
                             <div className='data data_opciones'>
                                 <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
                                 <button
-                                    // onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} 
+                                    onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
                                     className='btn_option edit'><FiEdit className='icon' /></button>
                                 <Form
                                     method='post'
-                                    // action={`/menu/usuarios/${user.id}/eliminar`}
+                                    action={`menu/recursos_humanos/empleado/${employee.id}/editar`}
                                     onSubmit={(e) => {
                                         if (!confirm('¿Deseas eliminar este registro?')) {
                                             e.preventDefault()

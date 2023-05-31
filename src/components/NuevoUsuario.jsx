@@ -18,8 +18,7 @@ export async function action({ request }) {
 const NuevoUsuario = () => {
 
     return (
-        <section className='contenedor_usuario'>
-            <Toaster />
+        <section className='contenedor_nuevo-dato'>
             
             <Form
                 method="post"

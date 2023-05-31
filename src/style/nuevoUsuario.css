@@ -1,4 +1,4 @@
-.contenedor_usuario {
+.contenedor_nuevo-dato {
     /* position: absolute;
     top: 0;
     height: 100vh; */
@@ -12,12 +12,12 @@
 
 
 @media (min-width:768px) {
-    .contenedor_usuario button {
+    .contenedor_nuevo-dato button {
         top: 8rem;
     }
 }
 
-.contenedor_usuario button .icono {
+.contenedor_nuevo-dato button .icono {
     font-size: 3rem;
     color: white;
 

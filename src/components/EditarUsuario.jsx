@@ -1,7 +1,6 @@
 import { getUser, updateUser } from "../services/users"
 import Formulario from "./Formulario"
 import { Form, useLoaderData, useActionData, redirect } from 'react-router-dom'
-import { Toaster, toast } from 'sonner'
 
 export async function loader({ params }) {
     const user = await getUser(params.usuarioId)
@@ -28,8 +27,7 @@ const EditarUsuario = () => {
     const user = useLoaderData()
 
     return (
-        <section className='contenedor_usuario'>
-            <Toaster />            
+        <section className='contenedor_nuevo-dato'>
             <Form
                 method="post"
                 noValidate

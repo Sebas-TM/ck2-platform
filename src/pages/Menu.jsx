@@ -18,6 +18,10 @@ const Menu = () => {
         setMenuToggle(!menuToggle)
     }
 
+    const closeMenu = () => {
+        setMenuToggle(false)
+    }
+
     const cerrarSesion = () => {
         cookies.remove('id', { path: "/" })
         cookies.remove('apellido_paterno', { path: "/" })
@@ -77,7 +81,7 @@ const Menu = () => {
                 }
             </header>
 
-            <div className='outlet'>
+            <div onClick={closeMenu} className='outlet'>
                 <Outlet />
             </div>
         </div>

@@ -11,10 +11,21 @@ const Formulario = ({ user }) => {
     const [nombre, setNombre] = useState('')
     const [apellidoPaterno, setApellidoPaterno] = useState('')
     const [apellidoMaterno, setApellidoMaterno] = useState('')
+    const [dni, setDni] = useState('')
+    const [usuario, setUsuario] = useState('')
+    const [contraseña, setContraseña] = useState('')
+
+
+    const validate = () =>{
+        if(nombre == '' || apellidoPaterno == '' || apellidoMaterno == '' || dni == '' || usuario == '' || contraseña == ''){
+            toast.error('Todos los campos son obligatorios');
+        }
+    }
+
 
     return (
         <div className='contenedor-form'>
-            <Toaster />
+            <Toaster position="top-center" richColors/>
             <div className='contenedor-form-header'>
                 <button onClick={() => navigate(-1)} className='btn_regresar'>
                     <FiChevronLeft />
@@ -99,26 +110,22 @@ const Formulario = ({ user }) => {
                     </div>
                     <div className='form-group__input-group'>
                         <label htmlFor="isAdmin">Administrador</label>
-                        {/* <select
+                        <select
                             className='select_admin'
-                        >
-                            <option value="" disabled>--Seleccione--</option>
-                            <option value="1">1</option>
-                            <option value="0">0</option>
-                        </select> */}
-                        <input
-                            type="text"
                             name='isAdmin'
                             id='isAdmin'
-                            placeholder='¿Es admin?'
                             defaultValue={user?.isAdmin}
-                            onChange={(e) => setAdmin(e.target.value)}
-                        />
+                        >
+                            <option value="" disabled>--Seleccione--</option>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
                     </div>
                     <div className='form-group__input-group'>
                         <input
                             type='submit'
                             className='btn_registrar'
+                            onClick={validate}
                             value={user?.nombre ? 'Guardar cambios' : 'Registrar usuario'}
                         />
                     </div>

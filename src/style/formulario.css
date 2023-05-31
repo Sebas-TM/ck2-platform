@@ -69,9 +69,11 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.select_admin {
-    padding: .5rem 1rem;
+.form-group__input-group select {
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 1.5rem;
     margin: 1.5rem 0;
+    padding: .8rem 1.5rem;
     font-family: 'Poppins', sans-serif;
 }
 

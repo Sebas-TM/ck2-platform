@@ -7,10 +7,13 @@ import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
 import NuevoUsuario,{action as nuevoUsuarioAction} from './components/NuevoUsuario'
 import Usuarios,{loader as usuariosLoader, action as eliminarUsuarioAction} from './pages/Usuarios'
-import EditarUsuario, {loader as usuarioLoader, action as updateActionLoader} from './components/EditarUsuario'
+import EditarUsuario, {loader as usuarioLoader, action as actualizarUsuarioAction} from './components/EditarUsuario'
 import RecursosHumanos  from './pages/RecursosHumanos'
-import Empleados, {loader as empleadosLoader} from './pages/Empleados'
+import Empleados, {loader as empleadosLoader, action as eliminarEmpleadoAction} from './pages/Empleados'
 import VerEmpleado, {loader as verEmpleadoLoader} from './components/VerEmpleado'
+import NuevoEmpleado, {action as nuevoEmpleadoAction} from './components/NuevoEmpleado'
+import EditarEmpleado, {loader as empleadoLoader, action as actualizarEmpleadoAction} from './components/EditarEmpleado'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -37,7 +40,7 @@ const router = createBrowserRouter([
         path:'/menu/usuarios/:usuarioId/editar',
         element:<EditarUsuario/>,
         loader:usuarioLoader,
-        action: updateActionLoader
+        action: actualizarUsuarioAction
       },
       {
         path: '/menu/usuarios/:usuarioId/eliminar',
@@ -55,6 +58,21 @@ const router = createBrowserRouter([
             path: '/menu/recursos_humanos/empleado/:empleadoId',
             element: <VerEmpleado/>,
             loader: verEmpleadoLoader
+          },
+          {
+            path: '/menu/recursos_humanos/empleado/crear',
+            element: <NuevoEmpleado/>,
+            action: nuevoEmpleadoAction
+          },
+          {
+            path: '/menu/recursos_humanos/empleado/:empleadoId/editar',
+            element: <EditarEmpleado/>,
+            loader: empleadoLoader,
+            action:actualizarEmpleadoAction
+          },
+          {
+            path:'menu/recursos_humanos/empleado/:empleadoId/editar',
+            action: eliminarEmpleadoAction,            
           }
         ]
       }
