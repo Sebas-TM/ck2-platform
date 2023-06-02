@@ -13,6 +13,8 @@ import Empleados, {loader as empleadosLoader, action as eliminarEmpleadoAction} 
 import VerEmpleado, {loader as verEmpleadoLoader} from './components/VerEmpleado'
 import NuevoEmpleado, {action as nuevoEmpleadoAction} from './components/NuevoEmpleado'
 import EditarEmpleado, {loader as empleadoLoader, action as actualizarEmpleadoAction} from './components/EditarEmpleado'
+import Postulaciones from './pages/Postulaciones'
+import Gestiones from './pages/Gestiones'
 
 const router = createBrowserRouter([
   {
@@ -73,6 +75,14 @@ const router = createBrowserRouter([
           {
             path:'menu/recursos_humanos/empleado/:empleadoId/editar',
             action: eliminarEmpleadoAction,            
+          },
+          {
+            path:'/menu/recursos_humanos/postulaciones',
+            element: <Postulaciones/>
+          },
+          {
+            path:'/menu/recursos_humanos/gestiones',
+            element: <Gestiones/>
           }
         ]
       }

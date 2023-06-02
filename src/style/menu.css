@@ -1,32 +1,52 @@
+.contenedor-header{
+    padding: 0 4rem;
+}
+
+@media (min-width:768px){
+    .contenedor-header{
+        position: sticky;
+        top: 0;    
+        z-index: 2;
+    }
+}
+
 .header {
-    height: 6rem;
-    background-color: #E62838;
+    height: 7rem;
+    background-color: #fff;
     display: flex;
     /* flex-direction: column; */
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
-    transition: height .5s ease;
-    position: sticky;
-    top: 0;
-    z-index: 2;
+    padding: .5rem 2rem;
+    transition: height .5s ease;    
+    border-bottom: 2px solid rgb(233, 230, 230);
 }
 
 .outlet{
     /* height: 100vh; */
+    padding: 0 4rem;
 }
 
 .icono-user {
-    color: white;
+    /* color: white; */
     font-size: 2rem;
     cursor: pointer;
 }
 
 
 
+
+
 .contenedor-logo-menu {
+    width: 10rem;
     display: flex;
     align-items: center;
+    justify-content: center;
+    border-radius: 0px 100px 100px 0px;
+    -moz-border-radius: 0px 100px 100px 0px;
+    -webkit-border-radius: 0px 100px 100px 0px;
+    border: 0px solid #000000;
+    background-color: rgb(233, 230, 230);
 }
 
 .logo2 {
@@ -55,6 +75,7 @@
     justify-content: center;
     transition: all .3s ease;
     cursor: pointer;
+    gap: 2rem;
 }
 
 @media (min-width:768px) {
@@ -64,10 +85,23 @@
     }
 }
 
+.contenedor-saludo-usuario{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenedor-img-usuario{
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    border: 1px solid rgb(133, 133, 133);
+}
+
 .usuario {
     margin-right: 1rem;
     font-size: 1.5rem;
-    color: white;
+    /* color: white; */
 }
 
 
@@ -136,16 +170,29 @@ a {
     }
 }
 
-@media (min-width:1020px) {
+@media (min-width:1150px) {
     .contenedor-modulo {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (min-width:1280px) {
+@media (min-width:1500px) {
     .contenedor-modulo {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.disable{
+    display: none;
+}
+
+@media (min-width:768px) {
+    .disable{
+        display: flex;
+    }
+    .contenedor-logo-menu {
+        width: 20rem;
     }
 }

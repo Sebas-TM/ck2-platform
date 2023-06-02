@@ -6,8 +6,10 @@ import { Link,Outlet } from 'react-router-dom';
 import { FiUsers, FiChevronDown, FiSettings } from "react-icons/fi";
 import { GiEntryDoor } from "react-icons/gi";
 
-import logo_texto_blanco from '../image/logo_texto_blanco.webp'
-import logo_blanco from '../image/logo_blanco.png'
+import logo_texto from '../image/logo_texto.png'
+import logo from '../image/logo.png'
+import user_icon from '../image/user-icon.png'
+
 const cookies = new Cookies()
 
 const Menu = () => {
@@ -52,39 +54,46 @@ const Menu = () => {
     const isAdmin = cookies.get('isAdmin')
 
     return (
-        <div>
-            <header className='header'>
-                <Link to='/menu' className='contenedor-logo-menu'>
-                    <img className='logo1' src={logo_texto_blanco} alt="logo" />
-                    <img className='logo2' src={logo_blanco} alt="logo" />
-                </Link>
-                <div className='contenedor-usuario' onClick={openMenu}>
-                    <p className='usuario'>{nombre + ' ' + apellido_paterno}</p>
-                    <FiChevronDown className='icono-user' />
+        <>
+            <header className='contenedor-header'>
+                <div className='header'>
+                    <Link to='/menu' className='contenedor-logo-menu'>
+                        <img className='logo1' src={logo_texto} alt="logo" />
+                        <img className='logo2' src={logo} alt="logo" />
+                    </Link>
+                    <div className='contenedor-usuario' onClick={openMenu}>
+                        <div className='contenedor-saludo-usuario disable'>
+                            <p className='usuario'>{`Hola! ${nombre} ${apellido_paterno}`}</p>
+                            <FiChevronDown className='icono-user' />
+                        </div>
+                        <div className='contenedor-img-usuario'>
+                            <img src={user_icon} alt="" />
+                        </div>
+                    </div>
+                    {
+                        menuToggle &&
+                        <ul className='contenedor-menu__user'>
+                            <Link to='/menu/usuarios' className={isAdmin == 0 ? 'isNotAdmin' : 'list'}>
+                                <FiUsers className='icono-li' />
+                                <p>Administrar usuarios</p>
+                            </Link>
+                            <li className='list'>
+                                <FiSettings className='icono-li' />
+                                <p>Configuración</p>
+                            </li>
+                            <li className='list' onClick={cerrarSesion}>
+                                <GiEntryDoor className='icono-li' />
+                                <p>Cerrar sesión</p>
+                            </li>
+                        </ul>
+                    }
                 </div>
-                {
-                    menuToggle &&
-                    <ul className='contenedor-menu__user'>
-                        <Link to='/menu/usuarios' className={isAdmin == 0 ? 'isNotAdmin' : 'list'}>
-                            <FiUsers className='icono-li' />
-                            <p>Administrar usuarios</p>
-                        </Link>
-                        <li className='list'>
-                            <FiSettings className='icono-li' />
-                            <p>Configuración</p>
-                        </li>
-                        <li className='list' onClick={cerrarSesion}>
-                            <GiEntryDoor className='icono-li' />
-                            <p>Cerrar sesión</p>
-                        </li>
-                    </ul>
-                }
             </header>
 
             <div onClick={closeMenu} className='outlet'>
                 <Outlet />
             </div>
-        </div>
+        </>
     )
 }
 
