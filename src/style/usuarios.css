@@ -154,6 +154,16 @@
     background-color: rgb(172, 38, 38);
 }
 
+.wsp{
+    background-color: #44c052;
+    transition: all .3s ease;
+}
+
+.wsp:hover{
+    background-color: #287b32;
+}
+
+
 .contenedor-general-cards{
     margin-top: 5rem;
 }

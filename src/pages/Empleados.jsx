@@ -1,15 +1,19 @@
 import { useLoaderData, Form, Link, Outlet, useNavigate } from "react-router-dom"
 import { deleteEmployee, getEmployees } from "../services/employees"
 import { useState } from 'react'
-import {Toaster, toast} from 'sonner'
+import { Toaster, toast } from 'sonner'
+import { ImWhatsapp } from "react-icons/im";
 import { FiUserPlus, FiTrash, FiEdit, FiEye } from "react-icons/fi";
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies()
 
 export function loader() {
     const empleados = getEmployees()
     return empleados
 }
 
-export const action = async ({params}) => {
+export const action = async ({ params }) => {
     await deleteEmployee(params.empleadoId)
     location.reload()
     return toast.success('Eliminado correctamente')
@@ -17,6 +21,7 @@ export const action = async ({params}) => {
 
 const Empleados = () => {
 
+    const isAdmin = cookies.get('isAdmin')
     const empleados = useLoaderData()
     const [employees, setEmployees] = useState(empleados)
     const [tabla, setTabla] = useState(employees)
@@ -75,9 +80,15 @@ const Empleados = () => {
                                     <td align="center" className='data data_amaterno'>{employee.estado}</td>
                                     <td align="center" className='data data_opciones'>
                                         <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
+                                        <button className="btn_option wsp">
+                                            <Link to={`https://wa.me/51${employee.telefono}`}>
+                                                <ImWhatsapp className="icon" />
+                                            </Link>
+                                        </button>
                                         <button
-                                            onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)} 
-                                            className='btn_option edit'><FiEdit className='icon' /></button>
+                                            onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
+                                            className='btn_option edit'><FiEdit className='icon' />
+                                        </button>
                                         <Form
                                             method='post'
                                             action={`menu/recursos_humanos/empleado/${employee.id}/editar`}
@@ -87,7 +98,7 @@ const Empleados = () => {
                                                 }
                                             }}
                                         >
-                                            <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                            <button className={isAdmin != 1 ? 'isNotAdmin' : 'btn_option delete'}><FiTrash className='icon' /></button>
                                         </Form>
 
                                     </td>
@@ -126,9 +137,15 @@ const Empleados = () => {
                             </div>
                             <div className='data data_opciones'>
                                 <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
+                                <button className="btn_option wsp">
+                                    <Link to={`https://wa.me/51${employee.telefono}`}>
+                                        <ImWhatsapp className="icon" />
+                                    </Link>
+                                </button>
                                 <button
                                     onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
-                                    className='btn_option edit'><FiEdit className='icon' /></button>
+                                    className='btn_option edit'><FiEdit className='icon' />
+                                </button>
                                 <Form
                                     method='post'
                                     action={`menu/recursos_humanos/empleado/${employee.id}/editar`}
@@ -138,7 +155,7 @@ const Empleados = () => {
                                         }
                                     }}
                                 >
-                                    <button className='btn_option delete'><FiTrash className='icon' /></button>
+                                    <button className={isAdmin != 1 ? 'isNotAdmin' : 'btn_option delete'}><FiTrash className='icon' /></button>
                                 </Form>
 
                             </div>

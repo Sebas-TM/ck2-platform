@@ -87,7 +87,6 @@
 
 .form-group__boton:hover {
     background-color: #f82b3c;
-    transform: scale(1.1);
 }
 
 .contenedor-dos {
@@ -105,5 +104,9 @@
     }
     .form-group__boton{
         width: 30%;
+    }
+    .form-group__boton:hover {
+        background-color: #f82b3c;
+        transform: scale(1.1);
     }
 }

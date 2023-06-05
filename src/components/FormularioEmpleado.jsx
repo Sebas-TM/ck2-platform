@@ -68,10 +68,7 @@ const FormularioEmpleado = ({employee}) => {
                         >
                             <option value="" disabled>--Seleccione--</option>
                             <option value="Activo">Activo</option>
-                            <option value="Capacitacion">Capacitación</option>
-                            <option value="Cesado">Cesado</option>
-                            <option value="Seleccionado">Seleccionado</option>
-                            <option value="Postulante">Postulante</option>
+                            <option value="No activo">No activo</option>
                         </select>
                     </div>
                     <div className='form-group__input-group'>

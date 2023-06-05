@@ -32,7 +32,7 @@ export const addEmployee = async (datos) => {
 
 export async function updateEmployee(id,datos){
     try{
-        const respuesta = fetch(`${config.API_URL}employees/update/${id}`,{
+        const respuesta = await fetch(`${config.API_URL}employees/update/${id}`,{
             method:'POST',
             body: JSON.stringify(datos),
             headers:{

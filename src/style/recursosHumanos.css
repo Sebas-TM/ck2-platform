@@ -1,34 +1,52 @@
-.contenedor-navegacion{
-    max-width: 100%;
+.contenedor-navegacion {
+    width: 80%;
     overflow-x: auto;
-}
-
-.navegacion{
-    height: 3.5rem;
+    margin: auto;
+    height: 10rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 3rem;
-    padding: 2rem 0;
 }
 
-@media (min-width:768px){
-    .navegacion{
+.navegacion {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    white-space: nowrap;
+    width: 100%;
+}
+
+@media (min-width:768px) {
+    .navegacion {
         justify-content: space-evenly;
         gap: 0;
     }
 }
 
-.navegacion .link_rrhh{
+.navegacion .link_rrhh {
     font-size: 1.5rem;
     color: black;
     background-color: rgb(233, 230, 230);
     padding: .5rem 1.5rem;
     border-radius: 3rem;
-    transition: all .3s ease;
+    transition: all .3s ease; 
+    display: inline-block;
+    text-decoration: none;
 }
 
-.navegacion .link_rrhh:hover{
+.navegacion .link_rrhh:hover {
     background-color: gray;
     color: white;
+}
+
+.link_rrhh_seleccionado {
+    background-color: gray;
+    color: white;
+    font-size: 1.5rem;
+    padding: .5rem 1.5rem;
+    border-radius: 3rem;
+    transition: all .3s ease;
 }

@@ -5,7 +5,7 @@ import md5 from 'md5'
 import Cookies from 'universal-cookie'
 import { Toaster, toast } from 'sonner'
 import Spinner from '../components/Spinner'
-import logo_original from '../image/logo_original.webp'
+import logo_texto from '../image/logo_texto.png'
 
 const url = "http://127.0.0.1:8000/api/users/list"
 const cookies = new Cookies()
@@ -70,7 +70,7 @@ const Login = () => {
             {cargando && <Spinner />}
             <Toaster position="top-center" richColors />
             <div className='contenedor-uno'>
-                <img className='form-group__logo' src={logo_original} alt="logo" />
+                <img className='form-group__logo' src={logo_texto} alt="logo" />
 
 
                 <div className='form-group'>
