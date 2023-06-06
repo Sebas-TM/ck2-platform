@@ -1,11 +1,17 @@
 .contenedor-navegacion {
-    width: 80%;
+    width: 100%;
     overflow-x: auto;
     margin: auto;
     height: 10rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+}
+
+@media (min-width:500px) {
+    .contenedor-navegacion {
+        justify-content: center;
+        gap: 2rem;
+    }
 }
 
 .navegacion {
@@ -16,13 +22,12 @@
     gap: 2rem;
     padding: 2rem 0;
     white-space: nowrap;
-    width: 100%;
 }
 
 @media (min-width:768px) {
     .navegacion {
         justify-content: space-evenly;
-        gap: 0;
+        width: 100%;
     }
 }
 
@@ -32,7 +37,7 @@
     background-color: rgb(233, 230, 230);
     padding: .5rem 1.5rem;
     border-radius: 3rem;
-    transition: all .3s ease; 
+    transition: all .3s ease;
     display: inline-block;
     text-decoration: none;
 }

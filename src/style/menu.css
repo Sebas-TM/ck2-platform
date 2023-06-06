@@ -201,10 +201,6 @@
     gap: 1.5rem;
 }
 
-.list_user {
-    /* margin-top: 1.5rem; */
-}
-
 .list_user .texto_header {
     color: white;
     cursor: pointer;
