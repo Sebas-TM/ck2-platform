@@ -34,8 +34,6 @@ const NuevoUsuario = () => {
 
     return (
         <section className='contenedor_nuevo-dato'>
-            {/* {errores?.length && errores.map((error, i) => <Error key={i}>{error}</Error>)} */}
-            <Error>{errores}</Error>
 
             <Form
                 method="post"

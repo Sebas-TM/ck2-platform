@@ -2,12 +2,28 @@ import '../style/formulario.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { FiChevronLeft } from "react-icons/fi";
 import { Toaster, toast } from 'sonner';
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { getAreas } from '../services/areas';
+import useFetchAndLoad from '../hooks/useFetchAndLoad';
 
-const FormularioEmpleado = ({employee}) => {
+const FormularioEmpleado = ({ employee }) => {
 
     const navigate = useNavigate()
-    
+    const { loading, callEndpoint } = useFetchAndLoad()
+    const [areas, setAreas] = useState([])
+
+    useEffect(() => {
+        callEndpoint(getAreas())
+            .then(res => res.json())
+            .then(res => {
+                setAreas(res)
+            })
+            .catch(error => {
+                if (error.code === 'ERR_CANCELED') {
+                    console - log('Request has benn', error.message)
+                }
+            })
+    }, [])
     return (
         <div className='contenedor-form'>
             {/* <Toaster /> */}
@@ -33,7 +49,7 @@ const FormularioEmpleado = ({employee}) => {
                             id='nombre'
                             placeholder='Ingrese su nombre'
                             defaultValue={employee?.nombre}
-                            // onChange={(e) => setNombre(e.target.value)}
+                        // onChange={(e) => setNombre(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -44,7 +60,7 @@ const FormularioEmpleado = ({employee}) => {
                             id='apellido_paterno'
                             placeholder='Ingrese su apellido paterno'
                             defaultValue={employee?.apellido_paterno}
-                            // onChange={(e) => setApellidoPaterno(e.target.value)}
+                        // onChange={(e) => setApellidoPaterno(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -55,7 +71,7 @@ const FormularioEmpleado = ({employee}) => {
                             id='apellido_materno'
                             placeholder='Ingrese su apellido materno'
                             defaultValue={employee?.apellido_materno}
-                            // onChange={(e) => setApellidoMaterno(e.target.value)}
+                        // onChange={(e) => setApellidoMaterno(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -79,7 +95,7 @@ const FormularioEmpleado = ({employee}) => {
                             id='dni'
                             placeholder='Ingrese su DNI'
                             defaultValue={employee?.dni}
-                            // onChange={(e) => setDni(e.target.value)}
+                        // onChange={(e) => setDni(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -90,20 +106,20 @@ const FormularioEmpleado = ({employee}) => {
                             id='correo'
                             placeholder='Ingrese su correo'
                             defaultValue={employee?.correo}
-                            // onChange={(e) => setDni(e.target.value)}
+                        // onChange={(e) => setDni(e.target.value)}
                         />
                     </div>
                 </div>
                 <div className='subcontenedor-form'>
                     <div className='form-group__input-group'>
-                        <label htmlFor="telefono">Teléfono</label>
+                        <label htmlFor="telefono">Celular</label>
                         <input
                             type="text"
                             name='telefono'
                             id='telefono'
                             placeholder='Ingrese su teléfono'
                             defaultValue={employee?.telefono}
-                            // onChange={(e) => setUsuario(e.target.value)}
+                        // onChange={(e) => setUsuario(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -114,8 +130,22 @@ const FormularioEmpleado = ({employee}) => {
                             id='area'
                             placeholder='Ingrese el área al que pertenece el empleado'
                             defaultValue={employee?.area}
-                            // onChange={(e) => setContraseña(e.target.value)}
+                        // onChange={(e) => setContraseña(e.target.value)}
                         />
+                    </div>
+                    <div className='form-group__input-group'>
+                        <label htmlFor="sala">Área</label>
+                        <select
+                            className='sala'
+                            name='sala'
+                            id='sala'
+                            defaultValue={employee?.area}
+                        >
+                            <option value="" disabled>--Seleccione--</option>
+                            {areas.map(area => (
+                                <option key={area.id}>{area.area}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className='form-group__input-group'>
                         <label htmlFor="sala">Sala</label>
@@ -141,7 +171,7 @@ const FormularioEmpleado = ({employee}) => {
                             id='arcargoea'
                             placeholder='Ingrese el cargo del empleado'
                             defaultValue={employee?.cargo}
-                            // onChange={(e) => setContraseña(e.target.value)}
+                        // onChange={(e) => setContraseña(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
@@ -152,7 +182,7 @@ const FormularioEmpleado = ({employee}) => {
                             id='jefe_directo'
                             placeholder='Ingrese el supervisor del empleado'
                             defaultValue={employee?.jefe_directo}
-                            // onChange={(e) => setContraseña(e.target.value)}
+                        // onChange={(e) => setContraseña(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>

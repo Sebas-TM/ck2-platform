@@ -15,6 +15,7 @@ import NuevoEmpleado, {action as nuevoEmpleadoAction} from './components/NuevoEm
 import EditarEmpleado, {loader as empleadoLoader, action as actualizarEmpleadoAction} from './components/EditarEmpleado'
 import Postulaciones from './pages/Postulaciones'
 import Gestiones from './pages/Gestiones'
+import Areas, {loader as areasLoader} from './pages/Areas'
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,11 @@ const router = createBrowserRouter([
             element: <Gestiones/>
           }
         ]
+      },
+      {
+        path:'/menu/areas',
+        element: <Areas/>,
+        loader: areasLoader
       }
     ]
   }

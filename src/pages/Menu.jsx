@@ -49,7 +49,6 @@ const Menu = () => {
     const nombre = cookies.get('nombre')
     const username = cookies.get('username')
     const isAdmin = cookies.get('isAdmin')
-    console.log(isAdmin)
     return (
         <div >
             <header className='contenedor-header'>
