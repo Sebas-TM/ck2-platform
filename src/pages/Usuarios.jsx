@@ -1,19 +1,13 @@
 import '../style/usuarios.css'
 import { useEffect, useState } from 'react'
-import Spinner from '../components/Spinner'
 import Cookies from 'universal-cookie'
+import useFetchAndLoad from "../hooks/useFetchAndLoad"
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
 import { useLoaderData, useNavigate, Form, redirect } from 'react-router-dom';
 import { getUsers, deleteUser } from '../services/users';
 import { Toaster, toast } from 'sonner'
 
 
-const cookies = new Cookies()
-
-export function loader() {
-    const usuarios = getUsers()
-    return usuarios
-}
 
 export const action = async ({ params }) => {
     await deleteUser(params.usuarioId)
@@ -21,26 +15,34 @@ export const action = async ({ params }) => {
 
     return toast.success('Eliminado correctamente')
 }
-
-
-
 const Usuarios = () => {
+
+    const cookies = new Cookies()
+    const { loading, callEndpoint } = useFetchAndLoad()
+    const [users, setUsers] = useState([])
+    const [tabla, setTabla] = useState(users)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        callEndpoint(getUsers())
+            .then(res => res.json())
+            .then(res => {
+                setUsers(res)
+            })
+            .catch(error => {
+                if (error.code === 'ERR_CANCELED') {
+                    console.log('Request has been', error.message);
+                }
+            })
+    }, [])
+    console.log(users);
+
     if (!cookies.get('username')) {
         window.location.href = "/"
     }
     if (cookies.get('isAdmin') != 1) {
         window.location.href = "/menu"
     }
-
-    const usuarios = useLoaderData()
-    const [users, setUsers] = useState(usuarios)
-    const [tabla, setTabla] = useState(users)
-
-    // setUsers(usuarios)
-    // console.log(tabla);
-    const navigate = useNavigate()
-
-
 
     const handleChange = e => {
         filtrar(e.target.value)
@@ -64,9 +66,8 @@ const Usuarios = () => {
 
     return (
         <>
-            {!users.length && <Spinner />}
+            <Toaster position='top-center' />
             <div className="form-group">
-                <Toaster position='top-center' />
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
                     <div className='contenedor-input'>

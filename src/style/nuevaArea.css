@@ -1,0 +1,13 @@
+.input-area {
+    margin: auto;
+}
+
+@media (min-width:768px) {
+    .input-area {
+        width: 50%;
+    }
+}
+
+.error-message {
+    color: red;
+}

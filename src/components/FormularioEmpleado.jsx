@@ -20,7 +20,7 @@ const FormularioEmpleado = ({ employee }) => {
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
-                    console - log('Request has benn', error.message)
+                    console.log('Request has been', error.message)
                 }
             })
     }, [])
@@ -117,28 +117,17 @@ const FormularioEmpleado = ({ employee }) => {
                             type="text"
                             name='telefono'
                             id='telefono'
-                            placeholder='Ingrese su teléfono'
+                            placeholder='Ingrese su número de celular'
                             defaultValue={employee?.telefono}
                         // onChange={(e) => setUsuario(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
                         <label htmlFor="area">Área</label>
-                        <input
-                            type="text"
+                        <select
+                            className='area'
                             name='area'
                             id='area'
-                            placeholder='Ingrese el área al que pertenece el empleado'
-                            defaultValue={employee?.area}
-                        // onChange={(e) => setContraseña(e.target.value)}
-                        />
-                    </div>
-                    <div className='form-group__input-group'>
-                        <label htmlFor="sala">Área</label>
-                        <select
-                            className='sala'
-                            name='sala'
-                            id='sala'
                             defaultValue={employee?.area}
                         >
                             <option value="" disabled>--Seleccione--</option>
@@ -168,19 +157,19 @@ const FormularioEmpleado = ({ employee }) => {
                         <input
                             type="text"
                             name='cargo'
-                            id='arcargoea'
+                            id='cargo'
                             placeholder='Ingrese el cargo del empleado'
                             defaultValue={employee?.cargo}
                         // onChange={(e) => setContraseña(e.target.value)}
                         />
                     </div>
                     <div className='form-group__input-group'>
-                        <label htmlFor="jefe_directo">Supervisor</label>
+                        <label htmlFor="jefe_directo">Jefe inmediato</label>
                         <input
                             type="text"
                             name='jefe_directo'
                             id='jefe_directo'
-                            placeholder='Ingrese el supervisor del empleado'
+                            placeholder='Ingrese el jefe inmediato'
                             defaultValue={employee?.jefe_directo}
                         // onChange={(e) => setContraseña(e.target.value)}
                         />

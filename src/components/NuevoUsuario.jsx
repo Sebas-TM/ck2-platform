@@ -30,7 +30,6 @@ export async function action({ request }) {
 
 const NuevoUsuario = () => {
     const errores = useActionData()
-    console.log(errores)
 
     return (
         <section className='contenedor_nuevo-dato'>

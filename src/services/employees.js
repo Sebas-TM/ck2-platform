@@ -1,10 +1,14 @@
 import { config } from '../config'
+import { loadAbort } from '../utils/loadAbort'
 
 export const getEmployees = async () => {
-    const respuesta = await fetch(`${config.API_URL}employees/list`)
-    const resultado = await respuesta.json()
+    const controller = loadAbort()
 
-    return resultado
+    return {
+        call:fetch(`${config.API_URL}employees/list`, {signal: controller.signal}),
+        controller
+    }
+    
 }
 
 export const getEmployee = async (id) => {
@@ -43,7 +47,6 @@ export async function updateEmployee(id,datos){
     }catch(error){
         console.log(error);
     }
-    // console.log(datos);
 }
 
 export async function deleteEmployee(id){

@@ -5,18 +5,18 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login'
 import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
-import NuevoUsuario,{action as nuevoUsuarioAction} from './components/NuevoUsuario'
-import Usuarios,{loader as usuariosLoader, action as eliminarUsuarioAction} from './pages/Usuarios'
-import EditarUsuario, {loader as usuarioLoader, action as actualizarUsuarioAction} from './components/EditarUsuario'
-import RecursosHumanos  from './pages/RecursosHumanos'
-import Empleados, {loader as empleadosLoader, action as eliminarEmpleadoAction} from './pages/Empleados'
-import VerEmpleado, {loader as verEmpleadoLoader} from './components/VerEmpleado'
-import NuevoEmpleado, {action as nuevoEmpleadoAction} from './components/NuevoEmpleado'
-import EditarEmpleado, {loader as empleadoLoader, action as actualizarEmpleadoAction} from './components/EditarEmpleado'
+import NuevoUsuario, { action as nuevoUsuarioAction } from './components/NuevoUsuario'
+import Usuarios, {  action as eliminarUsuarioAction } from './pages/Usuarios'
+import EditarUsuario, { loader as usuarioLoader, action as actualizarUsuarioAction } from './components/EditarUsuario'
+import RecursosHumanos from './pages/RecursosHumanos'
+import Empleados, { loader as empleadosLoader, action as eliminarEmpleadoAction } from './pages/Empleados'
+import VerEmpleado, { loader as verEmpleadoLoader } from './components/VerEmpleado'
+import NuevoEmpleado, { action as nuevoEmpleadoAction } from './components/NuevoEmpleado'
+import EditarEmpleado, { loader as empleadoLoader, action as actualizarEmpleadoAction } from './components/EditarEmpleado'
 import Postulaciones from './pages/Postulaciones'
 import Gestiones from './pages/Gestiones'
-import Areas, {loader as areasLoader} from './pages/Areas'
-
+import Areas from './pages/Areas'
+import NuevaArea from './components/NuevaArea'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -24,25 +24,24 @@ const router = createBrowserRouter([
   },
   {
     path: '/menu',
-    element: <Menu/>, children:[
+    element: <Menu />, children: [
       {
-        index:true,
-        element:<Modulos/>
+        index: true,
+        element: <Modulos />
       },
       {
-        path:'/menu/usuarios',
-        element: <Usuarios/>,
-        loader: usuariosLoader
+        path: '/menu/usuarios',
+        element: <Usuarios />
       },
       {
-        path:'/menu/usuarios/crear',
-        element:<NuevoUsuario/>,
+        path: '/menu/usuarios/crear',
+        element: <NuevoUsuario />,
         action: nuevoUsuarioAction,
       },
       {
-        path:'/menu/usuarios/:usuarioId/editar',
-        element:<EditarUsuario/>,
-        loader:usuarioLoader,
+        path: '/menu/usuarios/:usuarioId/editar',
+        element: <EditarUsuario />,
+        loader: usuarioLoader,
         action: actualizarUsuarioAction
       },
       {
@@ -51,46 +50,57 @@ const router = createBrowserRouter([
       },
       {
         path: '/menu/recursos_humanos',
-        element: <RecursosHumanos/>, children:[
+        element: <RecursosHumanos />, children: [
           {
-            index:true,
-            element: <Empleados/>,
+            index: true,
+            element: <Empleados />,
             loader: empleadosLoader
           },
           {
             path: '/menu/recursos_humanos/empleado/:empleadoId',
-            element: <VerEmpleado/>,
+            element: <VerEmpleado />,
             loader: verEmpleadoLoader
           },
           {
             path: '/menu/recursos_humanos/empleado/crear',
-            element: <NuevoEmpleado/>,
+            element: <NuevoEmpleado />,
             action: nuevoEmpleadoAction
           },
           {
             path: '/menu/recursos_humanos/empleado/:empleadoId/editar',
-            element: <EditarEmpleado/>,
+            element: <EditarEmpleado />,
             loader: empleadoLoader,
-            action:actualizarEmpleadoAction
+            action: actualizarEmpleadoAction
           },
           {
-            path:'menu/recursos_humanos/empleado/:empleadoId/editar',
-            action: eliminarEmpleadoAction,            
+            path: 'menu/recursos_humanos/empleado/:empleadoId/editar',
+            action: eliminarEmpleadoAction,
           },
           {
-            path:'/menu/recursos_humanos/postulaciones',
-            element: <Postulaciones/>
+            path: '/menu/recursos_humanos/postulaciones',
+            element: <Postulaciones />
           },
           {
-            path:'/menu/recursos_humanos/gestiones',
-            element: <Gestiones/>
+            path: '/menu/recursos_humanos/gestiones',
+            element: <Gestiones />
           }
         ]
       },
       {
-        path:'/menu/areas',
-        element: <Areas/>,
-        loader: areasLoader
+        path: '/menu/areas',
+        element: <Areas />
+      },
+      {
+        path: '/menu/areas/crear',
+        element: <NuevaArea />
+      },
+      {
+        path: '/menu/areas/:areaId/editar',
+        element: <NuevaArea />
+      },
+      {
+        path: '/menu/areas/:areaId/eliminar',
+        element: <Areas />
       }
     ]
   }

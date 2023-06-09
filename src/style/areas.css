@@ -1,0 +1,13 @@
+.btn_add_areas{
+    padding: .5rem 1rem;
+}
+
+.tablaActive{
+    display: block;
+}
+
+@media (max-width:768px) {
+    .tablaActive{
+        width: 100%;
+    }
+}

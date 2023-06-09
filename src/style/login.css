@@ -54,6 +54,7 @@
     display: flex;
     flex-direction: column;
     width: 70%;
+    margin-top: 1rem;
 }
 
 .form-group__input-group label {
@@ -66,7 +67,7 @@
     border-radius: 1.5rem;
     margin-top: 1.5rem;
     outline-color: #E62838;
-    margin-bottom: 1.5rem;
+    margin-bottom: .5rem;
     font-family: 'Poppins', sans-serif;
 }
 

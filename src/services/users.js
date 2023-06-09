@@ -1,10 +1,12 @@
 import { config } from '../config'
-
+import { loadAbort } from '../utils/loadAbort'
 export const getUsers = async () => {
-    const respuesta = await fetch(`${config.API_URL}users/list`)
-    const resultado = await respuesta.json()
+    const controller = loadAbort()
 
-    return resultado
+    return {
+        call: fetch(`${config.API_URL}users/list`, { signal: controller.signal }),
+        controller
+    }
 }
 
 export const getUser = async (id) => {
@@ -34,17 +36,17 @@ export const addUser = async (datos) => {
     // console.log(datos)
 }
 
-export async function updateUser(id, datos){
-    try{
-        const respuesta = await fetch(`${config.API_URL}users/update/${id}`,{
+export async function updateUser(id, datos) {
+    try {
+        const respuesta = await fetch(`${config.API_URL}users/update/${id}`, {
             method: 'POST',
             body: JSON.stringify(datos),
-            headers:{
+            headers: {
                 'Content-Type': 'application/json'
             }
         })
         await respuesta.json()
-    }catch(error){
+    } catch (error) {
         console.log(error)
     }
     // console.log(datos)
@@ -57,8 +59,8 @@ export async function deleteUser(id) {
         })
 
         await respuesta.json()
-    }catch(error){
+    } catch (error) {
         console.log(error);
     }
-    
+
 }
