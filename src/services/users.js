@@ -1,6 +1,6 @@
 import { config } from '../config'
 import { loadAbort } from '../utils/loadAbort'
-export const getUsers = async () => {
+export const getUsers = () => {
     const controller = loadAbort()
 
     return {
@@ -9,31 +9,28 @@ export const getUsers = async () => {
     }
 }
 
-export const getUser = async (id) => {
-    const respuesta = await fetch(`${config.API_URL}users/list/${id}`)
-    const resultado = await respuesta.json()
+export const getUser = (id) => {
+    const controller = loadAbort()
 
-    return resultado
-
-    // console.log(id)
+    return {
+        call: fetch(`${config.API_URL}users/list/${id}`, { signal: controller.signal }),
+        controller
+    }
 }
 
-export const addUser = async (datos) => {
-    try {
-        const respuesta = await fetch(`${config.API_URL}users/create`, {
-            method: 'POST',
-            body: JSON.stringify(datos),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': '*/*'
-            }
-        })
-        await respuesta.json()
+export const postUser =  (user) => {
+    const controller = loadAbort()
 
-    } catch (error) {
-        console.log(error);
+    return{
+        call: fetch(`${config.API_URL}users/create`,{
+            signal: controller.signal,
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(user)
+        })
     }
-    // console.log(datos)
 }
 
 export async function updateUser(id, datos) {
@@ -52,15 +49,15 @@ export async function updateUser(id, datos) {
     // console.log(datos)
 }
 
-export async function deleteUser(id) {
-    try {
-        const respuesta = await fetch(`${config.API_URL}users/delete/${id}`, {
-            method: 'DELETE'
-        })
+export const deleteUser = (id) => {
+    const controller = loadAbort()
 
-        await respuesta.json()
-    } catch (error) {
-        console.log(error);
+    return {
+        call: fetch(`${config.API_URL}users/delete/${id}`,
+            {
+                signal: controller.signal,
+                method: 'DELETE'
+            }),
+        controller
     }
-
 }

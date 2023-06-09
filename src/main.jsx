@@ -5,8 +5,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login'
 import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
-import NuevoUsuario, { action as nuevoUsuarioAction } from './components/NuevoUsuario'
-import Usuarios, {  action as eliminarUsuarioAction } from './pages/Usuarios'
+import NuevoUsuario from './components/NuevoUsuario'
+import Usuarios from './pages/Usuarios'
 import EditarUsuario, { loader as usuarioLoader, action as actualizarUsuarioAction } from './components/EditarUsuario'
 import RecursosHumanos from './pages/RecursosHumanos'
 import Empleados, { loader as empleadosLoader, action as eliminarEmpleadoAction } from './pages/Empleados'
@@ -35,18 +35,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/menu/usuarios/crear',
-        element: <NuevoUsuario />,
-        action: nuevoUsuarioAction,
+        element: <NuevoUsuario />
       },
       {
         path: '/menu/usuarios/:usuarioId/editar',
         element: <EditarUsuario />,
         loader: usuarioLoader,
         action: actualizarUsuarioAction
-      },
-      {
-        path: '/menu/usuarios/:usuarioId/eliminar',
-        action: eliminarUsuarioAction
       },
       {
         path: '/menu/recursos_humanos',
@@ -97,10 +92,6 @@ const router = createBrowserRouter([
       {
         path: '/menu/areas/:areaId/editar',
         element: <NuevaArea />
-      },
-      {
-        path: '/menu/areas/:areaId/eliminar',
-        element: <Areas />
       }
     ]
   }

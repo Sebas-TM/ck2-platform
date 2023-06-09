@@ -54,12 +54,12 @@ export const updateArea = (area, id) => {
 export const deleteArea = (id) => {
     const controller = loadAbort()
 
-    return{
+    return {
         call: fetch(`${config.API_URL}areas/delete/${id}`,
-        {
-          signal:controller.signal,
-          method: 'DELETE'
-        }),
+            {
+                signal: controller.signal,
+                method: 'DELETE'
+            }),
         controller
     }
 }

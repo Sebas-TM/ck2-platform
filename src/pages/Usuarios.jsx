@@ -3,24 +3,25 @@ import { useEffect, useState } from 'react'
 import Cookies from 'universal-cookie'
 import useFetchAndLoad from "../hooks/useFetchAndLoad"
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
-import { useLoaderData, useNavigate, Form, redirect } from 'react-router-dom';
+import { useNavigate, Form, redirect } from 'react-router-dom';
 import { getUsers, deleteUser } from '../services/users';
 import { Toaster, toast } from 'sonner'
+import swal from 'sweetalert';
 
 
 
-export const action = async ({ params }) => {
-    await deleteUser(params.usuarioId)
-    location.reload()
+// export const action = async ({ params }) => {
+//     await deleteUser(params.usuarioId)
+//     location.reload()
 
-    return toast.success('Eliminado correctamente')
-}
+//     return toast.success('Eliminado correctamente')
+// }
 const Usuarios = () => {
 
     const cookies = new Cookies()
     const { loading, callEndpoint } = useFetchAndLoad()
     const [users, setUsers] = useState([])
-    const [tabla, setTabla] = useState(users)
+    const [tabla, setTabla] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -28,6 +29,7 @@ const Usuarios = () => {
             .then(res => res.json())
             .then(res => {
                 setUsers(res)
+                setTabla(res)
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
@@ -35,7 +37,27 @@ const Usuarios = () => {
                 }
             })
     }, [])
-    console.log(users);
+    // console.log(users);
+
+    const eliminarUsuario = userId => {
+        swal({
+            text: "¿Estás seguro de eliminar este usuario?",
+            buttons: ["No", "Si"]
+        }).then(respuesta => {
+            if (respuesta) {
+                callEndpoint(deleteUser(parseInt(userId)))
+                    .then(res => res.json())
+                    .then(res => console.log(res))
+                    .catch(error => {
+                        if (error.code === 'ERR_CANCELED') {
+                            console.log('Request has been', error.message)
+                        }
+                    })
+                toast.success('Área eliminada correctamente')
+                setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+            }
+        })
+    }
 
     if (!cookies.get('username')) {
         window.location.href = "/"
@@ -66,7 +88,7 @@ const Usuarios = () => {
 
     return (
         <>
-            <Toaster position='top-center' />
+            <Toaster position='top-center' richColors />
             <div className="form-group">
                 <div className="form-group-header">
                     <h1>Administrar usuarios</h1>
@@ -153,17 +175,7 @@ const Usuarios = () => {
                                 </div>
                                 <div className='data data_opciones'>
                                     <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
-                                    <Form
-                                        method='post'
-                                        action={`/menu/usuarios/${user.id}/eliminar`}
-                                        onSubmit={(e) => {
-                                            if (!confirm('¿Deseas eliminar este registro?')) {
-                                                e.preventDefault()
-                                            }
-                                        }}
-                                    >
-                                        <button className='btn_option delete'><FiTrash className='icon' /></button>
-                                    </Form>
+                                    <button onClick={() => eliminarUsuario(user.id)} className='btn_option delete'><FiTrash className='icon' /></button>
 
                                 </div>
                             </div>

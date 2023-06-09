@@ -30,9 +30,7 @@ const Areas = () => {
 
   const eliminarArea = (areaId) => {
     swal({
-      title: "Eliminar",
-      text: "¿Estás seguro de eliminar este registro?",
-      icon: "warning",
+      text: "¿Estás seguro de eliminar esta área?",
       buttons: ["No", "Si"]
     }).then(respuesta => {
       if (respuesta) {

@@ -11,3 +11,21 @@
         width: 100%;
     }
 }
+.swal-modal{
+    width: 35rem;
+}
+.swal-title{
+    color: black;
+}
+
+.swal-text{
+    color: black;
+}
+
+.swal-button--confirm{
+    background-color: rgb(217, 46, 46);
+}
+
+.swal-button--confirm:hover{
+    background-color: rgb(172, 38, 38);
+}

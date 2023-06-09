@@ -94,6 +94,7 @@ const Login = () => {
                             onChange={(e) => setContraseña(e.target.value)} />
                     </div>
                     <button className='form-group__boton' onClick={iniciarSesion} >Iniciar sesión</button>
+                    {/* <input type="button" onSubmit={iniciarSesion} className='form-group__boton' value='Ingresar'/> */}
                 </div>
             </div>
             <div className='contenedor-dos'>
