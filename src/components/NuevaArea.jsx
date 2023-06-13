@@ -12,25 +12,8 @@ const NuevaArea = () => {
     const navigate = useNavigate()
     const { areaId } = useParams()
     const [areas, setAreas] = useState([])
-    const { register, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
-    const submitData = (data) => {
-        if (!areaId) {
-            callEndpoint(postArea(data))
-                .then(resp => resp.json())
-                // .then(res => console.log(res))
-
-            toast.success('Área creada correctamente')
-            
-        }else{
-            callEndpoint(updateArea(data, parseInt(areaId)))
-                .then(resp => resp.json())
-                // .then(res => console.log(res))
-
-            toast.success('Área actualizada correctamente')
-        }
-    }
-
+    const [data, setData] = useState(6)
     useEffect(() => {
         if (!areaId) {
             return () => { }
@@ -39,13 +22,44 @@ const NuevaArea = () => {
             .then(res => res.json())
             .then(res => {
                 setAreas(res)
+                setData(res.area);
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
                     console.log('Request has been', error.message)
                 }
             })
+
     }, [areaId])
+    console.log(areas.id);
+
+    const preloadedValues = {
+        area: `${areaId}`
+    }
+
+    const { register, formState: { errors }, handleSubmit } = useForm({
+        defaultValues: preloadedValues
+    })
+
+
+    const submitData = (data) => {
+        if (!areaId) {
+            callEndpoint(postArea(data))
+                .then(resp => resp.json())
+            // .then(res => console.log(res))
+
+            toast.success('Área creada correctamente')
+
+        } else {
+            callEndpoint(updateArea(data, parseInt(areaId)))
+                .then(resp => resp.json())
+            // .then(res => console.log(res))
+
+            toast.success('Área actualizada correctamente')
+        }
+    }
+
+
 
     return (
         <section className='contenedor_nuevo-dato'>
@@ -63,7 +77,7 @@ const NuevaArea = () => {
                     </button>
                     <h1 className='contenedor-form__texto'>{areaId ? 'Editar' : 'Nueva'} área</h1>
                 </div>
-                <form  onSubmit={handleSubmit(submitData)}>
+                <form onSubmit={handleSubmit(submitData)}>
                     <div className='subcontenedor'>
                         <div className='form-group__input-group input-area'>
                             <label htmlFor="area">Área</label>
@@ -77,7 +91,7 @@ const NuevaArea = () => {
                                 name='area'
                                 id='area'
                                 placeholder='Ingresar área'
-                                defaultValue={areas?.area}
+                                // defaultValue={areas?.area}
                             // onChange={(e) => setNombre(e.target.value)}
                             />
                             {errors.area?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}

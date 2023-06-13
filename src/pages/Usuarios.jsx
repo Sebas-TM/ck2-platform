@@ -3,19 +3,12 @@ import { useEffect, useState } from 'react'
 import Cookies from 'universal-cookie'
 import useFetchAndLoad from "../hooks/useFetchAndLoad"
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
-import { useNavigate, Form, redirect } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { getUsers, deleteUser } from '../services/users';
 import { Toaster, toast } from 'sonner'
 import swal from 'sweetalert';
+import Spinner from '../components/Spinner';
 
-
-
-// export const action = async ({ params }) => {
-//     await deleteUser(params.usuarioId)
-//     location.reload()
-
-//     return toast.success('Eliminado correctamente')
-// }
 const Usuarios = () => {
 
     const cookies = new Cookies()
@@ -87,7 +80,8 @@ const Usuarios = () => {
 
 
     return (
-        <>
+        <>  
+            {users.length < 1 && <Spinner/>}
             <Toaster position='top-center' richColors />
             <div className="form-group">
                 <div className="form-group-header">
@@ -123,18 +117,7 @@ const Usuarios = () => {
                                     <td className='data data_admin'>{user.isAdmin == 1 ? 'SI' : 'NO'}</td>
                                     <td className='data data_opciones'>
                                         <button onClick={() => navigate(`/menu/usuarios/${user.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
-                                        <Form
-                                            method='post'
-                                            action={`/menu/usuarios/${user.id}/eliminar`}
-                                            onSubmit={(e) => {
-                                                if (!confirm('¿Deseas eliminar este registro?')) {
-                                                    e.preventDefault()
-                                                }
-                                            }}
-                                        >
-                                            <button className='btn_option delete'><FiTrash className='icon' /></button>
-                                        </Form>
-
+                                        <button onClick={() => eliminarUsuario(user.id)} className='btn_option delete'><FiTrash className='icon' /></button>
                                     </td>
                                 </tr>
                             ))

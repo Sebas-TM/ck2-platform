@@ -1,32 +1,59 @@
 import { useLoaderData, Form, Link, Outlet, useNavigate } from "react-router-dom"
 import { deleteEmployee, getEmployees } from "../services/employees"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster, toast } from 'sonner'
 import { ImWhatsapp } from "react-icons/im";
 import { FiUserPlus, FiTrash, FiEdit, FiEye } from "react-icons/fi";
 import Cookies from 'universal-cookie'
+import useFetchAndLoad from "../hooks/useFetchAndLoad"
+import swal from 'sweetalert';
+import Spinner from '../components/Spinner';
 
 const cookies = new Cookies()
 
-export function loader() {
-    const empleados = getEmployees()
-    return empleados
-}
 
-export const action = async ({ params }) => {
-    await deleteEmployee(params.empleadoId)
-    location.reload()
-    return toast.success('Eliminado correctamente')
-}
 
 const Empleados = () => {
 
     const isAdmin = cookies.get('isAdmin')
-    const empleados = useLoaderData()
-    const [employees, setEmployees] = useState(empleados)
-    const [tabla, setTabla] = useState(employees)
-
+    const { loading, callEndpoint } = useFetchAndLoad()
+    const [employees, setEmployees] = useState([])
+    const [tabla, setTabla] = useState([])
     const navigate = useNavigate()
+
+    useEffect(() => {
+        callEndpoint(getEmployees())
+            .then(res => res.json())
+            .then(res => {
+                setEmployees(res)
+                setTabla(res)
+            })
+            .catch(error => {
+                if (error.code === 'ERR_CANCELED') {
+                    console.log('Request has been', error.message);
+                }
+            })
+    }, [])
+
+    const eliminarEmpleado = employeeId => {
+        swal({
+            text: "¿Estás seguro de eliminar este empleado?",
+            buttons: ["No", "Si"]
+        }).then(respuesta => {
+            if (respuesta) {
+                callEndpoint(deleteEmployee(parseInt(employeeId)))
+                    .then(res => res.json())
+                    .then(res => console.log(res))
+                    .catch(error => {
+                        if (error.code === 'ERR_CANCELED') {
+                            console.log('Request has been', error.message)
+                        }
+                    })
+                toast.success('Empleado eliminado correctamente')
+                setEmployees(prevEmployees => prevEmployees.filter(employee => employee.id !== employeeId));
+            }
+        })
+    }
 
     const handleChange = e => {
         filtrar(e.target.value)
@@ -43,7 +70,8 @@ const Empleados = () => {
 
     return (
         <div className="form-group">
-            {/* <Toaster position='top-center'/> */}
+            {employees.length < 1 && <Spinner />}
+            <Toaster position='top-center' richColors />
             <div className="form-group-header">
                 <h1>Personal</h1>
                 <div className='contenedor-input'>
@@ -89,17 +117,11 @@ const Empleados = () => {
                                             onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
                                             className='btn_option edit'><FiEdit className='icon' />
                                         </button>
-                                        <Form
-                                            method='post'
-                                            action={`menu/recursos_humanos/empleado/${employee.id}/editar`}
-                                            onSubmit={(e) => {
-                                                if (!confirm('¿Deseas eliminar este registro?')) {
-                                                    e.preventDefault()
-                                                }
-                                            }}
-                                        >
-                                            <button className={isAdmin != 1 ? 'isNotAdmin' : 'btn_option delete'}><FiTrash className='icon' /></button>
-                                        </Form>
+
+                                        <button
+                                            onClick={() => eliminarEmpleado(employee.id)}
+                                            className="btn_option delete"
+                                        ><FiTrash className='icon' /></button>
 
                                     </td>
                                 </tr>
@@ -146,18 +168,10 @@ const Empleados = () => {
                                     onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
                                     className='btn_option edit'><FiEdit className='icon' />
                                 </button>
-                                <Form
-                                    method='post'
-                                    action={`menu/recursos_humanos/empleado/${employee.id}/editar`}
-                                    onSubmit={(e) => {
-                                        if (!confirm('¿Deseas eliminar este registro?')) {
-                                            e.preventDefault()
-                                        }
-                                    }}
-                                >
-                                    <button className={isAdmin != 1 ? 'isNotAdmin' : 'btn_option delete'}><FiTrash className='icon' /></button>
-                                </Form>
-
+                                <button
+                                    onClick={() => eliminarEmpleado(employee.id)}
+                                    className="btn_option delete"
+                                ><FiTrash className='icon' /></button>
                             </div>
                         </div>
                     ))

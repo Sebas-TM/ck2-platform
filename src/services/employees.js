@@ -1,7 +1,7 @@
 import { config } from '../config'
 import { loadAbort } from '../utils/loadAbort'
 
-export const getEmployees = async () => {
+export const getEmployees =  () => {
     const controller = loadAbort()
 
     return {
@@ -11,51 +11,54 @@ export const getEmployees = async () => {
     
 }
 
-export const getEmployee = async (id) => {
-    const respuesta = await fetch(`${config.API_URL}employees/list/${id}` ) 
-    const resultado = await respuesta.json()
+export const getEmployee =  (id) => {
+    const controller = loadAbort()
 
-    return resultado
-}
-
-export const addEmployee = async (datos) => {
-    try{
-        const respuesta = await fetch(`${config.API_URL}employees/create`,{
-            method: 'POST',
-            body: JSON.stringify(datos),
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': '*/*'
-            }
-        })
-    }catch(error){
-        console.log(error);
+    return {
+        call: fetch(`${config.API_URL}employees/list/${id}`, { signal: controller.signal }),
+        controller
     }
-    // console.log(datos);
 }
 
-export async function updateEmployee(id,datos){
-    try{
-        const respuesta = await fetch(`${config.API_URL}employees/update/${id}`,{
-            method:'POST',
-            body: JSON.stringify(datos),
+export const postEmployee =  (employee) => {
+    const controller = loadAbort()
+
+    return{
+        call: fetch(`${config.API_URL}employees/create`,{
+            signal: controller.signal,
+            method: 'POST',
             headers:{
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify(employee)
         })
-        await respuesta.json()
-    }catch(error){
-        console.log(error);
     }
 }
 
-export async function deleteEmployee(id){
-    try{
-        const respuesta = await fetch(`${config.API_URL}employees/delete/${id}`,{
-            method:'DELETE'
+export  function updateEmployee(employee, id){
+    const controller = loadAbort()
+
+    return{
+        call: fetch(`${config.API_URL}employees/update/${id}`,{
+            signal: controller.signal,
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(employee)
         })
-        await respuesta.json()
-    }catch(error){
-        console.log(error)
+    }
+}
+
+export  function deleteEmployee(id){
+    const controller = loadAbort()
+
+    return {
+        call: fetch(`${config.API_URL}employees/delete/${id}`,
+            {
+                signal: controller.signal,
+                method: 'DELETE'
+            }),
+        controller
     }
 }

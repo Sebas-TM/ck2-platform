@@ -31,22 +31,40 @@ export const postUser =  (user) => {
             body:JSON.stringify(user)
         })
     }
+
+    // console.log(user);
+}
+export const loginUser =  (user) => {
+    const controller = loadAbort()
+
+    return{
+        call: fetch(`${config.API_URL}users/login`,{
+            signal: controller.signal,
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(user)
+        })
+    }
+
+    // console.log(user);
 }
 
-export async function updateUser(id, datos) {
-    try {
-        const respuesta = await fetch(`${config.API_URL}users/update/${id}`, {
-            method: 'POST',
-            body: JSON.stringify(datos),
+export async function updateUser(user, id) {
+    const controller = loadAbort()
+
+    return{
+        call: fetch(`${config.API_URL}users/update/${id}`,{
+            signal: controller.signal,
+            method:'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
-        })
-        await respuesta.json()
-    } catch (error) {
-        console.log(error)
+            },
+            body:JSON.stringify(user)
+        }),
+        controller
     }
-    // console.log(datos)
 }
 
 export const deleteUser = (id) => {

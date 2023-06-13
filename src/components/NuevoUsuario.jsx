@@ -22,7 +22,12 @@ const NuevoUsuario = () => {
                 .then(resp => resp.json())
 
             toast.success('Usuario creado correctamente')
+        }else{
+            callEndpoint(updateUser(data, parseInt(userId)))
+                .then(resp => resp.json())
+            toast.success('Usuario editado correctamente')
         }
+        // console.log(data);
     }
 
     useEffect(() => {
@@ -40,7 +45,6 @@ const NuevoUsuario = () => {
                 }
             })
     }, [userId])
-
     return (
         <section className='contenedor_nuevo-dato'>
             <Toaster position="top-center" richColors />
@@ -55,7 +59,7 @@ const NuevoUsuario = () => {
                             Regresar
                         </Link>
                     </button>
-                    <h1 className='contenedor-form__texto'>{userId ? 'Editar' : 'Nueva'} área</h1>
+                    <h1 className='contenedor-form__texto'>{userId ? 'Editar' : 'Nuevo'} usuario</h1>
                 </div>
                 <form onSubmit={handleSubmit(submitData)}>
                     <div className='subcontenedor'>
@@ -72,6 +76,7 @@ const NuevoUsuario = () => {
                                     name='nombre'
                                     id='nombre'
                                     placeholder='Ingrese su nombre'
+                                    // defaultValue={users?.nombre}
                                     defaultValue={users?.nombre}
                                 />
                                 {errors.nombre?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
@@ -115,6 +120,7 @@ const NuevoUsuario = () => {
                                     {...register('dni',
                                         {
                                             required:true,
+                                            pattern: /^[0-9]+$/,
                                             maxLength:8,
                                             minLength: 8
                                         })
@@ -127,6 +133,7 @@ const NuevoUsuario = () => {
                                 {errors.dni?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                                 {errors.dni?.type === 'maxLength' && <p className="error-message">Ingresar DNI correcto</p>}
                                 {errors.dni?.type === 'minLength' && <p className="error-message">Ingresar DNI correcto</p>}
+                                {errors.dni?.type === 'pattern' && <p className="error-message">Ingresar DNI correcto</p>}
                             </div>
                         </div>
                         <div className='subcontenedor-form'>
@@ -166,7 +173,7 @@ const NuevoUsuario = () => {
                                 <label htmlFor="isAdmin">Administrador</label>
                                 <select
                                     className='select_admin'
-                                    {...register('password',
+                                    {...register('isAdmin',
                                         {
                                             required:true
                                         })
@@ -187,7 +194,7 @@ const NuevoUsuario = () => {
                         <input
                             type='submit'
                             className='btn_registrar'
-                            value={userId ? 'Guardar cambios' : 'Registrar área'}
+                            value={userId ? 'Guardar cambios' : 'Registrar usuario'}
                         />
                     </div>
                 </form>

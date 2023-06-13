@@ -7,12 +7,10 @@ import Menu from './pages/Menu'
 import Modulos from './pages/Modulos'
 import NuevoUsuario from './components/NuevoUsuario'
 import Usuarios from './pages/Usuarios'
-import EditarUsuario, { loader as usuarioLoader, action as actualizarUsuarioAction } from './components/EditarUsuario'
 import RecursosHumanos from './pages/RecursosHumanos'
-import Empleados, { loader as empleadosLoader, action as eliminarEmpleadoAction } from './pages/Empleados'
-import VerEmpleado, { loader as verEmpleadoLoader } from './components/VerEmpleado'
-import NuevoEmpleado, { action as nuevoEmpleadoAction } from './components/NuevoEmpleado'
-import EditarEmpleado, { loader as empleadoLoader, action as actualizarEmpleadoAction } from './components/EditarEmpleado'
+import Empleados from './pages/Empleados'
+import VerEmpleado from './components/VerEmpleado'
+import NuevoEmpleado from './components/NuevoEmpleado'
 import Postulaciones from './pages/Postulaciones'
 import Gestiones from './pages/Gestiones'
 import Areas from './pages/Areas'
@@ -38,38 +36,23 @@ const router = createBrowserRouter([
         element: <NuevoUsuario />
       },
       {
-        path: '/menu/usuarios/:usuarioId/editar',
-        element: <EditarUsuario />,
-        loader: usuarioLoader,
-        action: actualizarUsuarioAction
+        path: '/menu/usuarios/:userId/editar',
+        element: <NuevoUsuario />
       },
       {
         path: '/menu/recursos_humanos',
         element: <RecursosHumanos />, children: [
           {
             index: true,
-            element: <Empleados />,
-            loader: empleadosLoader
+            element: <Empleados />
           },
           {
             path: '/menu/recursos_humanos/empleado/:empleadoId',
-            element: <VerEmpleado />,
-            loader: verEmpleadoLoader
+            element: <VerEmpleado />
           },
           {
             path: '/menu/recursos_humanos/empleado/crear',
-            element: <NuevoEmpleado />,
-            action: nuevoEmpleadoAction
-          },
-          {
-            path: '/menu/recursos_humanos/empleado/:empleadoId/editar',
-            element: <EditarEmpleado />,
-            loader: empleadoLoader,
-            action: actualizarEmpleadoAction
-          },
-          {
-            path: 'menu/recursos_humanos/empleado/:empleadoId/editar',
-            action: eliminarEmpleadoAction,
+            element: <NuevoEmpleado />
           },
           {
             path: '/menu/recursos_humanos/postulaciones',

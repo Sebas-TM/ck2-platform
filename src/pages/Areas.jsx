@@ -6,6 +6,7 @@ import { FiEdit, FiTrash, FiPlus } from "react-icons/fi";
 import '../style/areas.css'
 import { Toaster, toast } from "sonner";
 import swal from "sweetalert"
+import Spinner from "../components/Spinner";
 
 const Areas = () => {
 
@@ -53,6 +54,7 @@ const Areas = () => {
   return (
     <>
       <Toaster position="top-center" richColors />
+      {areas.length < 1 && <Spinner/>}
 
       <div className="form-group">
         <div className="form-group-header">
