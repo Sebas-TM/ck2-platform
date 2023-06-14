@@ -8,6 +8,7 @@ import Cookies from 'universal-cookie'
 import useFetchAndLoad from "../hooks/useFetchAndLoad"
 import swal from 'sweetalert';
 import Spinner from '../components/Spinner';
+import employee_foto from '../image/foto-personal-ejemplo.jpg'
 
 const cookies = new Cookies()
 
@@ -18,15 +19,18 @@ const Empleados = () => {
     const isAdmin = cookies.get('isAdmin')
     const { loading, callEndpoint } = useFetchAndLoad()
     const [employees, setEmployees] = useState([])
+    const [cargando, setCargando] = useState(false)
     const [tabla, setTabla] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
+        setCargando(true)
         callEndpoint(getEmployees())
             .then(res => res.json())
             .then(res => {
                 setEmployees(res)
                 setTabla(res)
+                setCargando(false)
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
@@ -34,6 +38,8 @@ const Empleados = () => {
                 }
             })
     }, [])
+
+    const sortedEmployees = employees.sort((a,b)=>b.id - a.id)
 
     const eliminarEmpleado = employeeId => {
         swal({
@@ -70,7 +76,7 @@ const Empleados = () => {
 
     return (
         <div className="form-group">
-            {employees.length < 1 && <Spinner />}
+            {cargando && <Spinner />}
             <Toaster position='top-center' richColors />
             <div className="form-group-header">
                 <h1>Personal</h1>
@@ -87,7 +93,6 @@ const Empleados = () => {
                 <table cellSpacing="0" cellPadding="0" className='tabla'>
                     <thead>
                         <tr>
-                            <td>#</td>
                             <td>Nombre</td>
                             <td>Apellido paterno</td>
                             <td>Apellido materno</td>
@@ -98,29 +103,28 @@ const Empleados = () => {
                     </thead>
                     <tbody>
                         {
-                            employees.map((employee, index) => (
-                                <tr key={employee.id}>
-                                    <td align="center" className='data data_id'>{index + 1}</td>
-                                    <td className='data data_nombre'>{employee.nombre}</td>
-                                    <td className='data data_apaterno'>{employee.apellido_paterno}</td>
-                                    <td className='data data_amaterno'>{employee.apellido_materno}</td>
-                                    <td align="center" className='data data_amaterno'>{employee.dni}</td>
-                                    <td align="center" className='data data_amaterno'>{employee.estado}</td>
+                            sortedEmployees.map((sortedEmployee, index) => (
+                                <tr key={sortedEmployee.id}>
+                                    <td className='data data_nombre'>{sortedEmployee.nombre}</td>
+                                    <td className='data data_apaterno'>{sortedEmployee.apellido_paterno}</td>
+                                    <td className='data data_amaterno'>{sortedEmployee.apellido_materno}</td>
+                                    <td align="center" className='data data_amaterno'>{sortedEmployee.dni}</td>
+                                    <td align="center" className='data data_amaterno'>{sortedEmployee.estado}</td>
                                     <td align="center" className='data data_opciones'>
-                                        <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
+                                        <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
                                         <button className="btn_option wsp">
-                                            <Link to={`https://wa.me/51${employee.telefono}`}>
+                                            <Link to={`https://wa.me/51${sortedEmployee.telefono}`}>
                                                 <ImWhatsapp className="icon" />
                                             </Link>
                                         </button>
                                         <button
-                                            onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
-                                            className='btn_option edit'><FiEdit className='icon' />
+                                            onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`)}
+                                            className={isAdmin==1?'btn_option edit':'disable-button'}><FiEdit className='icon' />
                                         </button>
 
                                         <button
-                                            onClick={() => eliminarEmpleado(employee.id)}
-                                            className="btn_option delete"
+                                            onClick={() => eliminarEmpleado(sortedEmployee.id)}
+                                            className={isAdmin==1?'btn_option delete':'disable-button'}
                                         ><FiTrash className='icon' /></button>
 
                                     </td>
@@ -133,44 +137,49 @@ const Empleados = () => {
             </div>
             <div className="contenedor-general-cards">
                 {
-                    employees.map((employee, index) => (
+                    sortedEmployees.map((sortedEmployee, index) => (
                         <div key={index} className="contenedor-cards">
-                            <div className="cards">
-                                <div className="contenedor-datos">
-                                    <p className="dato">Nombre:</p>
-                                    <p className="dato-info">{employee.nombre}</p>
+                            <div className="cards cards-employee">
+                                <div className="contenedor-foto">
+                                    <img src={employee_foto} alt="foto_personal" />
                                 </div>
-                                <div className="contenedor-datos">
-                                    <p className="dato">Apellido paterno:</p>
-                                    <p className="dato-info">{employee.apellido_paterno}</p>
-                                </div>
-                                <div className="contenedor-datos">
-                                    <p className="dato">Apellido materno:</p>
-                                    <p className="dato-info">{employee.apellido_materno}</p>
-                                </div>
-                                <div className="contenedor-datos">
-                                    <p className="dato">DNI:</p>
-                                    <p className="dato-info">{employee.dni}</p>
-                                </div>
-                                <div className="contenedor-datos">
-                                    <p className="dato">Estado:</p>
-                                    <p className="dato-info">{employee.estado}</p>
+                                <div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Nombre:</p>
+                                        <p className="dato-info">{sortedEmployee.nombre}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Apellido paterno:</p>
+                                        <p className="dato-info">{sortedEmployee.apellido_paterno}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Apellido materno:</p>
+                                        <p className="dato-info">{sortedEmployee.apellido_materno}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">DNI:</p>
+                                        <p className="dato-info">{sortedEmployee.dni}</p>
+                                    </div>
+                                    <div className="contenedor-datos">
+                                        <p className="dato">Estado:</p>
+                                        <p className="dato-info">{sortedEmployee.estado}</p>
+                                    </div>
                                 </div>
                             </div>
                             <div className='data data_opciones'>
-                                <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
+                                <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
                                 <button className="btn_option wsp">
-                                    <Link to={`https://wa.me/51${employee.telefono}`}>
+                                    <Link to={`https://wa.me/51${sortedEmployee.telefono}`}>
                                         <ImWhatsapp className="icon" />
                                     </Link>
                                 </button>
                                 <button
-                                    onClick={() => navigate(`/menu/recursos_humanos/empleado/${employee.id}/editar`)}
-                                    className='btn_option edit'><FiEdit className='icon' />
+                                    onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`)}
+                                    className={isAdmin==1?'btn_option edit':'disable-button'}><FiEdit className='icon' />
                                 </button>
                                 <button
-                                    onClick={() => eliminarEmpleado(employee.id)}
-                                    className="btn_option delete"
+                                    onClick={() => eliminarEmpleado(sortedEmployee.id)}
+                                    className={isAdmin==1?'btn_option delete':'disable-button'}
                                 ><FiTrash className='icon' /></button>
                             </div>
                         </div>

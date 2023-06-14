@@ -1,27 +1,39 @@
 import {getEmployee} from "../services/employees"
-import { useLoaderData, useNavigate, Link } from "react-router-dom"
+import {  useNavigate, Link, useParams } from "react-router-dom"
 import '../style/verEmpleado.css'
 import { FiChevronLeft } from "react-icons/fi";
 import EmpleadoCard from "./EmpleadoCard"
-export async function loader({params}){
-    const employee = await getEmployee(params.empleadoId)
-    if (Object.values(employee).length === 0) {
-        throw new Response('', {
-            status: 404,
-            statusText: 'El empleado no fue encontrado'
-        })
-    }
-    return employee
-}
+import useFetchAndLoad from "../hooks/useFetchAndLoad"
+import { useState, useEffect } from "react";
+import Spinner from "./Spinner";
 
 const VerEmpleado = () => {
 
-    const employee = useLoaderData()
+    const {employeeId} = useParams()
+    const [employee, setEmployee] = useState({})
+    const [cargando, setCargando] = useState(false)
+    const {loading, callEndpoint} = useFetchAndLoad()
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        if(employeeId){
+            setCargando(true)
+            callEndpoint(getEmployee(parseInt(employeeId)))
+            .then(res => res.json())
+            .then(res=>{
+                setEmployee(res)
+                setCargando(false)
+            })
+        }else{
+            return ()=>{}
+        }
+        
+    },[])
     return(
         <>
         
         <section className="contenedor-ver-empleado">
+            {cargando && <Spinner/>}
             <div className="contenedor-ver-empleado__contenedor-boton">
                 <button onClick={() => navigate(-1)}    className='btn_regresar'>
                         <FiChevronLeft />

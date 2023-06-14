@@ -7,39 +7,38 @@ import { Link, useNavigate, redirect, useParams } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { getArea, postArea, updateArea } from "../services/areas";
 import { Toaster, toast } from "sonner";
+import Spinner from "./Spinner";
 
 const NuevaArea = () => {
     const navigate = useNavigate()
     const { areaId } = useParams()
     const [areas, setAreas] = useState([])
+    const [cargando, setCargando] = useState(false)
     const { loading, callEndpoint } = useFetchAndLoad()
-    const [data, setData] = useState(6)
     useEffect(() => {
-        if (!areaId) {
-            return () => { }
-        }
-        callEndpoint(getArea(parseInt(areaId)))
+        if (areaId) {
+            setCargando(true)
+            callEndpoint(getArea(parseInt(areaId)))
             .then(res => res.json())
             .then(res => {
                 setAreas(res)
-                setData(res.area);
+                setCargando(false)
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
                     console.log('Request has been', error.message)
                 }
             })
+        }else{
+            return ()=>{}
+        }
+        
 
     }, [areaId])
-    console.log(areas.id);
 
-    const preloadedValues = {
-        area: `${areaId}`
-    }
+    
 
-    const { register, formState: { errors }, handleSubmit } = useForm({
-        defaultValues: preloadedValues
-    })
+    const { register, formState: { errors }, handleSubmit } = useForm()
 
 
     const submitData = (data) => {
@@ -48,7 +47,7 @@ const NuevaArea = () => {
                 .then(resp => resp.json())
             // .then(res => console.log(res))
 
-            toast.success('Área creada correctamente')
+            toast.success('Área agregada correctamente')
 
         } else {
             callEndpoint(updateArea(data, parseInt(areaId)))
@@ -63,6 +62,7 @@ const NuevaArea = () => {
 
     return (
         <section className='contenedor_nuevo-dato'>
+            {cargando && <Spinner/>}
             <Toaster position="top-center" richColors />
             <div className='contenedor-form'>
                 <div className='contenedor-form-header'>
@@ -91,7 +91,7 @@ const NuevaArea = () => {
                                 name='area'
                                 id='area'
                                 placeholder='Ingresar área'
-                                // defaultValue={areas?.area}
+                                defaultValue={areaId ? areas?.area:''}
                             // onChange={(e) => setNombre(e.target.value)}
                             />
                             {errors.area?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}

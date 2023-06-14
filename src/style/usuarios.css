@@ -9,7 +9,7 @@
 }
 
 .form-group-header{
-    width: 70%;
+    width: 80%;
     height: 6rem;
     margin-top: 4rem;
     margin-bottom: 3rem;
@@ -186,6 +186,19 @@
     border-bottom: 1px solid gray;
     padding-bottom: 2rem;
     margin-bottom: 2rem;
+}
+
+.cards-employee{
+    display: flex;
+    gap: 2rem;
+}
+
+.contenedor-foto{
+    width: 50%;
+}
+
+.contenedor-foto img{
+    width: 100%;
 }
 
 .cards .contenedor-datos{

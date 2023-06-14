@@ -11,14 +11,17 @@ import Spinner from "../components/Spinner";
 const Areas = () => {
 
   const navigate = useNavigate()
+  const [cargando, setCargando] = useState(false)
   const { loading, callEndpoint } = useFetchAndLoad()
   const [areas, setAreas] = useState([])
 
   useEffect(() => {
+    setCargando(true)
     callEndpoint(getAreas())
       .then(res => res.json())
       .then(res => {
         setAreas(res)
+        setCargando(false)
       })
       .catch(error => {
         if (error.code === 'ERR_CANCELED') {
@@ -27,6 +30,8 @@ const Areas = () => {
       })
 
   }, [])
+
+  const sortedAreas = areas.sort((a,b)=>b.id - a.id)
 
 
   const eliminarArea = (areaId) => {
@@ -54,7 +59,7 @@ const Areas = () => {
   return (
     <>
       <Toaster position="top-center" richColors />
-      {areas.length < 1 && <Spinner/>}
+      {cargando && <Spinner/>}
 
       <div className="form-group">
         <div className="form-group-header">
@@ -68,19 +73,17 @@ const Areas = () => {
           <table cellSpacing="0" cellPadding="0" className='tabla'>
             <thead>
               <tr>
-                <td>#</td>
                 <td>Área</td>
                 <td>Opciones</td>
               </tr>
             </thead>
             <tbody>
-              {areas.map((area, index) => (
-                <tr key={area.id}>
-                  <td className='data data_id'>{index + 1}</td>
-                  <td className='data data_nombre'>{area.area}</td>
+              {sortedAreas.map((sortedArea) => (
+                <tr key={sortedArea.id}>
+                  <td className='data data_nombre'>{sortedArea.area}</td>
                   <td className='data data_opciones'>
-                    <button onClick={() => navigate(`/menu/areas/${area.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
-                    <button onClick={() => eliminarArea(area.id)} className='btn_option delete'><FiTrash className='icon' /></button>
+                    <button onClick={() => navigate(`/menu/areas/${sortedArea.id}/editar`)} className='btn_option edit'><FiEdit className='icon' /></button>
+                    <button onClick={() => eliminarArea(sortedArea.id)} className='btn_option delete'><FiTrash className='icon' /></button>
                   </td>
                 </tr>
               ))

@@ -8,12 +8,14 @@ import { getAreas } from '../services/areas';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import { useForm } from "react-hook-form";
+import Spinner from './Spinner';
 
 const NuevoEmpleado = () => {
 
     const navigate = useNavigate()
-    const { employeeId } = useParams()
+    const {employeeId } = useParams()
     const [employees, setEmployees] = useState([])
+    const [cargando, setCargando] = useState(false)
     const [areas, setAreas] = useState([])
     const { register, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
@@ -31,12 +33,37 @@ const NuevoEmpleado = () => {
             })
     }, [])
 
+    useEffect(()=>{
+        if(employeeId){
+            setCargando(true)
+            callEndpoint(getEmployee(parseInt(employeeId)))
+            .then(res => res.json())
+            .then(res=>{
+                setEmployees(res)
+                setCargando(false)
+            })
+        }else{
+            return ()=>{}
+        }
+        
+    },[])
+
     const submitData = data => {
-        console.log(data);
+        if(!employeeId){
+            callEndpoint(postEmployee(data))
+                .then(res=>res.json())
+            toast.success('Empleado agregado correctamente')
+        }else{
+            callEndpoint(updateEmployee(data,parseInt(employeeId)))
+                .then(res => res.json())
+            toast.success('Empleado actualizado correctamente')
+        }
+        
     }
 
     return (
         <section className='contenedor_nuevo-dato'>
+            {cargando && <Spinner/>}
             <Toaster position="top-center" richColors />
             <div className='contenedor-form'>
                 {/* <Toaster /> */}
@@ -114,7 +141,7 @@ const NuevoEmpleado = () => {
                                     }
                                     name='estado'
                                     id='estado'
-                                    defaultValue={employees?.estado}
+                                    value={employees?.estado}
                                 >
                                     <option value="" disabled>--Seleccione--</option>
                                     <option value="Activo">Activo</option>
@@ -197,11 +224,11 @@ const NuevoEmpleado = () => {
                                     }
                                     name='area'
                                     id='area'
-                                    defaultValue={employees?.area}
+                                    value={employees?.area}
                                 >
                                     <option value="" disabled >--Seleccione--</option>
                                     {areas.map(area => (
-                                        <option key={area.id}>{area.area}</option>
+                                        <option value={area.area} key={area.id}>{area.area}</option>
                                     ))}
                                 </select>
                                 {errors.area?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
@@ -217,7 +244,7 @@ const NuevoEmpleado = () => {
                                     }
                                     name='sala'
                                     id='sala'
-                                    defaultValue={employees?.sala}
+                                    value={employees?.sala}
                                 >
                                     <option value="" disabled>--Seleccione--</option>
                                     <option value="0">0</option>

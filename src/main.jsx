@@ -47,11 +47,15 @@ const router = createBrowserRouter([
             element: <Empleados />
           },
           {
-            path: '/menu/recursos_humanos/empleado/:empleadoId',
+            path: '/menu/recursos_humanos/empleado/:employeeId',
             element: <VerEmpleado />
           },
           {
             path: '/menu/recursos_humanos/empleado/crear',
+            element: <NuevoEmpleado />
+          },
+          {
+            path: '/menu/recursos_humanos/empleado/:employeeId/editar',
             element: <NuevoEmpleado />
           },
           {
