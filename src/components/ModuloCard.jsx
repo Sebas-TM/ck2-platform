@@ -1,6 +1,6 @@
 import '../style/moduloCard.css'
 
-const ModuloCard = ({imagen, texto}) => {
+const ModuloCard = ({ imagen, texto }) => {
   return (
     <div className='card'>
       <img src={imagen} alt="imagen_area" />

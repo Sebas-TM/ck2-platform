@@ -5,34 +5,34 @@ import { Link } from "react-router-dom";
 import '../style/modulos.css'
 const Modulos = () => {
 
-    
+
     return (
 
         <section className='contenedor-modulo'>
-                <Link to='/menu/recursos_humanos'>
-                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Ventas'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Administración'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Cobranzas'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
-                </Link>
-                <Link>
-                    <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
-                </Link>
+            <Link to='/menu/recursos_humanos'>
+                <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Ventas'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Administración'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Cobranzas'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+            </Link>
+            <Link>
+                <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
+            </Link>
         </section>
     )
 }

@@ -14,75 +14,40 @@ import { useNavigate } from 'react-router-dom'
 const cookies = new Cookies()
 const Login = () => {
 
-    const [user, setUser] = useState()
-    const [cargando, setCargando] = useState(false)
     const { register, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
     const navigate = useNavigate()
-
-
-    // console.log(datos)
-    // const iniciarSesion = async () => {
-    //     setCargando(true)
-    //     await axios.get(url, {
-    //         params: {
-    //             username: usuario,
-    //             password: md5(contraseña)
-    //         }
-    //     }).then(response => {
-    //         return response.data;
-    //     }).then(response => {
-    //         if (usuario == '' || contraseña == '') {
-    //             toast.error('Rellenar todos los campos')
-    //         }
-
-    //         if (response.length > 0 && usuario != '' && contraseña != '') {
-    //             for (let i = 0; response.length > i; i++) {
-    //                 if (response[i].username == datos.username && response[i].password == datos.password) {
-    //                     var respuesta = response[i]
-    //                     cookies.set('id', respuesta.id, { path: "/" })
-    //                     cookies.set('apellido_paterno', respuesta.apellido_paterno, { path: "/" })
-    //                     cookies.set('apellido_materno', respuesta.apellido_materno, { path: "/" })
-    //                     cookies.set('nombre', respuesta.nombre, { path: "/" })
-    //                     cookies.set('username', respuesta.username, { path: "/" })
-    //                     cookies.set('isAdmin', respuesta.isAdmin, { path: "/" })
-    //                     // alert(`Bienvenido ${respuesta.nombre} ${respuesta.apellido_paterno}`)
-    //                     toast.success('Ingreso correcto')
-    //                     window.location.href = "./menu"
-    //                     return
-    //                 }
-    //             }
-    //             toast.error('El usuario y/o la contraseña son incorrectos')
-    //         } else {
-    //         }
-    //     }).catch(error => {
-    //         console.log(error)
-    //     })
-    //     setCargando(false)
-    // }
-
 
     if (cookies.get('username')) {
         window.location.href = "./menu"
     }
 
     const onSubmit = data => {
-        callEndpoint(loginUser(data))
-            .then(resp => resp.json())
-            .then(resp => {
-                setUser(resp)
-            })
-    }
-    console.log(user);
+        try {
+            callEndpoint(loginUser(data))
+                .then(resp => resp.json())
+                .then(resp => {
+                    if (resp != 0) {
+                        cookies.set('id', resp.id, { path: "/" })
+                        cookies.set('apellido_paterno', resp.apellido_paterno, { path: "/" })
+                        cookies.set('apellido_materno', resp.apellido_materno, { path: "/" })
+                        cookies.set('nombre', resp.nombre, { path: "/" })
+                        cookies.set('username', resp.username, { path: "/" })
+                        cookies.set('isAdmin', resp.isAdmin, { path: "/" })
+                        navigate('/menu')
+                    } else {
+                        toast.error('Usuario y/o contraseña incorrecta')
+                    }
+                })
+        } catch (error) {
+            console.log(error);
 
-    if(user?.id){
-        console.log('Hola');
+        }
     }
 
 
     return (
         <div className='contenedor-principal'>
-            {cargando && <Spinner />}
             <Toaster position="top-center" richColors />
             <div className='contenedor-uno'>
                 <img className='form-group__logo' src={logo_texto} alt="logo" />
