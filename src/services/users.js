@@ -51,7 +51,7 @@ export const loginUser =  (user) => {
     // console.log(user);
 }
 
-export async function updateUser(user, id) {
+export  function updateUser(user, id) {
     const controller = loadAbort()
 
     return{

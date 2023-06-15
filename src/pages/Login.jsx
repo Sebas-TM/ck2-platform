@@ -15,6 +15,7 @@ const cookies = new Cookies()
 const Login = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm()
+    const [cargando, setCargando] = useState(false)
     const { loading, callEndpoint } = useFetchAndLoad()
     const navigate = useNavigate()
 
@@ -24,6 +25,7 @@ const Login = () => {
 
     const onSubmit = data => {
         try {
+            setCargando(true)
             callEndpoint(loginUser(data))
                 .then(resp => resp.json())
                 .then(resp => {
@@ -34,8 +36,10 @@ const Login = () => {
                         cookies.set('nombre', resp.nombre, { path: "/" })
                         cookies.set('username', resp.username, { path: "/" })
                         cookies.set('isAdmin', resp.isAdmin, { path: "/" })
+                        setCargando(false)
                         navigate('/menu')
                     } else {
+                        setCargando(false)
                         toast.error('Usuario y/o contraseña incorrecta')
                     }
                 })
@@ -48,6 +52,7 @@ const Login = () => {
 
     return (
         <div className='contenedor-principal'>
+            {cargando && <Spinner />}
             <Toaster position="top-center" richColors />
             <div className='contenedor-uno'>
                 <img className='form-group__logo' src={logo_texto} alt="logo" />

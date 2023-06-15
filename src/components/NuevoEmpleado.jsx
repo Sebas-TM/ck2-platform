@@ -17,7 +17,7 @@ const NuevoEmpleado = () => {
     const [employees, setEmployees] = useState([])
     const [cargando, setCargando] = useState(false)
     const [areas, setAreas] = useState([])
-    const { register, formState: { errors }, handleSubmit } = useForm()
+    const { register, setValue, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
 
     useEffect(() => {
@@ -39,7 +39,17 @@ const NuevoEmpleado = () => {
             callEndpoint(getEmployee(parseInt(employeeId)))
             .then(res => res.json())
             .then(res=>{
-                setEmployees(res)
+                setValue('nombre',res.nombre)
+                setValue('apellido_paterno',res.apellido_paterno)
+                setValue('apellido_materno',res.apellido_materno)
+                setValue('estado',res.estado)
+                setValue('dni',res.dni)
+                setValue('correo',res.correo)
+                setValue('telefono',res.telefono)
+                setValue('area',res.area)
+                setValue('sala',res.sala)
+                setValue('cargo',res.cargo)
+                setValue('jefe_directo',res.jefe_directo)
                 setCargando(false)
             })
         }else{
@@ -77,7 +87,7 @@ const NuevoEmpleado = () => {
                             Regresar
                         </Link>
                     </button>
-                    <h1 className='contenedor-form__texto'>{employees?.nombre ? 'Editar personal' : 'Nuevo personal'}</h1>
+                    <h1 className='contenedor-form__texto'>{employeeId ? 'Editar personal' : 'Nuevo personal'}</h1>
                 </div>
                 <form onSubmit={handleSubmit(submitData)}>
                     <div className='subcontenedor'>
@@ -94,7 +104,6 @@ const NuevoEmpleado = () => {
                                     name='nombre'
                                     id='nombre'
                                     placeholder='Ingrese su nombre'
-                                    defaultValue={employees?.nombre}
                                 />
                                 {errors.nombre?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -110,7 +119,6 @@ const NuevoEmpleado = () => {
                                     name='apellido_paterno'
                                     id='apellido_paterno'
                                     placeholder='Ingrese su apellido paterno'
-                                    defaultValue={employees?.apellido_paterno}
                                 />
                                 {errors.apellido_paterno?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -126,7 +134,6 @@ const NuevoEmpleado = () => {
                                     name='apellido_materno'
                                     id='apellido_materno'
                                     placeholder='Ingrese su apellido materno'
-                                    defaultValue={employees?.apellido_materno}
                                 />
                                 {errors.apellido_materno?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -141,7 +148,6 @@ const NuevoEmpleado = () => {
                                     }
                                     name='estado'
                                     id='estado'
-                                    value={employees?.estado}
                                 >
                                     <option value="" disabled>--Seleccione--</option>
                                     <option value="Activo">Activo</option>
@@ -164,7 +170,6 @@ const NuevoEmpleado = () => {
                                     name='dni'
                                     id='dni'
                                     placeholder='Ingrese su DNI'
-                                    defaultValue={employees?.dni}
                                 />
                                 {errors.dni?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                                 {errors.dni?.type === 'maxLength' && <p className="error-message">Ingresar DNI correcto</p>}
@@ -183,8 +188,6 @@ const NuevoEmpleado = () => {
                                     name='correo'
                                     id='correo'
                                     placeholder='Ingrese su correo'
-                                    defaultValue={employees?.correo}
-                                // onChange={(e) => setDni(e.target.value)}
                                 />
                                 {errors.correo?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -205,8 +208,6 @@ const NuevoEmpleado = () => {
                                     name='telefono'
                                     id='telefono'
                                     placeholder='Ingrese su número de celular'
-                                    defaultValue={employees?.telefono}
-                                // onChange={(e) => setUsuario(e.target.value)}
                                 />
                                 {errors.telefono?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                                 {errors.telefono?.type === 'maxLength' && <p className="error-message">Ingresar número de celular correcto</p>}
@@ -224,7 +225,6 @@ const NuevoEmpleado = () => {
                                     }
                                     name='area'
                                     id='area'
-                                    value={employees?.area}
                                 >
                                     <option value="" disabled >--Seleccione--</option>
                                     {areas.map(area => (
@@ -244,7 +244,6 @@ const NuevoEmpleado = () => {
                                     }
                                     name='sala'
                                     id='sala'
-                                    value={employees?.sala}
                                 >
                                     <option value="" disabled>--Seleccione--</option>
                                     <option value="0">0</option>
@@ -267,8 +266,6 @@ const NuevoEmpleado = () => {
                                     name='cargo'
                                     id='cargo'
                                     placeholder='Ingrese el cargo del empleado'
-                                    defaultValue={employees?.cargo}
-                                // onChange={(e) => setContraseña(e.target.value)}
                                 />
                                 {errors.cargo?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -284,8 +281,6 @@ const NuevoEmpleado = () => {
                                     name='jefe_directo'
                                     id='jefe_directo'
                                     placeholder='Ingrese el jefe inmediato'
-                                    defaultValue={employees?.jefe_directo}
-                                // onChange={(e) => setContraseña(e.target.value)}
                                 />
                                 {errors.jefe_directo?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>

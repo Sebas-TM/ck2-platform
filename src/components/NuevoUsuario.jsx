@@ -12,8 +12,7 @@ const NuevoUsuario = () => {
 
     const navigate = useNavigate()
     const { userId } = useParams()
-    const [users, setUsers] = useState([])
-    const { register, formState: { errors }, handleSubmit } = useForm()
+    const { register, setValue, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
 
     const submitData = data => {
@@ -27,7 +26,6 @@ const NuevoUsuario = () => {
                 .then(resp => resp.json())
             toast.success('Usuario editado correctamente')
         }
-        // console.log(data);
     }
 
     useEffect(() => {
@@ -37,7 +35,13 @@ const NuevoUsuario = () => {
         callEndpoint(getUser(parseInt(userId)))
             .then(res => res.json())
             .then(res => {
-                setUsers(res)
+                setValue('nombre', res.nombre)
+                setValue('apellido_paterno', res.apellido_paterno)
+                setValue('apellido_materno',res.apellido_materno)
+                setValue('dni',res.dni)
+                setValue('username', res.username)
+                setValue('password',res.password)
+                setValue('isAdmin',res.isAdmin)
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
@@ -45,6 +49,7 @@ const NuevoUsuario = () => {
                 }
             })
     }, [userId])
+
     return (
         <section className='contenedor_nuevo-dato'>
             <Toaster position="top-center" richColors />
@@ -76,8 +81,6 @@ const NuevoUsuario = () => {
                                     name='nombre'
                                     id='nombre'
                                     placeholder='Ingrese su nombre'
-                                    // defaultValue={users?.nombre}
-                                    defaultValue={users?.nombre}
                                 />
                                 {errors.nombre?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -93,7 +96,6 @@ const NuevoUsuario = () => {
                                     name='apellido_paterno'
                                     id='apellido_paterno'
                                     placeholder='Ingrese su apellido paterno'
-                                    defaultValue={users?.apellido_paterno}
                                 />
                                 {errors.apellido_paterno?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -109,7 +111,6 @@ const NuevoUsuario = () => {
                                     name='apellido_materno'
                                     id='apellido_materno'
                                     placeholder='Ingrese su apellido materno'
-                                    defaultValue={users?.apellido_materno}
                                 />
                                 {errors.apellido_materno?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -128,7 +129,6 @@ const NuevoUsuario = () => {
                                     name='dni'
                                     id='dni'
                                     placeholder='Ingrese su DNI'
-                                    defaultValue={users?.dni}
                                 />
                                 {errors.dni?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                                 {errors.dni?.type === 'maxLength' && <p className="error-message">Ingresar DNI correcto</p>}
@@ -149,7 +149,6 @@ const NuevoUsuario = () => {
                                     name='username'
                                     id='username'
                                     placeholder='Ingrese su usuario'
-                                    defaultValue={users?.username}
                                 />
                                 {errors.username?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -165,7 +164,6 @@ const NuevoUsuario = () => {
                                     name='password'
                                     id='password'
                                     placeholder='Ingrese su contraseña'
-                                    defaultValue={users?.password}
                                 />
                                 {errors.password?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
@@ -180,7 +178,6 @@ const NuevoUsuario = () => {
                                     }
                                     name='isAdmin'
                                     id='isAdmin'
-                                    defaultValue={users?.isAdmin}
                                 >
                                     <option value="" disabled>--Seleccione--</option>
                                     <option value="1">Sí</option>

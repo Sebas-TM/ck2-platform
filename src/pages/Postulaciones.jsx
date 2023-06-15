@@ -16,10 +16,13 @@ const Postulaciones = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('imagen', imagen);
-
+        const formData = {
+            'nombre': nombre,
+            'imagen': imagen
+        }
+        console.log(formData);
+        console.log(nombre);
+        console.log(imagen);
         try {
         await axios.post('http://127.0.0.1:8000/api/addImage', formData, {
             headers: {
