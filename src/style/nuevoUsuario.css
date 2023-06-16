@@ -9,7 +9,9 @@
     /* background-color: rgba(0, 0, 0, 0.7); */
 }
 
-
+.contenedor_nuevo-dato button {
+    margin-bottom: 3rem;
+}
 
 @media (min-width:768px) {
     .contenedor_nuevo-dato button {

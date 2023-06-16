@@ -2,7 +2,7 @@ import Cookies from 'universal-cookie'
 import '../style/menu.css'
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-
+import { config } from '../config'
 import logo_texto from '../image/logo_texto.png'
 import logo from '../image/logo.png'
 import user_icon from '../image/Carne.jpg'
@@ -26,10 +26,10 @@ const Menu = () => {
         cookies.remove('apellido_paterno', { path: "/" })
         cookies.remove('apellido_materno', { path: "/" })
         cookies.remove('nombre', { path: "/" })
+        cookies.remove('imagen', { path: "/" })
         cookies.remove('username', { path: "/" })
         window.location.href = '/'
     }
-
 
     if (!cookies.get('username')) {
         window.location.href = "/"
@@ -47,6 +47,7 @@ const Menu = () => {
     const apellido_paterno = cookies.get('apellido_paterno')
     const apelllido_materno = cookies.get('apellido_materno')
     const nombre = cookies.get('nombre')
+    const imagen = cookies.get('imagen')
     const username = cookies.get('username')
     const isAdmin = cookies.get('isAdmin')
     return (
@@ -76,7 +77,7 @@ const Menu = () => {
                         </li>
 
                         <li onClick={openMenu} className='contenedor-img-usuario'>
-                            <img className='img-usuario' src={user_icon} alt="" />
+                            <img className='img-usuario' src={`http://127.0.0.1:8000/${imagen}`} alt="" />
                         </li>
                     </ul>
 

@@ -1,9 +1,10 @@
-import {useState} from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const Postulaciones = () => {
     const [nombre, setNombre] = useState('');
     const [imagen, setImagen] = useState(null);
+    const [registros, setRegistros] = useState([])
 
     const handleNombreChange = (event) => {
         setNombre(event.target.value);
@@ -24,33 +25,57 @@ const Postulaciones = () => {
         console.log(nombre);
         console.log(imagen);
         try {
-        await axios.post('http://127.0.0.1:8000/api/addImage', formData, {
-            headers: {
-            'Content-Type': 'multipart/form-data',
-            },
-        });
+            await axios.post('http://127.0.0.1:8000/api/addImage', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-        console.log('Usuario registrado correctamente');
-        // Realiza las acciones necesarias después de registrar al usuario correctamente
+            console.log('Usuario registrado correctamente');
+            // Realiza las acciones necesarias después de registrar al usuario correctamente
 
         } catch (error) {
-        console.log('Error al registrar al usuario', error);
-        // Maneja el error de registro de usuario
+            console.log('Error al registrar al usuario', error);
+            // Maneja el error de registro de usuario
         }
     };
+    const url = 'http://127.0.0.1:8000/api/listImage'
 
-    return(
-        <form onSubmit={handleSubmit}>
+    useEffect( () => {
+        obtenerRegistros()
+    }, [])
+
+    const obtenerRegistros = async () =>{
+        const respuesta = await fetch(url)
+        const resultado = await respuesta.json()
+
+        setRegistros(resultado)
+    }
+    return (
+        <>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Nombre:</label>
+                    <input type="text" value={nombre} onChange={handleNombreChange} />
+                </div>
+                <div>
+                    <label>Imagen:</label>
+                    <input type="file" accept="image/jpeg, image/png" onChange={handleImagenChange} />
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
             <div>
-                <label>Nombre:</label>
-                <input type="text" value={nombre} onChange={handleNombreChange} />
+                {registros.map((registro, index) => (
+                    <div key={index}>
+                        <h1 >Nombre: <span>{registro.nombre}</span></h1>
+                        <p>{registro.imagen}</p>
+                        <img src={`http://127.0.0.1:8000/${registro.imagen}`} alt="imagen23" />
+                        {/* <img src="http://127.0.0.1:8000/storage/images/123monserrat.png" alt="imagennn" /> */}
+                    </div>
+                ))}
+                
             </div>
-            <div>
-                <label>Imagen:</label>
-                <input type="file" onChange={handleImagenChange} />
-            </div>
-            <button type="submit">Registrar</button>
-        </form>
+        </>
     )
 }
 

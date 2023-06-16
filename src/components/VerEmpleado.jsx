@@ -50,11 +50,13 @@ const VerEmpleado = () => {
                 <EmpleadoCard dato={'Estado:'} dato_info={employee.estado}/>
                 <EmpleadoCard dato={'DNI:'} dato_info={employee.dni}/>
                 <EmpleadoCard dato={'Correo:'} dato_info={employee.correo}/>
-                <EmpleadoCard dato={'Teléfono:'} dato_info={employee.telefono}/>
+                <EmpleadoCard dato={'Celular:'} dato_info={employee.celular}/>
                 <EmpleadoCard dato={'Área:'} dato_info={employee.area}/>
-                <EmpleadoCard dato={'Sala:'} dato_info={employee.sala}/>
-                <EmpleadoCard dato={'Puesto:'} dato_info={employee.cargo}/>
-                <EmpleadoCard dato={'Supervisor:'} dato_info={employee.jefe_directo}/>
+                <EmpleadoCard dato={'Nombre de contacto:'} dato_info={employee.nombre_contacto}/>
+                <EmpleadoCard dato={'Número de contacto:'} dato_info={employee.numero_contacto}/>
+                <EmpleadoCard dato={'Relación:'} dato_info={employee.relacion_contacto}/>
+                <EmpleadoCard dato={'Puesto:'} dato_info={employee.puesto}/>
+                <EmpleadoCard dato={'Jefe Inmediato:'} dato_info={employee.jefe_inmediato}/>
             </div>
         </section>
         </>

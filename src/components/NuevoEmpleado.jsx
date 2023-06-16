@@ -13,7 +13,7 @@ import Spinner from './Spinner';
 const NuevoEmpleado = () => {
 
     const navigate = useNavigate()
-    const {employeeId } = useParams()
+    const { employeeId } = useParams()
     const [employees, setEmployees] = useState([])
     const [cargando, setCargando] = useState(false)
     const [areas, setAreas] = useState([])
@@ -33,47 +33,50 @@ const NuevoEmpleado = () => {
             })
     }, [])
 
-    useEffect(()=>{
-        if(employeeId){
+    useEffect(() => {
+        if (employeeId) {
             setCargando(true)
             callEndpoint(getEmployee(parseInt(employeeId)))
-            .then(res => res.json())
-            .then(res=>{
-                setValue('nombre',res.nombre)
-                setValue('apellido_paterno',res.apellido_paterno)
-                setValue('apellido_materno',res.apellido_materno)
-                setValue('estado',res.estado)
-                setValue('dni',res.dni)
-                setValue('correo',res.correo)
-                setValue('telefono',res.telefono)
-                setValue('area',res.area)
-                setValue('sala',res.sala)
-                setValue('cargo',res.cargo)
-                setValue('jefe_directo',res.jefe_directo)
-                setCargando(false)
-            })
-        }else{
-            return ()=>{}
+                .then(res => res.json())
+                .then(res => {
+                    setValue('nombre', res.nombre)
+                    setValue('apellido_paterno', res.apellido_paterno)
+                    setValue('apellido_materno', res.apellido_materno)
+                    setValue('imagen', res.imagen)
+                    setValue('estado', res.estado)
+                    setValue('dni', res.dni)
+                    setValue('correo', res.correo)
+                    setValue('celular', res.celular)
+                    setValue('nombre_contacto', res.nombre_contacto)
+                    setValue('numero_contacto', res.numero_contacto)
+                    setValue('relacion_contacto', res.relacion_contacto)
+                    setValue('area', res.area)
+                    setValue('puesto', res.puesto)
+                    setValue('jefe_inmediato', res.jefe_inmediato)
+                    setCargando(false)
+                })
+        } else {
+            return () => { }
         }
-        
-    },[])
+
+    }, [])
 
     const submitData = data => {
-        if(!employeeId){
+        if (!employeeId) {
             callEndpoint(postEmployee(data))
-                .then(res=>res.json())
+                .then(res => res.json())
             toast.success('Empleado agregado correctamente')
-        }else{
-            callEndpoint(updateEmployee(data,parseInt(employeeId)))
+        } else {
+            callEndpoint(updateEmployee(data, parseInt(employeeId)))
                 .then(res => res.json())
             toast.success('Empleado actualizado correctamente')
         }
-        
+
     }
 
     return (
         <section className='contenedor_nuevo-dato'>
-            {cargando && <Spinner/>}
+            {cargando && <Spinner />}
             <Toaster position="top-center" richColors />
             <div className='contenedor-form'>
                 {/* <Toaster /> */}
@@ -138,6 +141,21 @@ const NuevoEmpleado = () => {
                                 {errors.apellido_materno?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                             <div className='form-group__input-group'>
+                                <label htmlFor="imagen">Foto</label>
+                                <input
+                                    type="file"
+                                    accept="image/jpeg, image/png"
+                                    {...register('imagen',
+                                        {
+                                            required: true
+                                        })
+                                    }
+                                    name='imagen'
+                                    id='imagen'
+                                />
+                                {errors.imagen?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                            </div>
+                            <div className='form-group__input-group'>
                                 <label htmlFor="estado">Estado</label>
                                 <select
                                     className='estado'
@@ -182,7 +200,7 @@ const NuevoEmpleado = () => {
                                     type="email"
                                     {...register('correo',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='correo'
@@ -191,13 +209,14 @@ const NuevoEmpleado = () => {
                                 />
                                 {errors.correo?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
+
                         </div>
                         <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
                                 <label htmlFor="telefono">Celular</label>
                                 <input
                                     type="text"
-                                    {...register('telefono',
+                                    {...register('celular',
                                         {
                                             required: true,
                                             pattern: /^[0-9]+$/,
@@ -209,10 +228,55 @@ const NuevoEmpleado = () => {
                                     id='telefono'
                                     placeholder='Ingrese su número de celular'
                                 />
-                                {errors.telefono?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                                {errors.celular?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                                {errors.celular?.type === 'maxLength' && <p className="error-message">Ingresar número de celular correcto</p>}
+                                {errors.celular?.type === 'minLength' && <p className="error-message">Ingresar número de celular correcto</p>}
+                                {errors.celular?.type === 'pattern' && <p className="error-message">Ingresar número de celular correcto</p>}
+                            </div>
+                            <div className='form-group__input-group'>
+                                <label htmlFor="nombre_contacto">Nombre de contacto de emergencia</label>
+                                <input
+                                    type="text"
+                                    {...register('nombre_contacto')}
+                                    name='nombre_contacto'
+                                    id='nombre_contacto'
+                                    placeholder='Ingrese el dato'
+                                />
+                            </div>
+                            <div className='form-group__input-group'>
+                                <label htmlFor="numero_contacto">Número de contacto de emergencia</label>
+                                <input
+                                    type="text"
+                                    {...register('numero_contacto',
+                                        {
+                                            pattern: /^[0-9]+$/,
+                                            maxLength: 9,
+                                            minLength: 9
+                                        })
+                                    }
+                                    name='numero_contacto'
+                                    id='numero_contacto'
+                                    placeholder='Ingrese el número de celular'
+                                />
                                 {errors.telefono?.type === 'maxLength' && <p className="error-message">Ingresar número de celular correcto</p>}
                                 {errors.telefono?.type === 'minLength' && <p className="error-message">Ingresar número de celular correcto</p>}
                                 {errors.telefono?.type === 'pattern' && <p className="error-message">Ingresar número de celular correcto</p>}
+                            </div>
+                            <div className='form-group__input-group'>
+                                <label htmlFor="relacion_contacto">Relación del contacto</label>
+                                <select
+                                    className='relacion_contacto'
+                                    {...register('relacion_contacto')}
+                                    name='relacion_contacto'
+                                    id='relacion_contacto'
+                                >
+                                    <option value="" disabled>--Seleccione--</option>
+                                    <option value="Padre">Padre</option>
+                                    <option value="Madre">Madre</option>
+                                    <option value="Esposo(a)">Esposo(a)</option>
+                                    <option value="Hijo(a)">Hijo(a)</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
                             </div>
                             <div className='form-group__input-group'>
                                 <label htmlFor="area">Área</label>
@@ -220,7 +284,7 @@ const NuevoEmpleado = () => {
                                     className='area'
                                     {...register('area',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='area'
@@ -234,66 +298,46 @@ const NuevoEmpleado = () => {
                                 {errors.area?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                             <div className='form-group__input-group'>
-                                <label htmlFor="sala">Sala</label>
-                                <select
-                                    className='sala'
-                                    {...register('sala',
-                                        {
-                                            required:true
-                                        })
-                                    }
-                                    name='sala'
-                                    id='sala'
-                                >
-                                    <option value="" disabled>--Seleccione--</option>
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                                {errors.sala?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
-                            </div>
-                            <div className='form-group__input-group'>
-                                <label htmlFor="cargo">Puesto</label>
+                                <label htmlFor="puesto">Puesto</label>
                                 <input
                                     type="text"
-                                    {...register('cargo',
+                                    {...register('puesto',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
-                                    name='cargo'
-                                    id='cargo'
-                                    placeholder='Ingrese el cargo del empleado'
+                                    name='puesto'
+                                    id='puesto'
+                                    placeholder='Ingrese el puesto del empleado'
                                 />
-                                {errors.cargo?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                                {errors.puesto?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                             <div className='form-group__input-group'>
-                                <label htmlFor="jefe_directo">Jefe inmediato</label>
+                                <label htmlFor="jefe_inmediato">Jefe inmediato</label>
                                 <input
                                     type="text"
-                                    {...register('jefe_directo',
+                                    {...register('jefe_inmediato',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
-                                    name='jefe_directo'
-                                    id='jefe_directo'
+                                    name='jefe_inmediato'
+                                    id='jefe_inmediato'
                                     placeholder='Ingrese el jefe inmediato'
                                 />
-                                {errors.jefe_directo?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                                {errors.jefe_inmediato?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
-                            <div className='form-group__input-group'>
-                                <input
-                                    type='submit'
-                                    className='btn_registrar'
-                                    value={employeeId ? 'Guardar cambios' : 'Registrar personal'}
-                                />
-                            </div>
-                        </div>
-                    </div>
 
+                        </div>
+
+                    </div>
+                    <div className='form-group__input-group'>
+                        <input
+                            type='submit'
+                            className='btn_registrar'
+                            value={employeeId ? 'Guardar cambios' : 'Registrar personal'}
+                        />
+                    </div>
                 </form>
             </div>
         </section>

@@ -34,6 +34,7 @@ const Login = () => {
                         cookies.set('apellido_paterno', resp.apellido_paterno, { path: "/" })
                         cookies.set('apellido_materno', resp.apellido_materno, { path: "/" })
                         cookies.set('nombre', resp.nombre, { path: "/" })
+                        cookies.set('imagen', resp.imagen, { path: "/" })
                         cookies.set('username', resp.username, { path: "/" })
                         cookies.set('isAdmin', resp.isAdmin, { path: "/" })
                         setCargando(false)
@@ -48,6 +49,7 @@ const Login = () => {
 
         }
     }
+
 
 
     return (

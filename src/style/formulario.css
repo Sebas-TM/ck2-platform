@@ -7,7 +7,7 @@
 
 @media (min-width:768px){
     .contenedor-form{
-        width: 50rem;
+        width: 70rem;
     }
 }
 
@@ -34,17 +34,15 @@
 }
 
 .contenedor-form-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
+        margin: auto;
         margin-bottom: 4rem;   
         gap: 1rem;    
     }
 
 @media (min-width:768px) {
-    .contenedor-form {
-        /* width: 60rem; */
-        /* display: flex; */
+    .contenedor-form-header {
+        width: 70%;
+
 
     }   
 
@@ -82,6 +80,11 @@
     padding: .8rem 1.5rem;
     font-family: 'Poppins', sans-serif;
     outline-color: #E62838;
+}
+
+.form-group__input-group{
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .btn_registrar {

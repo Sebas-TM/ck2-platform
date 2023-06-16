@@ -21,7 +21,7 @@ const NuevoUsuario = () => {
                 .then(resp => resp.json())
 
             toast.success('Usuario creado correctamente')
-        }else{
+        } else {
             callEndpoint(updateUser(data, parseInt(userId)))
                 .then(resp => resp.json())
             toast.success('Usuario editado correctamente')
@@ -37,11 +37,11 @@ const NuevoUsuario = () => {
             .then(res => {
                 setValue('nombre', res.nombre)
                 setValue('apellido_paterno', res.apellido_paterno)
-                setValue('apellido_materno',res.apellido_materno)
-                setValue('dni',res.dni)
+                setValue('apellido_materno', res.apellido_materno)
+                setValue('dni', res.dni)
                 setValue('username', res.username)
-                setValue('password',res.password)
-                setValue('isAdmin',res.isAdmin)
+                setValue('password', res.password)
+                setValue('isAdmin', res.isAdmin)
             })
             .catch(error => {
                 if (error.code === 'ERR_CANCELED') {
@@ -75,7 +75,7 @@ const NuevoUsuario = () => {
                                     type="text"
                                     {...register('nombre',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='nombre'
@@ -90,7 +90,7 @@ const NuevoUsuario = () => {
                                     type="text"
                                     {...register('apellido_paterno',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='apellido_paterno'
@@ -105,7 +105,7 @@ const NuevoUsuario = () => {
                                     type="text"
                                     {...register('apellido_materno',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='apellido_materno'
@@ -120,9 +120,9 @@ const NuevoUsuario = () => {
                                     type="text"
                                     {...register('dni',
                                         {
-                                            required:true,
+                                            required: true,
                                             pattern: /^[0-9]+$/,
-                                            maxLength:8,
+                                            maxLength: 8,
                                             minLength: 8
                                         })
                                     }
@@ -135,6 +135,20 @@ const NuevoUsuario = () => {
                                 {errors.dni?.type === 'minLength' && <p className="error-message">Ingresar DNI correcto</p>}
                                 {errors.dni?.type === 'pattern' && <p className="error-message">Ingresar DNI correcto</p>}
                             </div>
+                            <div className='form-group__input-group'>
+                                <label htmlFor="imagen">Foto</label>
+                                <input
+                                    type="file"
+                                    {...register('imagen',
+                                        {
+                                            required: true
+                                        })
+                                    }
+                                    name='imagen'
+                                    id='imagen'
+                                />
+                                {errors.imagen?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                            </div>
                         </div>
                         <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
@@ -143,7 +157,7 @@ const NuevoUsuario = () => {
                                     type="text"
                                     {...register('username',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='username'
@@ -158,7 +172,7 @@ const NuevoUsuario = () => {
                                     type="password"
                                     {...register('password',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='password'
@@ -173,7 +187,7 @@ const NuevoUsuario = () => {
                                     className='select_admin'
                                     {...register('isAdmin',
                                         {
-                                            required:true
+                                            required: true
                                         })
                                     }
                                     name='isAdmin'

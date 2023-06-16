@@ -141,7 +141,7 @@ const Empleados = () => {
                         <div key={index} className="contenedor-cards">
                             <div className="cards cards-employee">
                                 <div className="contenedor-foto">
-                                    <img src={employee_foto} alt="foto_personal" />
+                                    <img src={`http://127.0.0.1:8000/${sortedEmployee.imagen}`} alt="foto_personal" />
                                 </div>
                                 <div>
                                     <div className="contenedor-datos">
