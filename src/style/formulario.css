@@ -41,7 +41,7 @@
 
 @media (min-width:768px) {
     .contenedor-form-header {
-        width: 70%;
+        width: 100%;
 
 
     }   
@@ -107,4 +107,44 @@
         background-color: #858784;
         transform: scale(1.1);
     }
+}
+
+.input_imagen{
+    display: none;
+}
+
+.label_imagen{
+    padding: .8rem 1.5rem;
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 1.5rem;
+    margin-top: 1.5rem;
+    outline-color: #E62838;
+    margin-bottom: .5rem;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+}
+.label_imagen p{
+    font-size: 1.3rem ;
+    color: rgb(110, 110, 110);
+}
+.contenedor-icon_imagen{
+    display:grid;
+    place-items: center;
+    font-size: 2rem;
+}
+
+.contenedor-icon_imagen .icon_imagen{
+    font-size: 1.5rem !;
+}
+
+.BiImage{
+    color: green;
+}
+
+.BiImageAdd{
+
 }

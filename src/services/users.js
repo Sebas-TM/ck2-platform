@@ -20,19 +20,19 @@ export const getUser = (id) => {
 
 export const postUser =  (user) => {
     const controller = loadAbort()
+    console.log(user);
 
     return{
         call: fetch(`${config.API_URL}users/create`,{
             signal: controller.signal,
             method: 'POST',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data',
             },
             body:JSON.stringify(user)
         })
     }
 
-    // console.log(user);
 }
 export const loginUser =  (user) => {
     const controller = loadAbort()

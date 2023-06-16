@@ -28,11 +28,12 @@ export const postEmployee =  (employee) => {
             signal: controller.signal,
             method: 'POST',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             },
             body: JSON.stringify(employee)
         })
     }
+    console.log(employee)
 }
 
 export  function updateEmployee(employee, id){

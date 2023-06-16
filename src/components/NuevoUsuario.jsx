@@ -6,6 +6,7 @@ import { postUser, getUser, updateUser } from '../services/users';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import { useForm } from "react-hook-form";
+import {BiImageAdd, BiImage} from "react-icons/bi";
 
 
 const NuevoUsuario = () => {
@@ -14,15 +15,33 @@ const NuevoUsuario = () => {
     const { userId } = useParams()
     const { register, setValue, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
+    const [imagen, setImagen] = useState('')
 
-    const submitData = data => {
+
+    const submitData =  (data) => {
+        const formData = {
+            'nombre': data.nombre,
+            'apellido_paterno': data.apellido_paterno,
+            'apellido_materno': data.apellido_materno,
+            'dni': data.dni,
+            'imagen': imagen,
+            'username': data.username,
+            'password': data.password,
+            'isAdmin': data.isAdmin
+        }
         if (!userId) {
-            callEndpoint(postUser(data))
+            try{
+                callEndpoint(postUser(formData))
                 .then(resp => resp.json())
 
             toast.success('Usuario creado correctamente')
+            }catch(error){
+                console.log(error)
+            }
+            
+            toast.success('Usuario creado correctamente')
         } else {
-            callEndpoint(updateUser(data, parseInt(userId)))
+            callEndpoint(updateUser(formData, parseInt(userId)))
                 .then(resp => resp.json())
             toast.success('Usuario editado correctamente')
         }
@@ -137,17 +156,21 @@ const NuevoUsuario = () => {
                             </div>
                             <div className='form-group__input-group'>
                                 <label htmlFor="imagen">Foto</label>
+                                <label className="label_imagen" htmlFor="imagen">
+                                    <p>{imagen != '' ? 'Imagen seleccionada' : 'Subir imagen'}</p>
+                                    <div className="contenedor-icon_imagen">
+                                    <BiImageAdd className={imagen != '' ? 'input_imagen BiImageAdd' : 'icon_imagen'}/>
+                                    <BiImage className={imagen != '' ? 'icon_imagen BiImage' : 'input_imagen'}/>
+                                    </div>                                    
+                                </label>
                                 <input
                                     type="file"
-                                    {...register('imagen',
-                                        {
-                                            required: true
-                                        })
-                                    }
+                                    {...register('imagen')}
                                     name='imagen'
                                     id='imagen'
+                                    className='input_imagen'
+                                    onChange = {e => setImagen(e.target.files[0])}
                                 />
-                                {errors.imagen?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                         </div>
                         <div className='subcontenedor-form'>
@@ -193,7 +216,7 @@ const NuevoUsuario = () => {
                                     name='isAdmin'
                                     id='isAdmin'
                                 >
-                                    <option value="" disabled>--Seleccione--</option>
+                                    <option value="">--Seleccione--</option>
                                     <option value="1">Sí</option>
                                     <option value="0">No</option>
                                 </select>

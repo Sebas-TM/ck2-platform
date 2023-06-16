@@ -9,16 +9,17 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import { useForm } from "react-hook-form";
 import Spinner from './Spinner';
+import {BiImageAdd, BiImage} from "react-icons/bi";
 
 const NuevoEmpleado = () => {
 
     const navigate = useNavigate()
     const { employeeId } = useParams()
-    const [employees, setEmployees] = useState([])
     const [cargando, setCargando] = useState(false)
     const [areas, setAreas] = useState([])
     const { register, setValue, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
+    const [imagen, setImagen] = useState('')
 
     useEffect(() => {
         callEndpoint(getAreas())
@@ -62,12 +63,28 @@ const NuevoEmpleado = () => {
     }, [])
 
     const submitData = data => {
+        const formData = {
+            'nombre': data.nombre,
+            'apellido_paterno': data.apellido_paterno,
+            'apellido_materno': data.apellido_materno,
+            'imagen': imagen,
+            'estado': data.estado,
+            'dni': data.dni,
+            'correo': data.correo,
+            'celular': data.celular,
+            'nombre_contacto': data.nombre_contacto,
+            'numero_contacto': data.numero_contacto,
+            'relacion_contacto': data.relacion_contacto,
+            'area': data.area,
+            'puesto': data.puesto,
+            'jefe_inmediato': data.jefe_inmediato
+        }
         if (!employeeId) {
-            callEndpoint(postEmployee(data))
+            callEndpoint(postEmployee(formData))
                 .then(res => res.json())
             toast.success('Empleado agregado correctamente')
         } else {
-            callEndpoint(updateEmployee(data, parseInt(employeeId)))
+            callEndpoint(updateEmployee(formData, parseInt(employeeId)))
                 .then(res => res.json())
             toast.success('Empleado actualizado correctamente')
         }
@@ -142,18 +159,21 @@ const NuevoEmpleado = () => {
                             </div>
                             <div className='form-group__input-group'>
                                 <label htmlFor="imagen">Foto</label>
+                                <label className="label_imagen" htmlFor="imagen">
+                                    <p>{imagen != '' ? 'Imagen seleccionada' : 'Subir imagen'}</p>
+                                    <div className="contenedor-icon_imagen">
+                                    <BiImageAdd className={imagen != '' ? 'input_imagen BiImageAdd' : 'icon_imagen'}/>
+                                    <BiImage className={imagen != '' ? 'icon_imagen BiImage' : 'input_imagen'}/>
+                                    </div>                                    
+                                </label>
                                 <input
                                     type="file"
-                                    accept="image/jpeg, image/png"
-                                    {...register('imagen',
-                                        {
-                                            required: true
-                                        })
-                                    }
+                                    {...register('imagen')}
                                     name='imagen'
                                     id='imagen'
+                                    className='input_imagen'
+                                    onChange = {e => setImagen(e.target.files[0])}
                                 />
-                                {errors.imagen?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                             <div className='form-group__input-group'>
                                 <label htmlFor="estado">Estado</label>
@@ -167,7 +187,7 @@ const NuevoEmpleado = () => {
                                     name='estado'
                                     id='estado'
                                 >
-                                    <option value="" disabled>--Seleccione--</option>
+                                    <option value="" >--Seleccione--</option>
                                     <option value="Activo">Activo</option>
                                     <option value="No activo">No activo</option>
                                 </select>
@@ -213,7 +233,7 @@ const NuevoEmpleado = () => {
                         </div>
                         <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
-                                <label htmlFor="telefono">Celular</label>
+                                <label htmlFor="celular">Celular</label>
                                 <input
                                     type="text"
                                     {...register('celular',
@@ -224,8 +244,8 @@ const NuevoEmpleado = () => {
                                             minLength: 9
                                         })
                                     }
-                                    name='telefono'
-                                    id='telefono'
+                                    name='celular'
+                                    id='celular'
                                     placeholder='Ingrese su número de celular'
                                 />
                                 {errors.celular?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
@@ -270,7 +290,7 @@ const NuevoEmpleado = () => {
                                     name='relacion_contacto'
                                     id='relacion_contacto'
                                 >
-                                    <option value="" disabled>--Seleccione--</option>
+                                    <option value="">--Seleccione--</option>
                                     <option value="Padre">Padre</option>
                                     <option value="Madre">Madre</option>
                                     <option value="Esposo(a)">Esposo(a)</option>
@@ -290,7 +310,7 @@ const NuevoEmpleado = () => {
                                     name='area'
                                     id='area'
                                 >
-                                    <option value="" disabled >--Seleccione--</option>
+                                    <option value=""  >--Seleccione--</option>
                                     {areas.map(area => (
                                         <option value={area.area} key={area.id}>{area.area}</option>
                                     ))}
