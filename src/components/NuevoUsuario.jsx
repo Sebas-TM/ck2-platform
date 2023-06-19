@@ -6,7 +6,9 @@ import { postUser, getUser, updateUser } from '../services/users';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import { useForm } from "react-hook-form";
-import {BiImageAdd, BiImage} from "react-icons/bi";
+import { BiImageAdd, BiImage } from "react-icons/bi";
+import { config } from '../config';
+import axios from 'axios'
 
 
 const NuevoUsuario = () => {
@@ -18,7 +20,7 @@ const NuevoUsuario = () => {
     const [imagen, setImagen] = useState('')
 
 
-    const submitData =  (data) => {
+    const submitData = async (data) => {
         const formData = {
             'nombre': data.nombre,
             'apellido_paterno': data.apellido_paterno,
@@ -30,21 +32,31 @@ const NuevoUsuario = () => {
             'isAdmin': data.isAdmin
         }
         if (!userId) {
-            try{
-                callEndpoint(postUser(formData))
-                .then(resp => resp.json())
-
-            toast.success('Usuario creado correctamente')
-            }catch(error){
-                console.log(error)
-            }
-            
+            // try{
+            //     callEndpoint(postUser(formData))
+            //     .then(resp => resp.json())
+            //     .then( resp => console.log(resp))
+            // toast.success('Usuario creado correctamente')
+            // }catch(error){
+            //     console.log(error)
+            // }
+            await axios.post(`${config.API_URL}users/create`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             toast.success('Usuario creado correctamente')
         } else {
-            callEndpoint(updateUser(formData, parseInt(userId)))
-                .then(resp => resp.json())
+            // callEndpoint(updateUser(formData, parseInt(userId)))
+            //     .then(resp => resp.json())
+            await axios.post(`${config.API_URL}users/update/${userId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             toast.success('Usuario editado correctamente')
         }
+
     }
 
     useEffect(() => {
@@ -59,7 +71,7 @@ const NuevoUsuario = () => {
                 setValue('apellido_materno', res.apellido_materno)
                 setValue('dni', res.dni)
                 setValue('username', res.username)
-                setValue('password', res.password)
+                // setValue('password', res.password)
                 setValue('isAdmin', res.isAdmin)
             })
             .catch(error => {
@@ -85,7 +97,7 @@ const NuevoUsuario = () => {
                     </button>
                     <h1 className='contenedor-form__texto'>{userId ? 'Editar' : 'Nuevo'} usuario</h1>
                 </div>
-                <form onSubmit={handleSubmit(submitData)}>
+                <form onSubmit={handleSubmit(submitData)} encType="multipart/form-data">
                     <div className='subcontenedor'>
                         <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
@@ -154,14 +166,17 @@ const NuevoUsuario = () => {
                                 {errors.dni?.type === 'minLength' && <p className="error-message">Ingresar DNI correcto</p>}
                                 {errors.dni?.type === 'pattern' && <p className="error-message">Ingresar DNI correcto</p>}
                             </div>
+
+                        </div>
+                        <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
                                 <label htmlFor="imagen">Foto</label>
                                 <label className="label_imagen" htmlFor="imagen">
                                     <p>{imagen != '' ? 'Imagen seleccionada' : 'Subir imagen'}</p>
                                     <div className="contenedor-icon_imagen">
-                                    <BiImageAdd className={imagen != '' ? 'input_imagen BiImageAdd' : 'icon_imagen'}/>
-                                    <BiImage className={imagen != '' ? 'icon_imagen BiImage' : 'input_imagen'}/>
-                                    </div>                                    
+                                        <BiImageAdd className={imagen != '' ? 'input_imagen BiImageAdd' : 'icon_imagen'} />
+                                        <BiImage className={imagen != '' ? 'icon_imagen BiImage' : 'input_imagen'} />
+                                    </div>
                                 </label>
                                 <input
                                     type="file"
@@ -169,11 +184,10 @@ const NuevoUsuario = () => {
                                     name='imagen'
                                     id='imagen'
                                     className='input_imagen'
-                                    onChange = {e => setImagen(e.target.files[0])}
+                                    accept="image/jpeg, image/png"
+                                    onChange={e => setImagen(e.target.files[0])}
                                 />
                             </div>
-                        </div>
-                        <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
                                 <label htmlFor="username">Usuario</label>
                                 <input
@@ -190,17 +204,17 @@ const NuevoUsuario = () => {
                                 {errors.username?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                             <div className='form-group__input-group'>
-                                <label htmlFor="password">Contraseña</label>
+                                <label htmlFor="password">{userId && 'Nueva'} Contraseña</label>
                                 <input
                                     type="password"
                                     {...register('password',
                                         {
-                                            required: true
+                                            required: userId ? false : true
                                         })
                                     }
                                     name='password'
                                     id='password'
-                                    placeholder='Ingrese su contraseña'
+                                    placeholder={userId ? 'Ingrese su nueva contraseña' : 'Ingrese su contraseña'}
                                 />
                                 {errors.password?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>

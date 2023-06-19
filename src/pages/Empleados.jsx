@@ -39,7 +39,7 @@ const Empleados = () => {
             })
     }, [])
 
-    const sortedEmployees = employees.sort((a,b)=>b.id - a.id)
+    const sortedEmployees = employees.sort((a, b) => b.id - a.id)
 
     const eliminarEmpleado = employeeId => {
         swal({
@@ -119,12 +119,12 @@ const Empleados = () => {
                                         </button>
                                         <button
                                             onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`)}
-                                            className={isAdmin==1?'btn_option edit':'disable-button'}><FiEdit className='icon' />
+                                            className={isAdmin == 1 ? 'btn_option edit' : 'disable-button'}><FiEdit className='icon' />
                                         </button>
 
                                         <button
                                             onClick={() => eliminarEmpleado(sortedEmployee.id)}
-                                            className={isAdmin==1?'btn_option delete':'disable-button'}
+                                            className={isAdmin == 1 ? 'btn_option delete' : 'disable-button'}
                                         ><FiTrash className='icon' /></button>
 
                                     </td>
@@ -175,11 +175,11 @@ const Empleados = () => {
                                 </button>
                                 <button
                                     onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`)}
-                                    className={isAdmin==1?'btn_option edit':'disable-button'}><FiEdit className='icon' />
+                                    className={isAdmin == 1 ? 'btn_option edit' : 'disable-button'}><FiEdit className='icon' />
                                 </button>
                                 <button
                                     onClick={() => eliminarEmpleado(sortedEmployee.id)}
-                                    className={isAdmin==1?'btn_option delete':'disable-button'}
+                                    className={isAdmin == 1 ? 'btn_option delete' : 'disable-button'}
                                 ><FiTrash className='icon' /></button>
                             </div>
                         </div>

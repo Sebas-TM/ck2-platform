@@ -38,13 +38,14 @@ export const postEmployee =  (employee) => {
 
 export  function updateEmployee(employee, id){
     const controller = loadAbort()
+    console.log(employee);
 
     return{
         call: fetch(`${config.API_URL}employees/update/${id}`,{
             signal: controller.signal,
             method: 'POST',
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             },
             body: JSON.stringify(employee)
         })

@@ -10,7 +10,8 @@ import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import { useForm } from "react-hook-form";
 import Spinner from './Spinner';
 import {BiImageAdd, BiImage} from "react-icons/bi";
-
+import { config } from '../config';
+import axios from 'axios';
 const NuevoEmpleado = () => {
 
     const navigate = useNavigate()
@@ -62,7 +63,7 @@ const NuevoEmpleado = () => {
 
     }, [])
 
-    const submitData = data => {
+    const submitData = async (data) => {
         const formData = {
             'nombre': data.nombre,
             'apellido_paterno': data.apellido_paterno,
@@ -80,12 +81,23 @@ const NuevoEmpleado = () => {
             'jefe_inmediato': data.jefe_inmediato
         }
         if (!employeeId) {
-            callEndpoint(postEmployee(formData))
-                .then(res => res.json())
+            // callEndpoint(postEmployee(formData))
+            //     .then(res => res.json())
+            //     .then(res => console.log(res))
+            await axios.post(`${config.API_URL}employees/create`,formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             toast.success('Empleado agregado correctamente')
         } else {
-            callEndpoint(updateEmployee(formData, parseInt(employeeId)))
-                .then(res => res.json())
+            // callEndpoint(updateEmployee(formData, parseInt(employeeId)))
+            //     .then(res => res.json())
+            await axios.post(`${config.API_URL}employees/update/${employeeId}`,formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             toast.success('Empleado actualizado correctamente')
         }
 
@@ -109,7 +121,7 @@ const NuevoEmpleado = () => {
                     </button>
                     <h1 className='contenedor-form__texto'>{employeeId ? 'Editar personal' : 'Nuevo personal'}</h1>
                 </div>
-                <form onSubmit={handleSubmit(submitData)}>
+                <form onSubmit={handleSubmit(submitData)} encType="multipart/form-data">
                     <div className='subcontenedor'>
                         <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
@@ -172,6 +184,7 @@ const NuevoEmpleado = () => {
                                     name='imagen'
                                     id='imagen'
                                     className='input_imagen'
+                                    accept="image/jpeg, image/png"
                                     onChange = {e => setImagen(e.target.files[0])}
                                 />
                             </div>

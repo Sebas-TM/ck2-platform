@@ -28,6 +28,8 @@ export const postUser =  (user) => {
             method: 'POST',
             headers:{
                 'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': '*',
+                'Accept': 'application/json'
             },
             body:JSON.stringify(user)
         })
@@ -53,7 +55,6 @@ export const loginUser =  (user) => {
 
 export  function updateUser(user, id) {
     const controller = loadAbort()
-
     return{
         call: fetch(`${config.API_URL}users/update/${id}`,{
             signal: controller.signal,
