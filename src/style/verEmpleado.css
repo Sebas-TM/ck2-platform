@@ -11,17 +11,20 @@
 }
 
 .contenedor-ver-empleado__contenedor-boton{
-    width: 35rem;
+    width: 30rem;
     display: flex;
     justify-content: start;
     padding: 2rem;
 }
 
 .ver-empleado-card{
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
     padding: 2rem;
-    border-radius: .6rem;
-    width: 30rem;
+    border-radius: .8rem;
+    -webkit-box-shadow: -1px 0px 23px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -1px 0px 23px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: -1px 0px 23px -9px rgba(0, 0, 0, 0.75);
+    width: 25rem;
 }
 
 .ver-empleado-card p{
@@ -56,9 +59,13 @@
 }
 
 .contenedor-datos .dato{
-    font-weight: normal;
+    /* font-weight: normal; */
+    color: gray;
+
 }
 
 .contenedor-datos .dato-info{
-    font-weight: bold;
+    /* color: gray; */
+    font-weight: normal;
+
 }

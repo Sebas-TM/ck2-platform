@@ -8,11 +8,12 @@ import { useForm } from "react-hook-form";
 import { getArea, postArea, updateArea } from "../services/areas";
 import { Toaster, toast } from "sonner";
 import Spinner from "./Spinner";
-
+import axios from "axios";
+import { config } from "../config";
 const NuevaArea = () => {
     const navigate = useNavigate()
     const { areaId } = useParams()
-    const [cargando, setCargando] = useState(false)    
+    const [cargando, setCargando] = useState(false)
     const { loading, callEndpoint } = useFetchAndLoad()
     const { register, setValue, formState: { errors }, handleSubmit } = useForm()
 
@@ -20,38 +21,32 @@ const NuevaArea = () => {
     useEffect(() => {
         if (areaId) {
             setCargando(true)
-            callEndpoint(getArea(parseInt(areaId)))
-                .then(res => res.json())
-                .then(res => {
-                    setValue('area',res.area)
-                    setCargando(false)
-                })
-                .catch(error => {
-                    if (error.code === 'ERR_CANCELED') {
-                        console.log('Request has been', error.message)
-                    }
-                })
+            obtenerArea()
+            setCargando(false)
         } else {
             return () => { }
         }
-
-
     }, [areaId])
 
-
-    const submitData = (data) => {
+    const obtenerArea = async () => {
+        const res = await axios.get(`${config.API_URL}areas/list/${areaId}`)
+        setValue('area', res.data.area)
+    }
+    const submitData = async (data) => {
         if (!areaId) {
-            callEndpoint(postArea(data))
-                .then(resp => resp.json())
-            // .then(res => console.log(res))
-
+            await axios.post(`${config.API_URL}areas/create`, data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
             toast.success('Área agregada correctamente')
 
         } else {
-            callEndpoint(updateArea(data, parseInt(areaId)))
-                .then(resp => resp.json())
-            // .then(res => console.log(res))
-
+            await axios.post(`${config.API_URL}areas/update/${areaId}`, data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
             toast.success('Área actualizada correctamente')
         }
     }

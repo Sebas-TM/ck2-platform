@@ -26,20 +26,16 @@ const NuevoUsuario = () => {
             'apellido_paterno': data.apellido_paterno,
             'apellido_materno': data.apellido_materno,
             'dni': data.dni,
-            'imagen': imagen,
             'username': data.username,
             'password': data.password,
             'isAdmin': data.isAdmin
         }
+
+        if (imagen != '') {
+            formData.imagen = imagen
+        }
+
         if (!userId) {
-            // try{
-            //     callEndpoint(postUser(formData))
-            //     .then(resp => resp.json())
-            //     .then( resp => console.log(resp))
-            // toast.success('Usuario creado correctamente')
-            // }catch(error){
-            //     console.log(error)
-            // }
             await axios.post(`${config.API_URL}users/create`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -47,8 +43,6 @@ const NuevoUsuario = () => {
             });
             toast.success('Usuario creado correctamente')
         } else {
-            // callEndpoint(updateUser(formData, parseInt(userId)))
-            //     .then(resp => resp.json())
             await axios.post(`${config.API_URL}users/update/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -63,23 +57,18 @@ const NuevoUsuario = () => {
         if (!userId) {
             return () => { }
         }
-        callEndpoint(getUser(parseInt(userId)))
-            .then(res => res.json())
-            .then(res => {
-                setValue('nombre', res.nombre)
-                setValue('apellido_paterno', res.apellido_paterno)
-                setValue('apellido_materno', res.apellido_materno)
-                setValue('dni', res.dni)
-                setValue('username', res.username)
-                // setValue('password', res.password)
-                setValue('isAdmin', res.isAdmin)
-            })
-            .catch(error => {
-                if (error.code === 'ERR_CANCELED') {
-                    console.log('Request has been', error.message)
-                }
-            })
+        obtenerUsuario()
     }, [userId])
+
+    const obtenerUsuario = async () => {
+        const res = await axios.get(`${config.API_URL}users/list/${userId}`)
+        setValue('nombre', res.data.nombre)
+        setValue('apellido_paterno', res.data.apellido_paterno)
+        setValue('apellido_materno', res.data.apellido_materno)
+        setValue('dni', res.data.dni)
+        setValue('username', res.data.username)
+        setValue('isAdmin', res.data.isAdmin)
+    }
 
     return (
         <section className='contenedor_nuevo-dato'>

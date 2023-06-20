@@ -9,7 +9,7 @@ import useFetchAndLoad from "../hooks/useFetchAndLoad"
 import swal from 'sweetalert';
 import Spinner from '../components/Spinner';
 import employee_foto from '../image/foto-personal-ejemplo.jpg'
-
+import '../style/empleados.css'
 const cookies = new Cookies()
 
 
@@ -98,6 +98,7 @@ const Empleados = () => {
                             <td>Apellido materno</td>
                             <td>DNI</td>
                             <td>Estado</td>
+                            <td>Foto</td>
                             <td>Opciones</td>
                         </tr>
                     </thead>
@@ -110,10 +111,13 @@ const Empleados = () => {
                                     <td className='data data_amaterno'>{sortedEmployee.apellido_materno}</td>
                                     <td align="center" className='data data_amaterno'>{sortedEmployee.dni}</td>
                                     <td align="center" className='data data_amaterno'>{sortedEmployee.estado}</td>
+                                    <td>
+                                        <img className="img_empleados" src={`http://127.0.0.1:8000/${sortedEmployee.imagen}`} alt="foto_personal" />
+                                    </td>
                                     <td align="center" className='data data_opciones'>
                                         <button onClick={() => navigate(`/menu/recursos_humanos/empleado/${sortedEmployee.id}`)} className="btn_option view"><FiEye className="icon" /></button>
                                         <button className="btn_option wsp">
-                                            <Link to={`https://wa.me/51${sortedEmployee.telefono}`}>
+                                            <Link target="blank" to={`https://wa.me/51${sortedEmployee.celular}`}>
                                                 <ImWhatsapp className="icon" />
                                             </Link>
                                         </button>

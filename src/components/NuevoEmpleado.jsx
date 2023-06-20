@@ -9,7 +9,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import { useForm } from "react-hook-form";
 import Spinner from './Spinner';
-import {BiImageAdd, BiImage} from "react-icons/bi";
+import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from '../config';
 import axios from 'axios';
 const NuevoEmpleado = () => {
@@ -20,55 +20,56 @@ const NuevoEmpleado = () => {
     const [areas, setAreas] = useState([])
     const { register, setValue, formState: { errors }, handleSubmit } = useForm()
     const { loading, callEndpoint } = useFetchAndLoad()
-    const [imagen, setImagen] = useState('')
+    const [imagen, setImagen] = useState("")
 
     useEffect(() => {
-        callEndpoint(getAreas())
-            .then(res => res.json())
-            .then(res => {
-                setAreas(res)
-            })
-            .catch(error => {
-                if (error.code === 'ERR_CANCELED') {
-                    console.log('Request has been', error.message)
-                }
-            })
+        obtenerAreas()
     }, [])
 
+    const obtenerAreas = async () => {
+        try {
+            setCargando(true)
+            const res = await axios.get(`${config.API_URL}areas/list`)
+            setAreas(res.data)
+            setCargando(false)
+        } catch (e) {
+            console.log(e);
+        }
+    }
     useEffect(() => {
         if (employeeId) {
             setCargando(true)
-            callEndpoint(getEmployee(parseInt(employeeId)))
-                .then(res => res.json())
-                .then(res => {
-                    setValue('nombre', res.nombre)
-                    setValue('apellido_paterno', res.apellido_paterno)
-                    setValue('apellido_materno', res.apellido_materno)
-                    setValue('imagen', res.imagen)
-                    setValue('estado', res.estado)
-                    setValue('dni', res.dni)
-                    setValue('correo', res.correo)
-                    setValue('celular', res.celular)
-                    setValue('nombre_contacto', res.nombre_contacto)
-                    setValue('numero_contacto', res.numero_contacto)
-                    setValue('relacion_contacto', res.relacion_contacto)
-                    setValue('area', res.area)
-                    setValue('puesto', res.puesto)
-                    setValue('jefe_inmediato', res.jefe_inmediato)
-                    setCargando(false)
-                })
+            obtenerEmpleado()
+            setCargando(false)
         } else {
             return () => { }
         }
 
-    }, [])
+    }, [employeeId])
+
+    const obtenerEmpleado = async () => {
+        const res = await axios.get(`${config.API_URL}employees/list/${employeeId}`)
+        setValue('nombre', res.data.nombre)
+        setValue('apellido_paterno', res.data.apellido_paterno)
+        setValue('apellido_materno', res.data.apellido_materno)
+        setValue('imagen', res.data.imagen)
+        setValue('estado', res.data.estado)
+        setValue('dni', res.data.dni)
+        setValue('correo', res.data.correo)
+        setValue('celular', res.data.celular)
+        setValue('nombre_contacto', res.data.nombre_contacto)
+        setValue('numero_contacto', res.data.numero_contacto)
+        setValue('relacion_contacto', res.data.relacion_contacto)
+        setValue('area', res.data.area)
+        setValue('puesto', res.data.puesto)
+        setValue('jefe_inmediato', res.data.jefe_inmediato)
+    }
 
     const submitData = async (data) => {
         const formData = {
             'nombre': data.nombre,
             'apellido_paterno': data.apellido_paterno,
             'apellido_materno': data.apellido_materno,
-            'imagen': imagen,
             'estado': data.estado,
             'dni': data.dni,
             'correo': data.correo,
@@ -80,20 +81,20 @@ const NuevoEmpleado = () => {
             'puesto': data.puesto,
             'jefe_inmediato': data.jefe_inmediato
         }
+
+        if (imagen != "") {
+            formData.imagen = imagen
+        }
+
         if (!employeeId) {
-            // callEndpoint(postEmployee(formData))
-            //     .then(res => res.json())
-            //     .then(res => console.log(res))
-            await axios.post(`${config.API_URL}employees/create`,formData,{
+            await axios.post(`${config.API_URL}employees/create`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             toast.success('Empleado agregado correctamente')
         } else {
-            // callEndpoint(updateEmployee(formData, parseInt(employeeId)))
-            //     .then(res => res.json())
-            await axios.post(`${config.API_URL}employees/update/${employeeId}`,formData,{
+            await axios.post(`${config.API_URL}employees/update/${employeeId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -121,7 +122,7 @@ const NuevoEmpleado = () => {
                     </button>
                     <h1 className='contenedor-form__texto'>{employeeId ? 'Editar personal' : 'Nuevo personal'}</h1>
                 </div>
-                <form onSubmit={handleSubmit(submitData)} encType="multipart/form-data">
+                <form onSubmit={handleSubmit(submitData)} >
                     <div className='subcontenedor'>
                         <div className='subcontenedor-form'>
                             <div className='form-group__input-group'>
@@ -174,9 +175,9 @@ const NuevoEmpleado = () => {
                                 <label className="label_imagen" htmlFor="imagen">
                                     <p>{imagen != '' ? 'Imagen seleccionada' : 'Subir imagen'}</p>
                                     <div className="contenedor-icon_imagen">
-                                    <BiImageAdd className={imagen != '' ? 'input_imagen BiImageAdd' : 'icon_imagen'}/>
-                                    <BiImage className={imagen != '' ? 'icon_imagen BiImage' : 'input_imagen'}/>
-                                    </div>                                    
+                                        <BiImageAdd className={imagen != '' ? 'input_imagen BiImageAdd' : 'icon_imagen'} />
+                                        <BiImage className={imagen != '' ? 'icon_imagen BiImage' : 'input_imagen'} />
+                                    </div>
                                 </label>
                                 <input
                                     type="file"
@@ -185,7 +186,7 @@ const NuevoEmpleado = () => {
                                     id='imagen'
                                     className='input_imagen'
                                     accept="image/jpeg, image/png"
-                                    onChange = {e => setImagen(e.target.files[0])}
+                                    onChange={e => setImagen(e.target.files[0])}
                                 />
                             </div>
                             <div className='form-group__input-group'>

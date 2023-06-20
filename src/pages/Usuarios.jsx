@@ -8,6 +8,8 @@ import { getUsers, deleteUser } from '../services/users';
 import { Toaster, toast } from 'sonner'
 import swal from 'sweetalert';
 import Spinner from '../components/Spinner';
+import { config } from '../config';
+import axios from 'axios';
 
 const Usuarios = () => {
 
@@ -18,34 +20,25 @@ const Usuarios = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        callEndpoint(getUsers())
-            .then(res => res.json())
-            .then(res => {
-                setUsers(res)
-                setTabla(res)
-            })
-            .catch(error => {
-                if (error.code === 'ERR_CANCELED') {
-                    console.log('Request has been', error.message);
-                }
-            })
+        obtenerUsuarios()
     }, [])
     // console.log(users);
-
+    const obtenerUsuarios = async () => {
+        const res = await axios.get(`${config.API_URL}users/list`)
+        setUsers(res.data)
+        setTabla(res.data)
+    }
     const eliminarUsuario = userId => {
         swal({
             text: "¿Estás seguro de eliminar este usuario?",
             buttons: ["No", "Si"]
         }).then(respuesta => {
             if (respuesta) {
-                callEndpoint(deleteUser(parseInt(userId)))
-                    .then(res => res.json())
-                    .then(res => console.log(res))
-                    .catch(error => {
-                        if (error.code === 'ERR_CANCELED') {
-                            console.log('Request has been', error.message)
-                        }
-                    })
+                try{
+                    axios.delete(`${config.API_URL}users/delete/${userId}`)
+                }catch(e){
+                    console.log(e);
+                }
                 toast.success('Área eliminada correctamente')
                 setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
             }
