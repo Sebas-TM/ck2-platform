@@ -66,6 +66,7 @@ const NuevoEmpleado = () => {
     }
 
     const submitData = async (data) => {
+        setCargando(true)
         const formData = {
             'nombre': data.nombre,
             'apellido_paterno': data.apellido_paterno,
@@ -91,15 +92,33 @@ const NuevoEmpleado = () => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            toast.success('Empleado agregado correctamente')
+            })
+                .then(()=>{
+                    toast.success('Datos registrados!')
+                setCargando(false)
+
+                })
+                .catch(error =>{
+                    toast.error(error.response.data.message)
+                setCargando(false)
+
+                })
         } else {
             await axios.post(`${config.API_URL}employees/update/${employeeId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            toast.success('Empleado actualizado correctamente')
+            })
+            .then(()=>{
+                toast.success('Datos actualizados!')
+                setCargando(false)
+
+            })
+            .catch(error =>{
+                toast.error(error.response.data.message)
+                setCargando(false)
+
+            })
         }
 
     }
@@ -249,7 +268,7 @@ const NuevoEmpleado = () => {
                             <div className='form-group__input-group'>
                                 <label htmlFor="celular">Celular</label>
                                 <input
-                                    type="text"
+                                    type="tel"
                                     {...register('celular',
                                         {
                                             required: true,

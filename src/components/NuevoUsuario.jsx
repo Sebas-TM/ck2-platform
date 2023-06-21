@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from '../config';
 import axios from 'axios'
+import Spinner from './Spinner';
 
 
 const NuevoUsuario = () => {
@@ -16,11 +17,12 @@ const NuevoUsuario = () => {
     const navigate = useNavigate()
     const { userId } = useParams()
     const { register, setValue, formState: { errors }, handleSubmit } = useForm()
-    const { loading, callEndpoint } = useFetchAndLoad()
     const [imagen, setImagen] = useState('')
+    const [cargando, setCargando] = useState(false)
 
 
     const submitData = async (data) => {
+        setCargando(true)
         const formData = {
             'nombre': data.nombre,
             'apellido_paterno': data.apellido_paterno,
@@ -39,16 +41,32 @@ const NuevoUsuario = () => {
             await axios.post(`${config.API_URL}users/create`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                },
-            });
-            toast.success('Usuario creado correctamente')
+                },               
+            })
+                .then(()=>{
+                    toast.success('Usuario creado correctamente')
+                    setCargando(false)
+                })
+                .catch(error => {
+                    // console.log(error);
+                    toast.error(error.response.data.message);
+                    setCargando(false)
+                })
         } else {
             await axios.post(`${config.API_URL}users/update/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            toast.success('Usuario editado correctamente')
+            })
+                .then(()=>{
+                    toast.success('Datos actualizados!')
+                    setCargando(false)
+                })
+                .catch(error => {
+                    // console.log(error);
+                    toast.error(error.response.data.message);
+                    setCargando(false)
+                });
         }
 
     }
@@ -61,6 +79,7 @@ const NuevoUsuario = () => {
     }, [userId])
 
     const obtenerUsuario = async () => {
+        setCargando(true)
         const res = await axios.get(`${config.API_URL}users/list/${userId}`)
         setValue('nombre', res.data.nombre)
         setValue('apellido_paterno', res.data.apellido_paterno)
@@ -68,11 +87,13 @@ const NuevoUsuario = () => {
         setValue('dni', res.data.dni)
         setValue('username', res.data.username)
         setValue('isAdmin', res.data.isAdmin)
+        setCargando(false)
     }
 
     return (
         <section className='contenedor_nuevo-dato'>
             <Toaster position="top-center" richColors />
+            {cargando && <Spinner/>}
             <div className='contenedor-form'>
                 <div className='contenedor-form-header'>
                     <button onClick={() => navigate("/menu/usuarios")} className='btn_regresar'>

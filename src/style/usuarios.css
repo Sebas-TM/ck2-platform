@@ -99,10 +99,17 @@
     position:static;
 }
 
+
+
 .tabla tbody tr td{
-    height: 11rem;
+    height: 5rem;
     border: 1px solid #8080801b;
 }
+
+.tabla-empleados tbody tr td{
+    height: 11rem;
+}
+
 
 .data{
     padding:0 1rem;

@@ -90,7 +90,7 @@ const Empleados = () => {
                 </div>
             </div>
             <div className='contenedor-tabla '>
-                <table cellSpacing="0" cellPadding="0" className='tabla'>
+                <table cellSpacing="0" cellPadding="0" className='tabla tabla-empleados'>
                     <thead>
                         <tr>
                             <td>Nombre</td>
@@ -111,7 +111,7 @@ const Empleados = () => {
                                     <td className='data data_amaterno'>{sortedEmployee.apellido_materno}</td>
                                     <td align="center" className='data data_amaterno'>{sortedEmployee.dni}</td>
                                     <td align="center" className='data data_amaterno'>{sortedEmployee.estado}</td>
-                                    <td>
+                                    <td align="center">
                                         <img className="img_empleados" src={`http://127.0.0.1:8000/${sortedEmployee.imagen}`} alt="foto_personal" />
                                     </td>
                                     <td align="center" className='data data_opciones'>
