@@ -42,7 +42,7 @@ const Postulaciones = () => {
     const url = 'http://127.0.0.1:8000/api/listImage'
 
     useEffect( () => {
-        obtenerRegistros()
+        // obtenerRegistros()
     }, [])
 
     const obtenerRegistros = async () =>{
@@ -53,7 +53,7 @@ const Postulaciones = () => {
     }
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}>
                 <div>
                     <label>Nombre:</label>
                     <input type="text" value={nombre} onChange={handleNombreChange} />
@@ -63,18 +63,9 @@ const Postulaciones = () => {
                     <input type="file" accept="image/jpeg, image/png" onChange={handleImagenChange} />
                 </div>
                 <button type="submit">Registrar</button>
-            </form>
-            <div>
-                {registros.map((registro, index) => (
-                    <div key={index}>
-                        <h1 >Nombre: <span>{registro.nombre}</span></h1>
-                        <p>{registro.imagen}</p>
-                        <img src={`http://127.0.0.1:8000/${registro.imagen}`} alt="imagen23" />
-                        {/* <img src="http://127.0.0.1:8000/storage/images/123monserrat.png" alt="imagennn" /> */}
-                    </div>
-                ))}
-                
-            </div>
+            </form> */}
+            
+            <div>Postulaciones</div>
         </>
     )
 }

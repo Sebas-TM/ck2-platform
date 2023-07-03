@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import ModuloCard from '../components/ModuloCard';
-import area_rrhh from '../image/area_rrhh.jpg'
+import area_rrhh from '../image/portada_rrhh.jpg'
 import { Link } from "react-router-dom";
 import '../style/modulos.css'
 const Modulos = () => {
@@ -12,7 +12,7 @@ const Modulos = () => {
             <Link to='/menu/recursos_humanos'>
                 <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
             </Link>
-            <Link>
+            {/* <Link>
                 <ModuloCard imagen={area_rrhh} texto={'Ventas'} />
             </Link>
             <Link>
@@ -32,7 +32,7 @@ const Modulos = () => {
             </Link>
             <Link>
                 <ModuloCard imagen={area_rrhh} texto={'Recursos Humanos'} />
-            </Link>
+            </Link> */}
         </section>
     )
 }

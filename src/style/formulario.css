@@ -16,11 +16,11 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1rem 2rem;
+    padding: .7rem 1.5rem;
     border: none;
     background-color: #676966;
     color: white;
-    border-radius: 1.5rem;
+    border-radius: .8rem;
     cursor: pointer;
     transition: all .3s ease;
 
@@ -75,7 +75,7 @@
 
 .form-group__input-group select {
     border: 1px solid rgb(201, 201, 201);
-    border-radius: 1.5rem;
+    border-radius: .8rem;
     margin: 1.5rem 0 .5rem 0;
     padding: .8rem 1.5rem;
     font-family: 'Poppins', sans-serif;
@@ -99,13 +99,13 @@
 
 @media (min-width:768px) {
     .btn_registrar:hover {
-        background-color: #f82b3c;
-        transform: scale(1.1);
+        background-color: #bd1e2b;
+        /* transform: scale(1.1); */
     }
 
     .btn_regresar:hover {
         background-color: #858784;
-        transform: scale(1.1);
+        /* transform: scale(1.1); */
     }
 }
 
@@ -116,7 +116,7 @@
 .label_imagen{
     padding: .8rem 1.5rem;
     border: 1px solid rgb(201, 201, 201);
-    border-radius: 1.5rem;
+    border-radius: .8rem;
     margin-top: 1.5rem;
     outline-color: #E62838;
     margin-bottom: .5rem;

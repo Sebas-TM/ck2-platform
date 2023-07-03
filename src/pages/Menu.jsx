@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { config } from '../config'
 import logo_texto from '../image/logo_texto.png'
 import logo from '../image/logo.png'
-import user_icon from '../image/Carne.jpg'
+import foto_usuario from '../image/foto_personal.webp'
 
 const cookies = new Cookies()
 
@@ -41,7 +41,7 @@ const Menu = () => {
     // console.log('apellido_materno: ' + cookies.get('apellido_materno'))
     // console.log('nombre: ' + cookies.get('nombre'))
     // console.log('username: ' + cookies.get('username'))
-    // console.log('isAdmin: ' + cookies.get('isAdmin'))
+    // console.log('rol: ' + cookies.get('rol'))
 
     const id = cookies.get('id')
     const apellido_paterno = cookies.get('apellido_paterno')
@@ -49,7 +49,7 @@ const Menu = () => {
     const nombre = cookies.get('nombre')
     const imagen = cookies.get('imagen')
     const username = cookies.get('username')
-    const isAdmin = cookies.get('isAdmin')
+    const rol = cookies.get('rol')
     return (
         <div >
             <header className='contenedor-header'>
@@ -62,10 +62,10 @@ const Menu = () => {
                         <Link to='/menu' className='list disable'>
                             <p className='texto_header'>Menu</p>
                         </Link>
-                        <Link to='/menu/usuarios' className={isAdmin == 0 ? 'isNotAdmin' : 'list disable'}>
+                        <Link to='/menu/usuarios' className={rol != 1 ? 'isNotAdmin' : 'list disable'}>
                             <p className='texto_header'>Usuarios</p>
                         </Link>
-                        <Link to='/menu/areas' className={isAdmin == 0 ? 'isNotAdmin' : 'list disable'}>
+                        <Link to='/menu/areas' className={rol == 3 ? 'isNotAdmin' : 'list disable'}>
                             <p className='texto_header'>Áreas</p>
                         </Link>
 
@@ -77,7 +77,7 @@ const Menu = () => {
                         </li>
 
                         <li onClick={openMenu} className='contenedor-img-usuario'>
-                            <img className='img-usuario' src={`http://127.0.0.1:8000/${imagen}`} alt="" />
+                            <img className='img-usuario' src={imagen ==null ? foto_usuario : `https://comunik2peru.com/${imagen}`} alt="" />
                         </li>
                     </ul>
 
@@ -86,10 +86,10 @@ const Menu = () => {
                             <Link to='/menu' className='list_user disable_user'>
                                 <p className='texto_header'>Menu</p>
                             </Link>
-                            <Link to='/menu/usuarios' className={isAdmin == 0 ? 'isNotAdmin' : 'list_user disable_user'}>
+                            <Link to='/menu/usuarios' className={rol != 1 ? 'isNotAdmin' : 'list_user disable_user'}>
                                 <p className='texto_header'>Usuarios</p>
                             </Link>
-                            <Link to='/menu/areas' className={isAdmin == 0 ? 'isNotAdmin' : 'list_user disable_user'}>
+                            <Link to='/menu/areas' className={rol == 3 ? 'isNotAdmin' : 'list_user disable_user'}>
                                 <p className='texto_header'>Áreas</p>
                             </Link>
                             <Link className='list_user'>

@@ -14,7 +14,7 @@
 } */
 
 .header {
-    height: 7rem;
+    height: 5rem;
     background-color: rgb(233, 230, 230);
     display: flex;
     /* flex-direction: column; */
@@ -26,9 +26,15 @@
 }
 
 .outlet {
-    /* height: 100vh; */
+    height: 120vh;
     padding: 10rem 4rem 10rem 4rem;
 
+}
+
+@media (min-width:768px){
+    .outlet{
+        height: auto;
+    }
 }
 
 .icono-user {
@@ -165,9 +171,9 @@
 
 .contenedor-menu__user {
     position: absolute;
-    top: 8.5rem;
+    top: 6.5rem;
     right: 3rem;
-    background-color: #ab242b;
+    background-color: #f82b3c;
     padding: 1rem 2rem;
     border-radius: 1.2rem;
     display: flex;

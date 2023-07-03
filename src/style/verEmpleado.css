@@ -1,71 +1,101 @@
-.contenedor-ver-empleado{
-    width: 100%;
-    height: 40rem;
+.contenedor-ver-empleado {
+  width: 100%;
+  height: 40rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* padding: 0 2rem; */
+  gap: 2rem;
+  margin-top: 20rem;
+}
+.container-ver-empleado {
+  width: 100%;
+}
+
+.contenedor-ver-empleado__contenedor-boton {
+  width: 35rem;
+  display: flex;
+  justify-content: start;
+  padding: 2rem;
+}
+
+.ver-empleado-card {
+  border: 1px solid gray;
+  padding: 0 2rem 2rem 2rem;
+  border-radius: 0.8rem;
+  width: 30rem;
+}
+
+@media (min-width: 768px) {
+  .ver-empleado-card {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    /* padding: 0 2rem; */
     gap: 2rem;
-    margin-top: 10rem;
-}
-
-.contenedor-ver-empleado__contenedor-boton{
-    width: 30rem;
-    display: flex;
-    justify-content: start;
-    padding: 2rem;
-}
-
-.ver-empleado-card{
-    /* border: 1px solid gray; */
-    padding: 2rem;
-    border-radius: .8rem;
-    -webkit-box-shadow: -1px 0px 23px -9px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: -1px 0px 23px -9px rgba(0, 0, 0, 0.75);
-    box-shadow: -1px 0px 23px -9px rgba(0, 0, 0, 0.75);
-    width: 25rem;
-}
-
-.ver-empleado-card p{
-    font-size: 1.5rem;
-}
-
-@media (min-width:768px){
-    .ver-empleado-card p{
-        font-size: 2rem;
-    }
-    .ver-empleado-card{
-        width: 60rem;
-    }
-    .contenedor-ver-empleado__contenedor-boton{
-        width: 65rem;
-    }
-    .contenedor-ver-empleado{
-        margin-top: 5rem;
-    }
-}
-
-.contenedor-datos{
-    display: block;
     align-items: center;
-    justify-content: space-between;
+  }
+  .container-ver-empleado {
+    width: 35%;
+  }
+  .contenedor-empleado {
+    width: 65%;
+  }
+  .contenedor-foto {
+    height: 15rem;
+  }
 }
 
-@media (min-width:768px){
-    .contenedor-datos{
-        display: flex;
-    }
+.ver-empleado-card p {
+  font-size: 1.5rem;
 }
 
-.contenedor-datos .dato{
-    /* font-weight: normal; */
-    color: gray;
-
+.ver-empleado-card .contenedor-empleado {
+  margin-top: 2rem;
 }
 
-.contenedor-datos .dato-info{
-    /* color: gray; */
-    font-weight: normal;
+@media (min-width: 768px) {
+  .ver-empleado-card {
+    width: 85rem;
+    min-width: 60rem;
+  }
+  .contenedor-ver-empleado__contenedor-boton {
+    width: 90rem;
+  }
+  .contenedor-ver-empleado {
+    margin-top: 0rem;
+  }
+}
 
+.contenedor-datos {
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .contenedor-datos {
+    display: flex;
+  }
+}
+
+.contenedor-datos .contenedor-datos_texto-dato {
+  width: 100%;
+}
+
+.contenedor-datos .contenedor-datos_texto-dato-info {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .contenedor-datos .contenedor-datos_texto-dato {
+    width: 45%;
+  }
+  
+  .contenedor-datos .contenedor-datos_texto-dato-info {
+    width: 55%;
+  }
+}
+
+.contenedor-datos .dato-info {
+  color: gray;
+  font-weight: normal;
 }

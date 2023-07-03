@@ -1,57 +1,59 @@
 .contenedor-navegacion {
-    width: 100%;
-    overflow-x: auto;
-    margin: auto;
-    height: 10rem;
-    display: flex;
-    align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  margin: auto;
+  /* height: 10rem; */
+  display: flex;
+  align-items: center;
 }
 
-@media (min-width:500px) {
-    .contenedor-navegacion {
-        justify-content: center;
-        gap: 2rem;
-    }
+@media (min-width: 500px) {
+  .contenedor-navegacion {
+    justify-content: center;
+    gap: 2rem;
+  }
 }
 
 .navegacion {
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem 0;
-    white-space: nowrap;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 2rem 0; */
+  white-space: nowrap;
 }
 
-@media (min-width:768px) {
-    .navegacion {
-        justify-content: space-evenly;
-        width: 100%;
-    }
+@media (min-width: 768px) {
+  .navegacion {
+    /* justify-content: space-evenly; */
+    width: 100%;
+  }
+}
+
+.navegacion li {
+  position: relative;
+  font-size: 1.3rem;
+  border-bottom: 1px solid rgb(233, 230, 230);
 }
 
 .navegacion .link_rrhh {
-    font-size: 1.5rem;
-    color: black;
-    background-color: rgb(233, 230, 230);
-    padding: .5rem 1.5rem;
-    border-radius: 3rem;
-    transition: all .3s ease;
-    display: inline-block;
-    text-decoration: none;
+  color: black;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+  transition: all .1s ease-in;
 }
 
 .navegacion .link_rrhh:hover {
-    background-color: gray;
-    color: white;
+  border-bottom: 3px solid #f82b3c;
 }
 
-.link_rrhh_seleccionado {
-    background-color: gray;
-    color: white;
-    font-size: 1.5rem;
-    padding: .5rem 1.5rem;
-    border-radius: 3rem;
-    transition: all .3s ease;
+.navegacion .link_rrhh_seleccionado {
+  color: black;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+  border-bottom: 3px solid #f82b3c;
 }

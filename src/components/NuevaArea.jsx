@@ -39,7 +39,7 @@ const NuevaArea = () => {
                     'Content-Type': 'application/json'
                 }
             })
-            toast.success('Área agregada correctamente')
+            toast.success('Datos registrados!')
 
         } else {
             await axios.post(`${config.API_URL}areas/update/${areaId}`, data, {
@@ -47,7 +47,7 @@ const NuevaArea = () => {
                     'Content-Type': 'application/json'
                 }
             })
-            toast.success('Área actualizada correctamente')
+            toast.success('Datos actualizados!')
         }
     }
 

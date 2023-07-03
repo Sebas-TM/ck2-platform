@@ -30,7 +30,7 @@ const NuevoUsuario = () => {
             'dni': data.dni,
             'username': data.username,
             'password': data.password,
-            'isAdmin': data.isAdmin
+            'rol': data.rol
         }
 
         if (imagen != '') {
@@ -86,7 +86,7 @@ const NuevoUsuario = () => {
         setValue('apellido_materno', res.data.apellido_materno)
         setValue('dni', res.data.dni)
         setValue('username', res.data.username)
-        setValue('isAdmin', res.data.isAdmin)
+        setValue('rol', res.data.rol)
         setCargando(false)
     }
 
@@ -229,22 +229,23 @@ const NuevoUsuario = () => {
                                 {errors.password?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                             <div className='form-group__input-group'>
-                                <label htmlFor="isAdmin">Administrador</label>
+                                <label htmlFor="rol">Rol</label>
                                 <select
                                     className='select_admin'
-                                    {...register('isAdmin',
+                                    {...register('rol',
                                         {
                                             required: true
                                         })
                                     }
-                                    name='isAdmin'
-                                    id='isAdmin'
+                                    name='rol'
+                                    id='rol'
                                 >
                                     <option value="">--Seleccione--</option>
-                                    <option value="1">Sí</option>
-                                    <option value="0">No</option>
+                                    <option value="1">Administrador</option>
+                                    <option value="2">Usuario</option>
+                                    <option value="3">Lector</option>
                                 </select>
-                                {errors.isAdmin?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
+                                {errors.rol?.type === 'required' && <p className="error-message">Este campo es obligatorio</p>}
                             </div>
                         </div>
                     </div>
