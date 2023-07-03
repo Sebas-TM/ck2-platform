@@ -251,8 +251,7 @@
   width: 60%;
 }
 
-p {
-}
+
 .container .datos-principales .datos-principales_nombre {
   font-size: 1.5rem;
   color: #f82b3c;
@@ -280,9 +279,7 @@ p {
   height: auto;
 }
 
-.cards .contenedor-datos {
-  /* display: flex; */
-}
+
 
 .cards .contenedor-datos p {
   font-size: 1.5rem;
