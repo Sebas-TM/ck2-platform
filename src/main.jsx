@@ -11,6 +11,7 @@ import RecursosHumanos from './pages/RecursosHumanos'
 import Empleados from './pages/Empleados'
 import VerEmpleado from './components/VerEmpleado'
 import NuevoEmpleado from './components/NuevoEmpleado'
+import Asistencias from './pages/Asistencias'
 import Postulaciones from './pages/Postulaciones'
 import Gestiones from './pages/Gestiones'
 import Areas from './pages/Areas'
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
           {
             path: '/menu/recursos_humanos/postulaciones',
             element: <Postulaciones />
+          },
+          {
+            path: '/menu/recursos_humanos/asistencias',
+            element: <Asistencias/>
           },
           {
             path: '/menu/recursos_humanos/gestiones',

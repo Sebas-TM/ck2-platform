@@ -26,15 +26,9 @@
 }
 
 .outlet {
-    height: 120vh;
+    /* height: 100vh; */
     padding: 10rem 4rem 10rem 4rem;
 
-}
-
-@media (min-width:768px){
-    .outlet{
-        height: auto;
-    }
 }
 
 .icono-user {
@@ -115,7 +109,7 @@
 .img-usuario {
     max-width: 100%;
     /* max-height: 100%; */
-    object-fit: contain;
+    object-fit: contain;     
 }
 
 .texto_header {
@@ -171,9 +165,9 @@
 
 .contenedor-menu__user {
     position: absolute;
-    top: 6.5rem;
+    top: 8.5rem;
     right: 3rem;
-    background-color: #f82b3c;
+    background-color: #ab242b;
     padding: 1rem 2rem;
     border-radius: 1.2rem;
     display: flex;

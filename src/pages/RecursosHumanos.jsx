@@ -30,6 +30,18 @@ const RecursosHumanos = () => {
           <li>
             <Link
               className={`${
+                location.pathname === "/menu/recursos_humanos/asistencias"
+                  ? "link_rrhh_seleccionado"
+                  : "link_rrhh"
+              }`}
+              to="/menu/recursos_humanos/asistencias"
+            >
+              Asistencias
+            </Link>
+          </li>
+          <li>
+            <Link
+              className={`${
                 location.pathname === "/menu/recursos_humanos/postulaciones"
                   ? "link_rrhh_seleccionado"
                   : "link_rrhh"

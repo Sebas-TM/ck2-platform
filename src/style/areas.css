@@ -6,11 +6,7 @@
     display: block;
 }
 
-@media (max-width:768px) {
-    .tablaActive{
-        width: 100%;
-    }
-}
+
 .swal-modal{
     width: 35rem;
 }

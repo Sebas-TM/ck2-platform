@@ -105,7 +105,7 @@ const Usuarios = () => {
             onClick={() => navigate(`/menu/usuarios/crear`)}
           >
             <FiUserPlus className="icon" />
-            <p>Agregar</p>
+            <p className="disable">Agregar</p>
           </button>
           <input
             className="busqueda"
@@ -114,7 +114,6 @@ const Usuarios = () => {
             placeholder="Realizar búsqueda"
           />
         </div>
-        <div className="contenedor-tabla">
           <table cellSpacing="0" cellPadding="0" className="tabla">
             <thead>
               <tr>
@@ -164,7 +163,6 @@ const Usuarios = () => {
               ))}
             </tbody>
           </table>
-        </div>
         <div className="contenedor-general-cards">
           {users.map((user, index) => (
             <div key={index} className="contenedor-cards">

@@ -104,8 +104,6 @@ const Empleados = () => {
       {cargando && <Spinner />}
       <Toaster position="top-center" richColors />
       <div className="form-group-header">
-        {/* <h1>Personal</h1>
-        <div className="contenedor-input"> */}
         <button
           className={rol != 3 ? "btn_add" : "disable-button"}
           onClick={() => navigate(`/menu/recursos_humanos/empleado/crear`)}
@@ -123,7 +121,6 @@ const Empleados = () => {
         {/* </div> */}
       </div>
 
-      <div className="contenedor-tabla ">
         <table
           cellSpacing="0"
           cellPadding="0"
@@ -164,7 +161,7 @@ const Empleados = () => {
                       className="img_empleados"
                       src={
                         sortedEmployee.imagen
-                          ? `https://comunik2peru.com/${sortedEmployee.imagen}`
+                          ? `http://127.0.0.1:8000/${sortedEmployee.imagen}`
                           : foto_personal
                       }
                       alt="foto_personal"
@@ -255,7 +252,6 @@ const Empleados = () => {
             ))}
           </tbody>
         </table>
-      </div>
       <div className="contenedor-general-cards">
         {sortedEmployees.map((sortedEmployee, index) => (
           <div
@@ -279,7 +275,7 @@ const Empleados = () => {
                       loading="lazy"
                       src={
                         sortedEmployee.imagen
-                          ? `https://comunik2peru.com/${sortedEmployee.imagen}`
+                          ? `http://127.0.0.1:8000/${sortedEmployee.imagen}`
                           : foto_personal
                       }
                       alt="foto_personal"

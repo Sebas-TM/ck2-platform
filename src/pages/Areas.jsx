@@ -25,6 +25,7 @@ const Areas = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
   const [areas, setAreas] = useState([]);
 
+
   const obtenerAreas = async () => {
     try {
       setCargando(true);
@@ -75,8 +76,7 @@ const Areas = () => {
           </button>
           
         </div>
-        <div className="contenedor-tabla tablaActive">
-          <table cellSpacing="0" cellPadding="0" className="tabla">
+          <table cellSpacing="0" cellPadding="0" className="tabla tablaActive">
             <thead>
               <tr>
                 <th>Área</th>
@@ -110,7 +110,6 @@ const Areas = () => {
             </tbody>
           </table>
         </div>
-      </div>
     </>
   );
 };

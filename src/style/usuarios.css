@@ -65,36 +65,36 @@
 .btn_add:hover {
   background-color: #bd1e2b;
 }
-.contenedor-tabla {
-  width: 70%;
+.tabla {
   margin-top: 5rem;
   max-height: 50rem;
-  overflow: auto;
+  overflow: scroll;
   display: none;
+  font-size: 1.5rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgb(235, 235, 235);
 }
 
 @media (min-width: 768px) {
-  .contenedor-tabla {
+  .tabla {
     display: block;
   }
 }
 
-.contenedor-tabla::-webkit-scrollbar {
+.tabla::-webkit-scrollbar {
   width: 5px;
 }
 
-.contenedor-tabla::-webkit-scrollbar-thumb {
+.tabla::-webkit-scrollbar-thumb {
   background: rgb(192, 192, 192);
   border-radius: 7px;
 }
 
-.tabla {
-  width: 100%;
-  font-size: 1.5rem;
-  overflow: hidden;
-  border-radius: 0.8rem;
-  border: 1px solid rgb(235, 235, 235);
-  /* height: 5rem; */
+.tabla thead tr th{
+  position: sticky;
+  top: 0;
+  background-color: rgb(252, 252, 252);
+
 }
 
 
@@ -102,7 +102,6 @@
 .table__header tr {
   height: 4rem;
   border-bottom: 1px solid rgb(235, 235, 235);
-  background-color: #fcfcfc;
 }
 
 .tabla thead th,
@@ -121,6 +120,11 @@
 .tabla tbody tr {
   cursor: pointer;
 }
+
+.tabla tbody tr:hover {
+  background-color: #ebebeb;
+}
+
 .tabla tbody tr td {
   height: 5rem;
   /* border: 1px solid #8080801b; */
