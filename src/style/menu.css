@@ -165,9 +165,9 @@
 
 .contenedor-menu__user {
     position: absolute;
-    top: 8.5rem;
+    top: 6.5rem;
     right: 3rem;
-    background-color: #ab242b;
+    background-color: #f82b3c;
     padding: 1rem 2rem;
     border-radius: 1.2rem;
     display: flex;
