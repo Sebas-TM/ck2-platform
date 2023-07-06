@@ -26,9 +26,9 @@
 }
 
 .outlet {
-    /* height: 100vh; */
-    padding: 10rem 4rem 10rem 4rem;
-
+    height: 100vh;
+    padding: 0rem 4rem;
+    display: flex;
 }
 
 .icono-user {
@@ -184,4 +184,10 @@
     .disable_user {
         display: none;
     }
+}
+
+.error-message {
+    color: red;
+    text-transform: none;
+    font-weight: normal;
 }

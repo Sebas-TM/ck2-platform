@@ -94,6 +94,9 @@ const Menu = () => {
                             <Link to='/menu/areas' className={rol == 3 ? 'isNotAdmin' : 'list_user disable_user'}>
                                 <p className='texto_header'>Áreas</p>
                             </Link>
+                            <Link to='/menu/puestos' className={rol == 3 ? 'isNotAdmin' : 'list_user disable_user'}>
+                                <p className='texto_header'>Puestos</p>
+                            </Link>
                             <Link className='list_user'>
                                 <p className='texto_header'>Configuración</p>
                             </Link>

@@ -4,6 +4,8 @@
 
 .tablaActive{
     display: block;
+    margin: auto;
+    height: 40rem;
 }
 
 

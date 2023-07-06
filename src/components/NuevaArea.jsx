@@ -1,8 +1,6 @@
 import { FiChevronLeft } from "react-icons/fi";
 import "../style/formulario.css";
-import "../style/nuevaArea.css";
 import { useEffect, useState } from "react";
-import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import { Link, useNavigate, redirect, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getArea, postArea, updateArea } from "../services/areas";

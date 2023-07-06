@@ -7,6 +7,7 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import Cookies from "universal-cookie";
 import { useForm } from "react-hook-form";
 import swal from "sweetalert";
+import "../style/puestos.css";
 
 const cookies = new Cookies();
 
@@ -24,14 +25,18 @@ const Puestos = () => {
     } = useForm();
 
     const obtenerPuestos = async () => {
-        // setCargando(true);
         const res = await axios.get(`${config.API_URL}positions/list`);
         setPuestos(res.data);
-        // setCargando(false);
     };
 
     useEffect(() => {
-        obtenerPuestos();
+        const fetchData = async () => {
+            setCargando(true);
+            await obtenerPuestos();
+            setCargando(false);
+        };
+
+        fetchData();
     }, []);
 
     const obtenerPuesto = async (puestoId) => {
@@ -95,12 +100,19 @@ const Puestos = () => {
         <>
             <Toaster position="top-center" richColors />
             {cargando && <Spinner />}
-            <div className="form-group">
-                <div className="form-group-header">
-                    <form onSubmit={handleSubmit(submitData)}>
+            <div className="form-group form-group-table">
+                <div className="form-group-header form-group-header-table">
+                    <form
+                        onSubmit={handleSubmit(submitData)}
+                        className="form-table"
+                    >
                         <div className="subcontenedor">
-                            <div className="form-group__input-group input-area">
-                                <label htmlFor="puesto">Puesto</label>
+                            <div className="form-group__input-group input-area input-area-table">
+                                <label htmlFor="puesto">
+                                    {puestoId
+                                        ? "Editar"
+                                        : "Agregar"} puesto
+                                </label>
                                 <input
                                     type="text"
                                     {...register("puesto", {
@@ -108,7 +120,7 @@ const Puestos = () => {
                                     })}
                                     name="puesto"
                                     id="puesto"
-                                    placeholder="Ingresar área"
+                                    placeholder="Ingresar puesto"
                                 />
                                 {errors.puesto?.type === "required" && (
                                     <p className="error-message">
@@ -117,11 +129,15 @@ const Puestos = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="form-group__input-group input-area">
+                        <div className="form-group__input-group input-area input-area-table">
                             <input
                                 type="submit"
-                                className="btn_registrar"
-                                value={puestoId ? 'Guardar cambios' : 'Registrar puesto'}
+                                className="btn_registrar btn_registrar-table"
+                                value={
+                                    puestoId
+                                        ? "Guardar cambios"
+                                        : "Registrar puesto"
+                                }
                             />
                         </div>
                     </form>
@@ -129,10 +145,11 @@ const Puestos = () => {
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tablaActive">
+                    className="tabla tablaActive"
+                >
                     <thead>
                         <tr>
-                            <th>Puesto</th>
+                            <th>PUESTOS</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -147,7 +164,8 @@ const Puestos = () => {
                                         onClick={() =>
                                             obtenerPuesto(sortedPuesto.id)
                                         }
-                                        className="btn_option edit">
+                                        className="btn_option edit"
+                                    >
                                         <FiEdit className="icon" />
                                     </button>
                                     <button
@@ -158,7 +176,8 @@ const Puestos = () => {
                                             rol == 1
                                                 ? "btn_option delete"
                                                 : "disable-button"
-                                        }>
+                                        }
+                                    >
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>

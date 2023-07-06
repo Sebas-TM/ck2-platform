@@ -1,0 +1,42 @@
+.form-group-table {
+    display: flex;
+    margin: auto;
+    /* padding-top: 10rem;
+    padding-bottom: 5rem; */
+    gap: 5rem;
+}
+
+.form-group-header-table {
+    width: 30rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100%;
+}
+
+.form-table {
+    width: 100%;
+}
+
+.input-area-table {
+    width: 80%;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.btn_registrar-table{
+    width: 100%;
+}
+@media (min-width: 768px) {
+    .form-group-table {
+        flex-direction: row;
+        width: 80rem;
+        height: 100vh;        
+    }
+    .form-group-header-table {
+        margin-bottom: 0;
+        width: 50%;
+    }
+}

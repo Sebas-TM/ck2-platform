@@ -10,7 +10,8 @@ import Spinner from "../components/Spinner";
 import axios from "axios";
 import { config } from "../config";
 import Cookies from "universal-cookie";
-
+import "../style/puestos.css";
+import { useForm } from "react-hook-form";
 const cookies = new Cookies();
 
 const Areas = () => {
@@ -21,16 +22,20 @@ const Areas = () => {
     }
 
     const navigate = useNavigate();
-    const [cargando, setCargando] = useState(false);
-    const { loading, callEndpoint } = useFetchAndLoad();
     const [areas, setAreas] = useState([]);
+    const [areaId, setAreaId] = useState();
+    const [cargando, setCargando] = useState(false);
+    const {
+        register,
+        setValue,
+        formState: { errors },
+        handleSubmit,
+    } = useForm();
 
     const obtenerAreas = async () => {
         try {
-            setCargando(true);
             const res = await axios.get(`${config.API_URL}areas/list`);
             setAreas(res.data);
-            setCargando(false);
         } catch (e) {
             console.log(e);
         }
@@ -40,7 +45,40 @@ const Areas = () => {
         obtenerAreas();
     }, []);
 
+    const obtenerArea = async (areaId) => {
+        setAreaId(areaId);
+        const res = await axios.get(`${config.API_URL}areas/list/${areaId}`);
+        setValue("area", res.data.area);
+    };
+
     const sortedAreas = areas.sort((a, b) => b.id - a.id);
+
+    const submitData = async (data) => {
+        if (!areaId) {
+            await axios.post(`${config.API_URL}areas/create`, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            toast.success("Dato registrado!");
+            obtenerAreas();
+            setValue("area", "");
+        } else {
+            await axios.post(
+                `${config.API_URL}areas/update/${areaId}`,
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            toast.success("Dato actualizado!");
+            obtenerAreas();
+            setAreaId();
+            setValue("area", "");
+        }
+    };
 
     const eliminarArea = (areaId) => {
         swal({
@@ -66,22 +104,54 @@ const Areas = () => {
             <Toaster position="top-center" richColors />
             {cargando && <Spinner />}
 
-            <div className="form-group">
-                <div className="form-group-header">
-                    <button
-                        className={rol != 3 ? "btn_add" : "disable-button"}
-                        onClick={() => navigate(`/menu/areas/crear`)}>
-                        <FiPlus className="icon" />
-                        <p>Agregar</p>
-                    </button>
+            <div className="form-group form-group-table">
+                <div className="form-group-header form-group-header-table">
+                    <form
+                        onSubmit={handleSubmit(submitData)}
+                        className="form-table"
+                    >
+                        <div className="subcontenedor">
+                            <div className="form-group__input-group input-area input-area-table">
+                                <label htmlFor="area">
+                                    {areaId ? "Editar" : "Agregar"} area
+                                </label>
+                                <input
+                                    type="text"
+                                    {...register("area", {
+                                        required: true,
+                                    })}
+                                    name="area"
+                                    id="area"
+                                    placeholder="Ingresar area"
+                                />
+                                {errors.area?.type === "required" && (
+                                    <p className="error-message">
+                                        Este campo es obligatorio
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="form-group__input-group input-area input-area-table">
+                            <input
+                                type="submit"
+                                className="btn_registrar btn_registrar-table"
+                                value={
+                                    areaId
+                                        ? "Guardar cambios"
+                                        : "Registrar area"
+                                }
+                            />
+                        </div>
+                    </form>
                 </div>
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tablaActive">
+                    className="tabla tablaActive"
+                >
                     <thead>
                         <tr>
-                            <th>Área</th>
+                            <th>ÁREAS</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -94,11 +164,10 @@ const Areas = () => {
                                 <td className="data data_opciones">
                                     <button
                                         onClick={() =>
-                                            navigate(
-                                                `/menu/areas/${sortedArea.id}/editar`
-                                            )
+                                            obtenerArea(sortedArea.id)
                                         }
-                                        className="btn_option edit">
+                                        className="btn_option edit"
+                                    >
                                         <FiEdit className="icon" />
                                     </button>
                                     <button
@@ -109,7 +178,8 @@ const Areas = () => {
                                             rol == 1
                                                 ? "btn_option delete"
                                                 : "disable-button"
-                                        }>
+                                        }
+                                    >
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>
