@@ -15,7 +15,6 @@ import Asistencias from './pages/Asistencias'
 import Postulaciones from './pages/Postulaciones'
 import Gestiones from './pages/Gestiones'
 import Areas from './pages/Areas'
-import NuevaArea from './components/NuevaArea'
 import Puestos from './pages/Puestos'
 const router = createBrowserRouter([
   {
@@ -77,14 +76,6 @@ const router = createBrowserRouter([
       {
         path: '/menu/areas',
         element: <Areas />
-      },
-      {
-        path: '/menu/areas/crear',
-        element: <NuevaArea />
-      },
-      {
-        path: '/menu/areas/:areaId/editar',
-        element: <NuevaArea />
       },
       {
         path: '/menu/puestos',

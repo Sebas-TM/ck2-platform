@@ -135,6 +135,18 @@
     padding: 0.5rem 1rem;
 }
 
+
+
+.tabla-empleados thead .nombre,
+.tabla-empleados thead .apellidos{
+    width: 20rem;
+}
+
+.tabla-empleados thead .dni,
+.tabla-empleados thead .estado{
+    width: 15rem;
+}
+
 .data {
     padding: 0.5rem 1rem;
 }

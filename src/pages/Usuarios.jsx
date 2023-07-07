@@ -114,6 +114,8 @@ const Usuarios = () => {
                     <input
                         className="busqueda"
                         type="text"
+                        id="busqueda"
+                        name="busqueda"
                         onChange={handleChange}
                         placeholder="Realizar búsqueda"
                     />

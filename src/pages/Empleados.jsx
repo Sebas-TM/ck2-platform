@@ -11,38 +11,50 @@ import { Toaster, toast } from "sonner";
 import { BsWhatsapp } from "react-icons/bs";
 import { FiUserPlus, FiTrash, FiEdit, FiEye } from "react-icons/fi";
 import Cookies from "universal-cookie";
-import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
 import foto_personal from "../image/foto_personal.webp";
+import { config } from "../config";
 import "../style/empleados.css";
+import "../style/paginacion.css";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
+
 const cookies = new Cookies();
 
 const Empleados = () => {
     const rol = cookies.get("rol");
-    const { loading, callEndpoint } = useFetchAndLoad();
     const [employees, setEmployees] = useState([]);
     const [cargando, setCargando] = useState(false);
     const [tabla, setTabla] = useState([]);
     const navigate = useNavigate();
+    const sortedEmployees = employees.sort((a, b) => b.id - a.id);
+
+    const [pagination, setPagination] = useState({
+        current_page: 1,
+        last_page: 1,
+        per_page: 10,
+        total: 0,
+    });
 
     useEffect(() => {
-        setCargando(true);
-        callEndpoint(getEmployees())
-            .then((res) => res.json())
-            .then((res) => {
-                setEmployees(res);
-                setTabla(res);
-                setCargando(false);
-            })
-            .catch((error) => {
-                if (error.code === "ERR_CANCELED") {
-                    console.log("Request has been", error.message);
-                }
-            });
+        const fetchData = async () => {
+            setCargando(true);
+            await obtenerEmpleados();
+            setCargando(false);
+        };
+
+        fetchData();
     }, []);
 
-    const sortedEmployees = employees.sort((a, b) => b.id - a.id);
+    const obtenerEmpleados = async (page = 1) => {
+        const res = await axios.get(
+            `${config.API_URL}employees/list?page=${page}`
+        );
+        const { data, meta } = res.data;
+        setEmployees(data);
+        setPagination(meta);
+    };
 
     const eliminarEmpleado = (employeeId) => {
         swal({
@@ -101,6 +113,10 @@ const Empleados = () => {
         });
         setEmployees(resultadoBusqueda);
     };
+
+    const handlePageChange = ({ selected }) => {
+        obtenerEmpleados(selected + 1);
+    };
     return (
         <div className="form-group">
             {cargando && <Spinner />}
@@ -117,13 +133,14 @@ const Empleados = () => {
                 <input
                     className="busqueda"
                     type="text"
+                    id="busqueda"
+                    name="busqueda"
                     onChange={handleChange}
                     placeholder="Realizar búsqueda"
                 />
 
                 {/* </div> */}
             </div>
-
             <table
                 cellSpacing="0"
                 cellPadding="0"
@@ -131,11 +148,11 @@ const Empleados = () => {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
+                        <th className="nombre">Nombre</th>
+                        <th className="apellidos">Apellidos</th>
                         {/* <th>Apellido materno</th> */}
-                        <th>DNI</th>
-                        <th>Estado</th>
+                        <th className="dni">DNI</th>
+                        <th className="estado">Estado</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -252,6 +269,22 @@ const Empleados = () => {
                     ))}
                 </tbody>
             </table>
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                previousLabel="<"
+                pageCount={pagination.last_page}
+                pageRangeDisplayed={3}
+                marginPagesDisplayed={3}
+                onPageChange={handlePageChange}
+                containerClassName="pagination"
+                activeClassName="active"
+                activeLinkClassName="page-num"
+                pageLinkClassName="page-num"
+                previousLinkClassName="page-num"
+                nextLinkClassName="page-num"
+            />
+
             <div className="contenedor-general-cards">
                 {sortedEmployees.map((sortedEmployee, index) => (
                     <div

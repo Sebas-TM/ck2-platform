@@ -127,6 +127,24 @@ const NuevoEmpleado = () => {
                 .then(() => {
                     toast.success("Datos registrados!");
                     setCargando(false);
+                    
+                    setValue("nombre", "");
+                    setValue("apellido_paterno", "");
+                    setValue("apellido_materno", "");
+                    setValue("imagen", "");
+                    setValue("estado", "");
+                    setValue("dni", "");
+                    setValue("correo", "");
+                    setValue("celular", "");
+                    setValue("nombre_contacto", "");
+                    setValue("numero_contacto", "");
+                    setValue("relacion_contacto", "");
+                    setValue("area", "");
+                    setValue("puesto", res.data.puesto);
+                    setValue("jefe_inmediato", "");
+                    setValue("fecha_certificacion", "");
+                    setValue("grupo", "");
+                    setValue("sede", "");
                 })
                 .catch((error) => {
                     toast.error(error.response.data.message);
@@ -519,6 +537,7 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="fecha_certificacion"
+                                    id="fecha_certificacion"
                                     placeholder="Ingrese el mes de certificación"
                                 />
                                 {errors.fecha_certificacion?.type ===
