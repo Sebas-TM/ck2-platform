@@ -1,10 +1,8 @@
 import "../style/usuarios.css";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { getUsers, deleteUser } from "../services/users";
 import { Toaster, toast } from "sonner";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
@@ -14,13 +12,18 @@ import axios from "axios";
 const Usuarios = () => {
     const cookies = new Cookies();
     const rol = cookies.get("rol");
-    const { loading, callEndpoint } = useFetchAndLoad();
     const [users, setUsers] = useState([]);
     const [tabla, setTabla] = useState([]);
+    const [cargando, setCargando] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        obtenerUsuarios();
+        const fetchData = async () => {
+            setCargando(true);
+            await obtenerUsuarios();
+            setCargando(false);
+        };
+        fetchData();
     }, []);
     // console.log(users);
     const obtenerUsuarios = async () => {
@@ -100,7 +103,7 @@ const Usuarios = () => {
         <>
             {users.length < 1 && <Spinner />}
             <Toaster position="top-center" richColors />
-            <div className="form-group">
+            <div className="form-group pt-10">
                 <div className="form-group-header">
                     <button
                         className={rol != 3 ? "btn_add" : "disable-button"}
@@ -179,24 +182,24 @@ const Usuarios = () => {
                                     <p className="dato-info">{user.nombre}</p>
                                 </div>
                                 <div className="contenedor-datos">
+                                    <p className="dato">DNI:</p>
+                                    <p className="dato-info">{user.dni}</p>
+                                </div>
+                                <div className="contenedor-datos">
                                     <p className="dato">Apellido paterno:</p>
                                     <p className="dato-info">
                                         {user.apellido_paterno}
                                     </p>
                                 </div>
                                 <div className="contenedor-datos">
+                                    <p className="dato">Usuario:</p>
+                                    <p className="dato-info">{user.username}</p>
+                                </div>
+                                <div className="contenedor-datos">
                                     <p className="dato">Apellido materno:</p>
                                     <p className="dato-info">
                                         {user.apellido_materno}
                                     </p>
-                                </div>
-                                <div className="contenedor-datos">
-                                    <p className="dato">DNI:</p>
-                                    <p className="dato-info">{user.dni}</p>
-                                </div>
-                                <div className="contenedor-datos">
-                                    <p className="dato">Usuario:</p>
-                                    <p className="dato-info">{user.username}</p>
                                 </div>
                                 <div className="contenedor-datos">
                                     <p className="dato">Rol:</p>

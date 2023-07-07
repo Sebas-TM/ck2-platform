@@ -26,9 +26,7 @@
 }
 
 .outlet {
-    height: 100vh;
     padding: 0rem 4rem;
-    display: flex;
 }
 
 .icono-user {

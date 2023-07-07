@@ -63,6 +63,9 @@ const NuevoEmpleado = () => {
         setValue("area", res.data.area);
         setValue("puesto", res.data.puesto);
         setValue("jefe_inmediato", res.data.jefe_inmediato);
+        setValue("fecha_certificacion", res.data.fecha_certificacion);
+        setValue("grupo", res.data.grupo);
+        setValue("sede", res.data.sede);
     };
     useEffect(() => {
         const fetchData = async () => {
@@ -105,6 +108,9 @@ const NuevoEmpleado = () => {
             area: data.area,
             puesto: data.puesto,
             jefe_inmediato: data.jefe_inmediato,
+            fecha_certificacion: data.fecha_certificacion,
+            grupo: data.grupo,
+            sede: data.sede,
         };
 
         if (imagen != "") {
@@ -323,6 +329,8 @@ const NuevoEmpleado = () => {
                                     </p>
                                 )}
                             </div>
+                        </div>
+                        <div className="subcontenedor-form">
                             <div className="form-group__input-group">
                                 <label htmlFor="correo">Correo</label>
                                 <input
@@ -375,8 +383,6 @@ const NuevoEmpleado = () => {
                                     </p>
                                 )}
                             </div>
-                        </div>
-                        <div className="subcontenedor-form">
                             <div className="form-group__input-group">
                                 <label htmlFor="nombre_contacto">
                                     Nombre de contacto de emergencia
@@ -459,6 +465,8 @@ const NuevoEmpleado = () => {
                                     </p>
                                 )}
                             </div>
+                        </div>
+                        <div className="subcontenedor-form">
                             <div className="form-group__input-group">
                                 <label htmlFor="puesto">Puesto</label>
                                 <select

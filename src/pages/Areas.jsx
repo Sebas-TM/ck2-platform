@@ -42,7 +42,12 @@ const Areas = () => {
     };
 
     useEffect(() => {
-        obtenerAreas();
+        const fetchData = async () => {
+            setCargando(true);
+            await obtenerAreas();
+            setCargando(false);
+        };
+        fetchData();
     }, []);
 
     const obtenerArea = async (areaId) => {
@@ -64,15 +69,11 @@ const Areas = () => {
             obtenerAreas();
             setValue("area", "");
         } else {
-            await axios.post(
-                `${config.API_URL}areas/update/${areaId}`,
-                data,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+            await axios.post(`${config.API_URL}areas/update/${areaId}`, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             toast.success("Dato actualizado!");
             obtenerAreas();
             setAreaId();
@@ -108,8 +109,7 @@ const Areas = () => {
                 <div className="form-group-header form-group-header-table">
                     <form
                         onSubmit={handleSubmit(submitData)}
-                        className="form-table"
-                    >
+                        className="form-table">
                         <div className="subcontenedor">
                             <div className="form-group__input-group input-area input-area-table">
                                 <label htmlFor="area">
@@ -147,8 +147,7 @@ const Areas = () => {
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tablaActive"
-                >
+                    className="tabla tablaActive">
                     <thead>
                         <tr>
                             <th>ÁREAS</th>
@@ -166,8 +165,7 @@ const Areas = () => {
                                         onClick={() =>
                                             obtenerArea(sortedArea.id)
                                         }
-                                        className="btn_option edit"
-                                    >
+                                        className="btn_option edit">
                                         <FiEdit className="icon" />
                                     </button>
                                     <button
@@ -178,8 +176,7 @@ const Areas = () => {
                                             rol == 1
                                                 ? "btn_option delete"
                                                 : "disable-button"
-                                        }
-                                    >
+                                        }>
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>

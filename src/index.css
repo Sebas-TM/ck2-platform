@@ -12,8 +12,23 @@ html {
 
 body {
   font-family: "Poppins", sans-serif;
-  height: 100vh;
   background-color: rgba(252, 252, 252, 0.713);
+}
+
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgb(192, 192, 192);
+  border-radius: 7px;
+}
+
+body thead tr th{
+  position: sticky;
+  top: 0;
+  background-color: rgb(252, 252, 252);
+
 }
 
 a {
@@ -23,3 +38,10 @@ a {
 li {
   list-style: none;
 }
+
+/* MACROS */
+
+.pt-10{
+  padding-top: 10rem;
+}
+

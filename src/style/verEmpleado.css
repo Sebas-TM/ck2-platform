@@ -18,6 +18,7 @@
   display: flex;
   justify-content: start;
   padding: 2rem;
+  margin-top: 10rem;
 }
 
 .ver-empleado-card {
@@ -40,7 +41,8 @@
     width: 65%;
   }
   .contenedor-foto {
-    height: 15rem;
+    height: 22rem;
+    width: 15rem;
   }
 }
 

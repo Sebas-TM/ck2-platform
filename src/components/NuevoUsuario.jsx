@@ -91,7 +91,7 @@ const NuevoUsuario = () => {
     }
 
     return (
-        <section className='contenedor_nuevo-dato'>
+        <section className='contenedor_nuevo-dato pt-10'>
             <Toaster position="top-center" richColors />
             {cargando && <Spinner/>}
             <div className='contenedor-form'>

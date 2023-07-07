@@ -5,7 +5,7 @@
 .tablaActive{
     display: block;
     margin: auto;
-    height: 40rem;
+    max-height: 40rem;
 }
 
 
