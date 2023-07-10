@@ -127,7 +127,7 @@ const NuevoEmpleado = () => {
                 .then(() => {
                     toast.success("Datos registrados!");
                     setCargando(false);
-                    
+
                     setValue("nombre", "");
                     setValue("apellido_paterno", "");
                     setValue("apellido_materno", "");
@@ -140,7 +140,7 @@ const NuevoEmpleado = () => {
                     setValue("numero_contacto", "");
                     setValue("relacion_contacto", "");
                     setValue("area", "");
-                    setValue("puesto", res.data.puesto);
+                    setValue("puesto", "");
                     setValue("jefe_inmediato", "");
                     setValue("fecha_certificacion", "");
                     setValue("grupo", "");
@@ -181,7 +181,8 @@ const NuevoEmpleado = () => {
                 <div className="contenedor-form-header">
                     <button
                         onClick={() => navigate(-1)}
-                        className="btn_regresar">
+                        className="btn_regresar"
+                    >
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
@@ -258,7 +259,8 @@ const NuevoEmpleado = () => {
                                 <label htmlFor="imagen">Foto</label>
                                 <label
                                     className="label_imagen"
-                                    htmlFor="imagen">
+                                    htmlFor="imagen"
+                                >
                                     <p>
                                         {imagen != ""
                                             ? "Imagen seleccionada"
@@ -301,7 +303,8 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="estado"
-                                    id="estado">
+                                    id="estado"
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="Activo">Activo</option>
                                     <option value="No activo">No activo</option>
@@ -407,11 +410,19 @@ const NuevoEmpleado = () => {
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("nombre_contacto")}
+                                    {...register("nombre_contacto", {
+                                        required: true,
+                                    })}
                                     name="nombre_contacto"
                                     id="nombre_contacto"
                                     placeholder="Ingrese el dato"
                                 />
+                                {errors.nombre_contacto?.type ===
+                                    "required" && (
+                                    <p className="error-message">
+                                        Este campo es obligatorio
+                                    </p>
+                                )}
                             </div>
                             <div className="form-group__input-group">
                                 <label htmlFor="numero_contacto">
@@ -420,6 +431,7 @@ const NuevoEmpleado = () => {
                                 <input
                                     type="text"
                                     {...register("numero_contacto", {
+                                        required: true,
                                         pattern: /^[0-9]+$/,
                                         maxLength: 9,
                                         minLength: 9,
@@ -428,17 +440,23 @@ const NuevoEmpleado = () => {
                                     id="numero_contacto"
                                     placeholder="Ingrese el número de celular"
                                 />
-                                {errors.telefono?.type === "maxLength" && (
+                                {errors.numero_contacto?.type ===
+                                    "required" && (
+                                    <p className="error-message">
+                                        Este campo es obligatorio
+                                    </p>
+                                )}
+                                {errors.numero_contacto?.type === "maxLength" && (
                                     <p className="error-message">
                                         Ingresar número de celular correcto
                                     </p>
                                 )}
-                                {errors.telefono?.type === "minLength" && (
+                                {errors.numero_contacto?.type === "minLength" && (
                                     <p className="error-message">
                                         Ingresar número de celular correcto
                                     </p>
                                 )}
-                                {errors.telefono?.type === "pattern" && (
+                                {errors.numero_contacto?.type === "pattern" && (
                                     <p className="error-message">
                                         Ingresar número de celular correcto
                                     </p>
@@ -450,9 +468,12 @@ const NuevoEmpleado = () => {
                                 </label>
                                 <select
                                     className="relacion_contacto"
-                                    {...register("relacion_contacto")}
+                                    {...register("relacion_contacto",{
+                                        required: true
+                                    })}
                                     name="relacion_contacto"
-                                    id="relacion_contacto">
+                                    id="relacion_contacto"
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="Padre">Padre</option>
                                     <option value="Madre">Madre</option>
@@ -460,6 +481,12 @@ const NuevoEmpleado = () => {
                                     <option value="Hijo(a)">Hijo(a)</option>
                                     <option value="Otro">Otro</option>
                                 </select>
+                                {errors.relacion_contacto?.type ===
+                                    "required" && (
+                                    <p className="error-message">
+                                        Este campo es obligatorio
+                                    </p>
+                                )}
                             </div>
                             <div className="form-group__input-group">
                                 <label htmlFor="area">Área</label>
@@ -469,7 +496,8 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="area"
-                                    id="area">
+                                    id="area"
+                                >
                                     <option value="">--Seleccione--</option>
                                     {areas.map((area) => (
                                         <option value={area.area} key={area.id}>
@@ -492,12 +520,14 @@ const NuevoEmpleado = () => {
                                     id="puesto"
                                     {...register("puesto", {
                                         required: true,
-                                    })}>
+                                    })}
+                                >
                                     <option value="">--Seleccione--</option>
                                     {puestos.map((puesto) => (
                                         <option
                                             value={puesto.puesto}
-                                            key={puesto.id}>
+                                            key={puesto.id}
+                                        >
                                             {puesto.puesto}
                                         </option>
                                     ))}
@@ -554,13 +584,14 @@ const NuevoEmpleado = () => {
                                     id="grupo"
                                     {...register("grupo", {
                                         required: true,
-                                    })}>
+                                    })}
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="COMUNIK2">COMUNIK2</option>
                                     <option value="GLOBAL">GLOBAL</option>
                                 </select>
                                 {errors.grupo?.type === "required" && (
-                                    <p>Este campo es obligatorio</p>
+                                    <p className="error-message">Este campo es obligatorio</p>
                                 )}
                             </div>
                             <div className="form-group__input-group">
@@ -570,7 +601,8 @@ const NuevoEmpleado = () => {
                                     id="sede"
                                     {...register("sede", {
                                         required: true,
-                                    })}>
+                                    })}
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="Lima">Lima</option>
                                     <option value="Trujillo">Trujillo</option>

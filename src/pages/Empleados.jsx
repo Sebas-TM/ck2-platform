@@ -62,14 +62,11 @@ const Empleados = () => {
             buttons: ["No", "Si"],
         }).then((respuesta) => {
             if (respuesta) {
-                callEndpoint(deleteEmployee(parseInt(employeeId)))
-                    .then((res) => res.json())
-                    .then((res) => console.log(res))
-                    .catch((error) => {
-                        if (error.code === "ERR_CANCELED") {
-                            console.log("Request has been", error.message);
-                        }
-                    });
+                try {
+                    axios.delete(`${config.API_URL}employees/delete/${employeeId}`);
+                } catch (e) {
+                    console.log(e);
+                }
                 toast.success("Dato eliminado!");
                 setEmployees((prevEmployees) =>
                     prevEmployees.filter(
