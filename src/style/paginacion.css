@@ -2,15 +2,13 @@
     display: flex;
     gap: 3rem;
     font-family: "Poppins", sans-serif;
-    width: 90rem;
     display: flex;
     justify-content: center;
-    padding: 0 4rem;
     align-items: center;
     background-color: rgb(252, 252, 252);
     height: 4rem;
     color: gray;
-    padding-top: 1rem;
+    padding: 1rem 0 5rem 0;
     user-select: none;
 }
 .pagination li {
@@ -35,7 +33,7 @@
     background-color: gray;
     font-size: 1.4rem;
     /* padding: 0.7rem 1.4rem; */
-    border-radius: .8rem;
+    border-radius: 50%;
     transition: all 0.2s ease;
     color: white;
 }

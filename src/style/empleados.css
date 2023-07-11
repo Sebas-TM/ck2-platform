@@ -4,3 +4,8 @@
     /* max-height: 10rem; */
     object-fit: contain;
 }
+
+.form-buscar-empleados{
+    display: flex;
+    gap: 1rem;
+}

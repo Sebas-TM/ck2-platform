@@ -5,7 +5,7 @@
     /* margin-top: 5rem; */
 }
 
-@media (min-width:768px){
+@media (min-width:769px){
     .contenedor-form{
         width: 100rem;
     }
@@ -39,7 +39,7 @@
         gap: 1rem;    
     }
 
-@media (min-width:768px) {
+@media (min-width:769px) {
     .contenedor-form-header {
         width: 100%;
 
@@ -97,7 +97,7 @@
     transition: all .3s ease;
 }
 
-@media (min-width:768px) {
+@media (min-width:769px) {
     .btn_registrar:hover {
         background-color: #bd1e2b;
         /* transform: scale(1.1); */

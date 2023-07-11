@@ -14,7 +14,7 @@
     margin-bottom: 3rem;
 }
 
-@media (min-width:768px) {
+@media (min-width:769px) {
     .contenedor_nuevo-dato button {
         top: 8rem;
     }

@@ -9,7 +9,7 @@ import { deleteEmployee, getEmployees } from "../services/employees";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { BsWhatsapp } from "react-icons/bs";
-import { FiUserPlus, FiTrash, FiEdit, FiEye } from "react-icons/fi";
+import { FiUserPlus, FiTrash, FiEdit, FiEye, FiSearch } from "react-icons/fi";
 import Cookies from "universal-cookie";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
@@ -19,6 +19,7 @@ import "../style/empleados.css";
 import "../style/paginacion.css";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import { useForm } from "react-hook-form";
 
 const cookies = new Cookies();
 
@@ -27,7 +28,15 @@ const Empleados = () => {
     const [employees, setEmployees] = useState([]);
     const [cargando, setCargando] = useState(false);
     const [tabla, setTabla] = useState([]);
+    const [termino, setTermino] = useState();
     const navigate = useNavigate();
+    const {
+        register,
+        setValue,
+        formState: { errors },
+        handleSubmit,
+    } = useForm();
+
     const sortedEmployees = employees.sort((a, b) => b.id - a.id);
 
     const [pagination, setPagination] = useState({
@@ -53,7 +62,22 @@ const Empleados = () => {
         );
         const { data, meta } = res.data;
         setEmployees(data);
+        setTabla(data);
         setPagination(meta);
+    };
+
+    const submitData = async (data) => {
+        setCargando(true);
+        if (data.termino) {
+            await axios
+                .post(
+                    `${config.API_URL}employees/search?termino=${data.termino}`
+                )
+                .then((res) => setEmployees(res.data.data));
+        } else {
+            obtenerEmpleados();
+        }
+        setCargando(false);
     };
 
     const eliminarEmpleado = (employeeId) => {
@@ -63,7 +87,9 @@ const Empleados = () => {
         }).then((respuesta) => {
             if (respuesta) {
                 try {
-                    axios.delete(`${config.API_URL}employees/delete/${employeeId}`);
+                    axios.delete(
+                        `${config.API_URL}employees/delete/${employeeId}`
+                    );
                 } catch (e) {
                     console.log(e);
                 }
@@ -75,40 +101,6 @@ const Empleados = () => {
                 );
             }
         });
-    };
-
-    const handleChange = (e) => {
-        filtrar(e.target.value);
-    };
-
-    const filtrar = (terminoBusqueda) => {
-        var resultadoBusqueda = tabla.filter((e) => {
-            if (
-                e.nombre
-                    .toString()
-                    .toLowerCase()
-                    .includes(terminoBusqueda.toLowerCase()) ||
-                e.apellido_paterno
-                    .toString()
-                    .toLowerCase()
-                    .includes(terminoBusqueda.toLowerCase()) ||
-                e.apellido_materno
-                    .toString()
-                    .toLowerCase()
-                    .includes(terminoBusqueda.toLowerCase()) ||
-                e.dni
-                    .toString()
-                    .toLowerCase()
-                    .includes(terminoBusqueda.toLowerCase()) ||
-                e.estado
-                    .toString()
-                    .toLowerCase()
-                    .includes(terminoBusqueda.toLowerCase())
-            ) {
-                return e;
-            }
-        });
-        setEmployees(resultadoBusqueda);
     };
 
     const handlePageChange = ({ selected }) => {
@@ -127,16 +119,21 @@ const Empleados = () => {
                     <FiUserPlus className="icon" />
                     <p className="disable">Agregar</p>
                 </button>
-                <input
-                    className="busqueda"
-                    type="text"
-                    id="busqueda"
-                    name="busqueda"
-                    onChange={handleChange}
-                    placeholder="Realizar búsqueda"
-                />
-
-                {/* </div> */}
+                <form
+                    className="form-buscar-empleados"
+                    onSubmit={handleSubmit(submitData)}>
+                    <input
+                        className="busqueda"
+                        type="text"
+                        id="termino"
+                        name="termino"
+                        {...register("termino")}
+                        placeholder="Realizar búsqueda"
+                    />
+                    <button className="btn_add" type="submit">
+                        <FiSearch className="icon" />
+                    </button>
+                </form>
             </div>
             <table
                 cellSpacing="0"
@@ -266,21 +263,6 @@ const Empleados = () => {
                     ))}
                 </tbody>
             </table>
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel=">"
-                previousLabel="<"
-                pageCount={pagination.last_page}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={3}
-                onPageChange={handlePageChange}
-                containerClassName="pagination"
-                activeClassName="active"
-                activeLinkClassName="page-num"
-                pageLinkClassName="page-num"
-                previousLinkClassName="page-num"
-                nextLinkClassName="page-num"
-            />
 
             <div className="contenedor-general-cards">
                 {sortedEmployees.map((sortedEmployee, index) => (
@@ -384,6 +366,21 @@ const Empleados = () => {
                     </div>
                 ))}
             </div>
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                previousLabel="<"
+                pageCount={pagination.last_page}
+                pageRangeDisplayed={3}
+                marginPagesDisplayed={3}
+                onPageChange={handlePageChange}
+                containerClassName="pagination"
+                activeClassName="active"
+                activeLinkClassName="page-num"
+                pageLinkClassName="page-num"
+                previousLinkClassName="page-num"
+                nextLinkClassName="page-num"
+            />
         </div>
     );
 };

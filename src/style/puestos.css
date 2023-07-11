@@ -28,7 +28,7 @@
 .btn_registrar-table{
     width: 100%;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .form-group-table {
         flex-direction: row;
         width: 80rem;

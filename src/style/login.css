@@ -26,7 +26,7 @@
   left: 2rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .contenedor-uno {
     width: 50%;
   }
@@ -100,7 +100,7 @@
     /* height: 100%; */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .contenedor-dos {
     width: 60%;
     height: 100vh;

@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { deleteArea, getAreas } from "../services/areas";
-import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import { useEffect, useState } from "react";
 import { FiEdit, FiTrash, FiPlus } from "react-icons/fi";
 import "../style/areas.css";
