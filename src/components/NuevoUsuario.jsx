@@ -41,7 +41,7 @@ const NuevoUsuario = () => {
 
         if (!userId) {
             await axios
-                .post(`${config.API_URL}users/create`, formData, {
+                .post(`${config.API_URL}api/users/create`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -65,7 +65,7 @@ const NuevoUsuario = () => {
                 });
         } else {
             await axios
-                .post(`${config.API_URL}users/update/${userId}`, formData, {
+                .post(`${config.API_URL}api/users/update/${userId}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -91,7 +91,7 @@ const NuevoUsuario = () => {
 
     const obtenerUsuario = async () => {
         setCargando(true);
-        const res = await axios.get(`${config.API_URL}users/list/${userId}`);
+        const res = await axios.get(`${config.API_URL}api/users/list/${userId}`);
         setValue("nombre", res.data.nombre);
         setValue("apellido_paterno", res.data.apellido_paterno);
         setValue("apellido_materno", res.data.apellido_materno);

@@ -79,7 +79,7 @@ const Menu = () => {
                         </li>
 
                         <li onClick={openMenu} className='contenedor-img-usuario'>
-                            <img className='img-usuario' src={imagen ==null ? foto_usuario : `https://comunik2peru.com/${imagen}`} alt="" />
+                            <img className='img-usuario' src={imagen ==null ? foto_usuario : `${config.API_URL}${imagen}`} alt="" />
                         </li>
                     </ul>
 
@@ -97,9 +97,7 @@ const Menu = () => {
                             <Link to='/menu/puestos' className={rol == 3 ? 'isNotAdmin' : 'list_user disable_user'}>
                                 <p className='texto_header'>Puestos</p>
                             </Link>
-                            <Link className='list_user'>
-                                <p className='texto_header'>Configuración</p>
-                            </Link>
+                            
                             <li className='list_user' onClick={cerrarSesion}>
                                 <p className='texto_header'>Cerrar sesión</p>
                             </li>

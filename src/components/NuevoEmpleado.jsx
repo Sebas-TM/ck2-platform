@@ -30,7 +30,7 @@ const NuevoEmpleado = () => {
     const obtenerAreas = async () => {
         try {
             setCargando(true);
-            const res = await axios.get(`${config.API_URL}areas/list`);
+            const res = await axios.get(`${config.API_URL}api/areas/list`);
             setAreas(res.data);
             setCargando(false);
         } catch (e) {
@@ -40,14 +40,14 @@ const NuevoEmpleado = () => {
 
     const obtenerPuestos = async () => {
         setCargando(true);
-        const res = await axios.get(`${config.API_URL}positions/list`);
+        const res = await axios.get(`${config.API_URL}api/positions/list`);
         setPuestos(res.data);
         setCargando(false);
     };
 
     const obtenerEmpleado = async () => {
         const res = await axios.get(
-            `${config.API_URL}employees/list/${employeeId}`
+            `${config.API_URL}api/employees/list/${employeeId}`
         );
         setValue("nombre", res.data.nombre);
         setValue("apellido_paterno", res.data.apellido_paterno);
@@ -119,7 +119,7 @@ const NuevoEmpleado = () => {
 
         if (!employeeId) {
             await axios
-                .post(`${config.API_URL}employees/create`, formData, {
+                .post(`${config.API_URL}api/employees/create`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -153,7 +153,7 @@ const NuevoEmpleado = () => {
         } else {
             await axios
                 .post(
-                    `${config.API_URL}employees/update/${employeeId}`,
+                    `${config.API_URL}api/employees/update/${employeeId}`,
                     formData,
                     {
                         headers: {

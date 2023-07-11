@@ -25,7 +25,7 @@ const Puestos = () => {
     } = useForm();
 
     const obtenerPuestos = async () => {
-        const res = await axios.get(`${config.API_URL}positions/list`);
+        const res = await axios.get(`${config.API_URL}api/positions/list`);
         setPuestos(res.data);
     };
 
@@ -42,7 +42,7 @@ const Puestos = () => {
     const obtenerPuesto = async (puestoId) => {
         setPuestoId(puestoId);
         const res = await axios.get(
-            `${config.API_URL}positions/list/${puestoId}`
+            `${config.API_URL}api/positions/list/${puestoId}`
         );
         setValue("puesto", res.data.puesto);
     };
@@ -51,7 +51,7 @@ const Puestos = () => {
 
     const submitData = async (data) => {
         if (!puestoId) {
-            await axios.post(`${config.API_URL}positions/create`, data, {
+            await axios.post(`${config.API_URL}api/positions/create`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -61,7 +61,7 @@ const Puestos = () => {
             setValue("puesto", "");
         } else {
             await axios.post(
-                `${config.API_URL}positions/update/${puestoId}`,
+                `${config.API_URL}api/positions/update/${puestoId}`,
                 data,
                 {
                     headers: {
@@ -84,7 +84,7 @@ const Puestos = () => {
             if (respuesta) {
                 try {
                     axios.delete(
-                        `${config.API_URL}positions/delete/${puestoId}`
+                        `${config.API_URL}api/positions/delete/${puestoId}`
                     );
                 } catch (e) {
                     console.log(e);

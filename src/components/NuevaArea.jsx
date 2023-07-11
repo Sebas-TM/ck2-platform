@@ -30,19 +30,19 @@ const NuevaArea = () => {
     }, [areaId]);
 
     const obtenerArea = async () => {
-        const res = await axios.get(`${config.API_URL}areas/list/${areaId}`);
+        const res = await axios.get(`${config.API_URL}api/areas/list/${areaId}`);
         setValue("area", res.data.area);
     };
     const submitData = async (data) => {
         if (!areaId) {
-            await axios.post(`${config.API_URL}areas/create`, data, {
+            await axios.post(`${config.API_URL}api/areas/create`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
             toast.success("Datos registrados!");
         } else {
-            await axios.post(`${config.API_URL}areas/update/${areaId}`, data, {
+            await axios.post(`${config.API_URL}api/areas/update/${areaId}`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },

@@ -32,7 +32,7 @@ const Areas = () => {
 
     const obtenerAreas = async () => {
         try {
-            const res = await axios.get(`${config.API_URL}areas/list`);
+            const res = await axios.get(`${config.API_URL}api/areas/list`);
             setAreas(res.data);
         } catch (e) {
             console.log(e);
@@ -50,7 +50,7 @@ const Areas = () => {
 
     const obtenerArea = async (areaId) => {
         setAreaId(areaId);
-        const res = await axios.get(`${config.API_URL}areas/list/${areaId}`);
+        const res = await axios.get(`${config.API_URL}api/areas/list/${areaId}`);
         setValue("area", res.data.area);
     };
 
@@ -58,7 +58,7 @@ const Areas = () => {
 
     const submitData = async (data) => {
         if (!areaId) {
-            await axios.post(`${config.API_URL}areas/create`, data, {
+            await axios.post(`${config.API_URL}api/areas/create`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -67,7 +67,7 @@ const Areas = () => {
             obtenerAreas();
             setValue("area", "");
         } else {
-            await axios.post(`${config.API_URL}areas/update/${areaId}`, data, {
+            await axios.post(`${config.API_URL}api/areas/update/${areaId}`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -86,7 +86,7 @@ const Areas = () => {
         }).then((respuesta) => {
             if (respuesta) {
                 try {
-                    axios.delete(`${config.API_URL}areas/delete/${areaId}`);
+                    axios.delete(`${config.API_URL}api/areas/delete/${areaId}`);
                 } catch (e) {
                     console.log(e);
                 }

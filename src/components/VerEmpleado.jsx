@@ -7,6 +7,7 @@ import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 import foto_personal from "../image/foto_personal.webp";
+import { config } from "../config";
 
 const VerEmpleado = () => {
     const { employeeId } = useParams();
@@ -35,7 +36,8 @@ const VerEmpleado = () => {
                 <div className="contenedor-ver-empleado__contenedor-boton">
                     <button
                         onClick={() => navigate(-1)}
-                        className="btn_regresar">
+                        className="btn_regresar"
+                    >
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
@@ -54,7 +56,7 @@ const VerEmpleado = () => {
                                     className="img_empleados"
                                     src={
                                         employee.imagen
-                                            ? `https://comunik2peru.com/${employee.imagen}`
+                                            ? `${config.API_URL}${employee.imagen}`
                                             : foto_personal
                                     }
                                     alt="foto_personal"
@@ -77,10 +79,15 @@ const VerEmpleado = () => {
                             dato={"Correo:"}
                             dato_info={employee.correo}
                         />
-                        <EmpleadoCard
-                            dato={"Celular:"}
-                            dato_info={employee.celular}
-                        />
+                        <Link
+                            target="blank"
+                            to={`https://wa.me/51${employee.celular}`}
+                        >
+                            <EmpleadoCard
+                                dato={"Celular:"}
+                                dato_info={employee.celular}
+                            />
+                        </Link>
                         <EmpleadoCard
                             dato={"Nombre de contacto:"}
                             dato_info={

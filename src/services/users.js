@@ -4,7 +4,7 @@ export const getUsers = () => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}users/list`, { signal: controller.signal }),
+        call: fetch(`${config.API_URL}api/users/list`, { signal: controller.signal }),
         controller
     }
 }
@@ -13,7 +13,7 @@ export const getUser = (id) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}users/list/${id}`, { signal: controller.signal }),
+        call: fetch(`${config.API_URL}api/users/list/${id}`, { signal: controller.signal }),
         controller
     }
 }
@@ -23,7 +23,7 @@ export const postUser =  (user) => {
     console.log(user);
 
     return{
-        call: fetch(`${config.API_URL}users/create`,{
+        call: fetch(`${config.API_URL}api/users/create`,{
             signal: controller.signal,
             method: 'POST',
             headers:{
@@ -40,7 +40,7 @@ export const loginUser =  (user) => {
     const controller = loadAbort()
 
     return{
-        call: fetch(`${config.API_URL}users/login`,{
+        call: fetch(`${config.API_URL}api/users/login`,{
             signal: controller.signal,
             method: 'POST',
             headers:{
@@ -56,7 +56,7 @@ export const loginUser =  (user) => {
 export  function updateUser(user, id) {
     const controller = loadAbort()
     return{
-        call: fetch(`${config.API_URL}users/update/${id}`,{
+        call: fetch(`${config.API_URL}api/users/update/${id}`,{
             signal: controller.signal,
             method:'POST',
             headers: {
@@ -72,7 +72,7 @@ export const deleteUser = (id) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}users/delete/${id}`,
+        call: fetch(`${config.API_URL}api/users/delete/${id}`,
             {
                 signal: controller.signal,
                 method: 'DELETE'

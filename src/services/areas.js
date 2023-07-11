@@ -4,7 +4,7 @@ export const getAreas = () => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}areas/list`, { signal: controller.signal }),
+        call: fetch(`${config.API_URL}api/areas/list`, { signal: controller.signal }),
         controller
     }
 }
@@ -13,7 +13,7 @@ export const postArea = (area) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}areas/create`, {
+        call: fetch(`${config.API_URL}api/areas/create`, {
             signal: controller.signal,
             method: 'POST',
             headers: {
@@ -29,7 +29,7 @@ export const getArea = (id) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}areas/list/${id}`, { signal: controller.signal }),
+        call: fetch(`${config.API_URL}api/areas/list/${id}`, { signal: controller.signal }),
         controller
     }
 }
@@ -38,7 +38,7 @@ export const updateArea = (area, id) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}areas/update/${id}`,
+        call: fetch(`${config.API_URL}api/areas/update/${id}`,
             {
                 signal: controller.signal,
                 method: 'POST',
@@ -55,7 +55,7 @@ export const deleteArea = (id) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}areas/delete/${id}`,
+        call: fetch(`${config.API_URL}api/areas/delete/${id}`,
             {
                 signal: controller.signal,
                 method: 'DELETE'

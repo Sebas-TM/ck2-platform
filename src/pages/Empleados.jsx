@@ -58,7 +58,7 @@ const Empleados = () => {
 
     const obtenerEmpleados = async (page = 1) => {
         const res = await axios.get(
-            `${config.API_URL}employees/list?page=${page}`
+            `${config.API_URL}api/employees/list?page=${page}`
         );
         const { data, meta } = res.data;
         setEmployees(data);
@@ -71,7 +71,7 @@ const Empleados = () => {
         if (data.termino) {
             await axios
                 .post(
-                    `${config.API_URL}employees/search?termino=${data.termino}`
+                    `${config.API_URL}api/employees/search?termino=${data.termino}`
                 )
                 .then((res) => setEmployees(res.data.data));
         } else {
@@ -88,7 +88,7 @@ const Empleados = () => {
             if (respuesta) {
                 try {
                     axios.delete(
-                        `${config.API_URL}employees/delete/${employeeId}`
+                        `${config.API_URL}api/employees/delete/${employeeId}`
                     );
                 } catch (e) {
                     console.log(e);
@@ -172,7 +172,7 @@ const Empleados = () => {
                                         className="img_empleados"
                                         src={
                                             sortedEmployee.imagen
-                                                ? `http://127.0.0.1:8000/${sortedEmployee.imagen}`
+                                                ? `${config.API_URL}${sortedEmployee.imagen}`
                                                 : foto_personal
                                         }
                                         alt="foto_personal"
@@ -287,7 +287,7 @@ const Empleados = () => {
                                             loading="lazy"
                                             src={
                                                 sortedEmployee.imagen
-                                                    ? `http://127.0.0.1:8000/${sortedEmployee.imagen}`
+                                                    ? `${config.API_URL}${sortedEmployee.imagen}`
                                                     : foto_personal
                                             }
                                             alt="foto_personal"

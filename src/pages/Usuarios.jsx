@@ -27,7 +27,7 @@ const Usuarios = () => {
     }, []);
     // console.log(users);
     const obtenerUsuarios = async () => {
-        const res = await axios.get(`${config.API_URL}users/list`);
+        const res = await axios.get(`${config.API_URL}api/users/list`);
         setUsers(res.data);
         setTabla(res.data);
     };
@@ -38,7 +38,7 @@ const Usuarios = () => {
         }).then((respuesta) => {
             if (respuesta) {
                 try {
-                    axios.delete(`${config.API_URL}users/delete/${userId}`);
+                    axios.delete(`${config.API_URL}api/users/delete/${userId}`);
                 } catch (e) {
                     console.log(e);
                 }

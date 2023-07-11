@@ -5,7 +5,7 @@ export const getEmployees =  () => {
     const controller = loadAbort()
 
     return {
-        call:fetch(`${config.API_URL}employees/list`, {signal: controller.signal}),
+        call:fetch(`${config.API_URL}api/employees/list`, {signal: controller.signal}),
         controller
     }
     
@@ -15,7 +15,7 @@ export const getEmployee =  (id) => {
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}employees/list/${id}`, { signal: controller.signal }),
+        call: fetch(`${config.API_URL}api/employees/list/${id}`, { signal: controller.signal }),
         controller
     }
 }
@@ -24,7 +24,7 @@ export const postEmployee =  (employee) => {
     const controller = loadAbort()
 
     return{
-        call: fetch(`${config.API_URL}employees/create`,{
+        call: fetch(`${config.API_URL}api/employees/create`,{
             signal: controller.signal,
             method: 'POST',
             headers:{
@@ -41,7 +41,7 @@ export  function updateEmployee(employee, id){
     console.log(employee);
 
     return{
-        call: fetch(`${config.API_URL}employees/update/${id}`,{
+        call: fetch(`${config.API_URL}api/employees/update/${id}`,{
             signal: controller.signal,
             method: 'POST',
             headers:{
@@ -56,7 +56,7 @@ export  function deleteEmployee(id){
     const controller = loadAbort()
 
     return {
-        call: fetch(`${config.API_URL}employees/delete/${id}`,
+        call: fetch(`${config.API_URL}api/employees/delete/${id}`,
             {
                 signal: controller.signal,
                 method: 'DELETE'
