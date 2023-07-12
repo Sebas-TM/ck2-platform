@@ -562,7 +562,7 @@ const NuevoEmpleado = () => {
                                     Fecha de certificación
                                 </label>
                                 <input
-                                    type="text"
+                                    type="month" min="AAAA-MM" max="AAAA-MM" step="1"
                                     {...register("fecha_certificacion", {
                                         required: true,
                                     })}
