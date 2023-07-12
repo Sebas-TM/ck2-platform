@@ -16,6 +16,7 @@ const NuevoEmpleado = () => {
     const [cargando, setCargando] = useState(false);
     const [areas, setAreas] = useState([]);
     const [puestos, setPuestos] = useState([]);
+    const [empleados, setEmpleados] = useState([]);
     const {
         register,
         setValue,
@@ -42,6 +43,13 @@ const NuevoEmpleado = () => {
         setCargando(true);
         const res = await axios.get(`${config.API_URL}api/positions/list`);
         setPuestos(res.data);
+        setCargando(false);
+    };
+
+    const obtenerEmpleados = async () => {
+        setCargando(true);
+        const res = await axios.get(`${config.API_URL}api/employees/listAll`);
+        setEmpleados(res.data);
         setCargando(false);
     };
 
@@ -73,6 +81,7 @@ const NuevoEmpleado = () => {
                 try {
                     await obtenerAreas();
                     await obtenerPuestos();
+                    await obtenerEmpleados();
                     await obtenerEmpleado();
                 } catch (error) {
                     console.log(error);
@@ -80,15 +89,10 @@ const NuevoEmpleado = () => {
             } else {
                 await obtenerAreas();
                 await obtenerPuestos();
+                await obtenerEmpleados();
             }
         };
-        // if (employeeId) {
-        //   setCargando(true);
-        //   obtenerEmpleado();
-        //   setCargando(false);
-        // } else {
-        //   return () => {};
-        // }
+
         fetchData();
     }, [employeeId]);
 
@@ -181,8 +185,7 @@ const NuevoEmpleado = () => {
                 <div className="contenedor-form-header">
                     <button
                         onClick={() => navigate(-1)}
-                        className="btn_regresar"
-                    >
+                        className="btn_regresar">
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
@@ -259,8 +262,7 @@ const NuevoEmpleado = () => {
                                 <label htmlFor="imagen">Foto</label>
                                 <label
                                     className="label_imagen"
-                                    htmlFor="imagen"
-                                >
+                                    htmlFor="imagen">
                                     <p>
                                         {imagen != ""
                                             ? "Imagen seleccionada"
@@ -303,8 +305,7 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="estado"
-                                    id="estado"
-                                >
+                                    id="estado">
                                     <option value="">--Seleccione--</option>
                                     <option value="Activo">Activo</option>
                                     <option value="No activo">No activo</option>
@@ -446,12 +447,14 @@ const NuevoEmpleado = () => {
                                         Este campo es obligatorio
                                     </p>
                                 )}
-                                {errors.numero_contacto?.type === "maxLength" && (
+                                {errors.numero_contacto?.type ===
+                                    "maxLength" && (
                                     <p className="error-message">
                                         Ingresar número de celular correcto
                                     </p>
                                 )}
-                                {errors.numero_contacto?.type === "minLength" && (
+                                {errors.numero_contacto?.type ===
+                                    "minLength" && (
                                     <p className="error-message">
                                         Ingresar número de celular correcto
                                     </p>
@@ -468,12 +471,11 @@ const NuevoEmpleado = () => {
                                 </label>
                                 <select
                                     className="relacion_contacto"
-                                    {...register("relacion_contacto",{
-                                        required: true
+                                    {...register("relacion_contacto", {
+                                        required: true,
                                     })}
                                     name="relacion_contacto"
-                                    id="relacion_contacto"
-                                >
+                                    id="relacion_contacto">
                                     <option value="">--Seleccione--</option>
                                     <option value="Padre">Padre</option>
                                     <option value="Madre">Madre</option>
@@ -496,8 +498,7 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="area"
-                                    id="area"
-                                >
+                                    id="area">
                                     <option value="">--Seleccione--</option>
                                     {areas.map((area) => (
                                         <option value={area.area} key={area.id}>
@@ -520,14 +521,12 @@ const NuevoEmpleado = () => {
                                     id="puesto"
                                     {...register("puesto", {
                                         required: true,
-                                    })}
-                                >
+                                    })}>
                                     <option value="">--Seleccione--</option>
                                     {puestos.map((puesto) => (
                                         <option
                                             value={puesto.puesto}
-                                            key={puesto.id}
-                                        >
+                                            key={puesto.id}>
                                             {puesto.puesto}
                                         </option>
                                     ))}
@@ -547,10 +546,19 @@ const NuevoEmpleado = () => {
                                     {...register("jefe_inmediato", {
                                         required: true,
                                     })}
+                                    list="options"
                                     name="jefe_inmediato"
                                     id="jefe_inmediato"
                                     placeholder="Ingrese el jefe inmediato"
                                 />
+                                <datalist id="options">
+                                    <option value="S.J">S.J</option>
+                                    {empleados.map((empleado) => (
+                                        <option
+                                            key={empleado.id}
+                                            value={`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}>{`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}</option>
+                                    ))}
+                                </datalist>
                                 {errors.jefe_inmediato?.type === "required" && (
                                     <p className="error-message">
                                         Este campo es obligatorio
@@ -562,7 +570,10 @@ const NuevoEmpleado = () => {
                                     Fecha de certificación
                                 </label>
                                 <input
-                                    type="month" min="AAAA-MM" max="AAAA-MM" step="1"
+                                    type="month"
+                                    min="AAAA-MM"
+                                    max="AAAA-MM"
+                                    step="1"
                                     {...register("fecha_certificacion", {
                                         required: true,
                                     })}
@@ -584,14 +595,15 @@ const NuevoEmpleado = () => {
                                     id="grupo"
                                     {...register("grupo", {
                                         required: true,
-                                    })}
-                                >
+                                    })}>
                                     <option value="">--Seleccione--</option>
                                     <option value="COMUNIK2">COMUNIK2</option>
                                     <option value="GLOBAL">GLOBAL</option>
                                 </select>
                                 {errors.grupo?.type === "required" && (
-                                    <p className="error-message">Este campo es obligatorio</p>
+                                    <p className="error-message">
+                                        Este campo es obligatorio
+                                    </p>
                                 )}
                             </div>
                             <div className="form-group__input-group">
@@ -601,8 +613,7 @@ const NuevoEmpleado = () => {
                                     id="sede"
                                     {...register("sede", {
                                         required: true,
-                                    })}
-                                >
+                                    })}>
                                     <option value="">--Seleccione--</option>
                                     <option value="Lima">Lima</option>
                                     <option value="Trujillo">Trujillo</option>
