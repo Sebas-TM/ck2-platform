@@ -8,3 +8,14 @@
     display: flex;
     gap: .5rem;
 }
+
+.contenedor-empleados{
+    display: flex;
+    gap: 4rem;
+}
+
+.panel-filtro{
+    height: 100%;
+    width: 20rem;
+    border-right: 1px solid gray;
+}

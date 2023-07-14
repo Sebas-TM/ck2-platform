@@ -171,6 +171,7 @@ const NuevoEmpleado = () => {
                 })
                 .catch((error) => {
                     toast.error(error.response.data.message);
+                    console.log(error);
                     setCargando(false);
                 });
         }

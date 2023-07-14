@@ -86,7 +86,7 @@ const Menu = () => {
                     {menuToggle &&
                         <ul className='contenedor-menu__user'>
                             <Link to='/menu' className='list_user disable_user'>
-                                <p className='texto_header'>Menu</p>
+                                <p className='texto_header'>Menú</p>
                             </Link>
                             <Link to='/menu/usuarios' className={rol != 1 ? 'isNotAdmin' : 'list_user disable_user'}>
                                 <p className='texto_header'>Usuarios</p>
