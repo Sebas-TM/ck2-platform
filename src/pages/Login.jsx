@@ -9,7 +9,8 @@ import logo_texto from "../image/logo_texto_ver2.png";
 import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../services/users";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 import login from "../image/Login.png";
 
 const cookies = new Cookies();
@@ -22,11 +23,15 @@ const Login = () => {
     const [cargando, setCargando] = useState(false);
     const { loading, callEndpoint } = useFetchAndLoad();
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     if (cookies.get("username")) {
         window.location.href = "./menu";
     }
-
     const onSubmit = (data) => {
         try {
             setCargando(true);
@@ -71,8 +76,7 @@ const Login = () => {
 
                     <form
                         className="form-group"
-                        onSubmit={handleSubmit(onSubmit)}
-                    >
+                        onSubmit={handleSubmit(onSubmit)}>
                         <h1 className="form-group__titulo">
                             ¡Bienvenido a Ck2!
                         </h1>
@@ -96,7 +100,7 @@ const Login = () => {
                         <div className="form-group__input-group">
                             <label htmlFor="password">Contraseña</label>
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 {...register("password", {
                                     required: true,
                                 })}
@@ -109,13 +113,24 @@ const Login = () => {
                                     Este campo es obligatorio
                                 </p>
                             )}
+                            <div className="contenedor_checkbox">
+                                <input
+                                    type="checkbox"
+                                    name="checkbox"
+                                    id="checkbox"
+                                    checked={showPassword}
+                                    onChange={handleShowPassword}
+                                />
+                                <label htmlFor="checkbox">
+                                    Mostrar contraseña
+                                </label>
+                            </div>
                         </div>
                         <input
                             className="form-group__boton"
                             type="submit"
                             value="Ingresar"
                         />
-                        {/* <input type="button" onSubmit={iniciarSesion} className='form-group__boton' value='Ingresar'/> */}
                     </form>
                 </div>
                 <div className="contenedor-dos">
@@ -125,7 +140,18 @@ const Login = () => {
                 </div>
             </div>
             <div className="contenedor-rojo"></div>
-            <p className="texto-siguenos">Síguenos en: </p>
+            <div className="texto-siguenos">
+                <p>Síguenos en:</p>
+                <Link target="blank" to="https://www.facebook.com/CK2.PE/" className="link_logo_social_media">
+                    <FaFacebookF className="logo_social_media" />
+                </Link>
+                <Link target="blank" to="https://www.instagram.com/comunik2peru/" className="link_logo_social_media">
+                    <FaInstagram className="logo_social_media"/>
+                </Link>
+                <Link target="blank" to="http://tiktok.com/@grupo.ck2"  className="link_logo_social_media">
+                    <FaTiktok  className="logo_social_media"/>
+                </Link>
+            </div>
         </div>
     );
 };

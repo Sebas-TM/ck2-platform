@@ -57,6 +57,7 @@ const Empleados = () => {
     }, []);
 
     const obtenerEmpleados = async (page = 1) => {
+        setCargando(true)
         const res = await axios.get(
             `${config.API_URL}api/employees/list?page=${page}`
         );
@@ -64,6 +65,7 @@ const Empleados = () => {
         setEmployees(data);
         setTabla(data);
         setPagination(meta);
+        setCargando(false)
     };
 
     const submitData = async (data) => {
@@ -110,7 +112,7 @@ const Empleados = () => {
         <div className="form-group">
             {cargando && <Spinner />}
             <Toaster position="top-center" richColors />
-            <div className="form-group-header">
+            <div className={rol!=3 ? "form-group-header" : "form-group-header-lector"}>
                 <button
                     className={rol != 3 ? "btn_add" : "disable-button"}
                     onClick={() =>

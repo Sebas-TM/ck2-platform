@@ -3,8 +3,8 @@ import '../style/menu.css'
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { config } from '../config'
-import logo_texto from '../image/logo_texto.png'
-import logo from '../image/logo.png'
+import logo_texto from '../image/logo_texto_ver2.png'
+import logo from '../image/logo_ver2.png'
 import foto_usuario from '../image/foto_personal.webp'
 
 const cookies = new Cookies()
@@ -60,7 +60,7 @@ const Menu = () => {
                             <img className='logo2' src={logo} alt="logo" />
                         </Link>
                         <Link to='/menu' className='list disable'>
-                            <p className='texto_header'>Menu</p>
+                            <p className='texto_header'>Menú</p>
                         </Link>
                         <Link to='/menu/usuarios' className={rol != 1 ? 'isNotAdmin' : 'list disable'}>
                             <p className='texto_header'>Usuarios</p>

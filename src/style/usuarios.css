@@ -8,7 +8,7 @@
     /* height: 100%; */
 }
 
-.form-group-header {
+.form-group-header, .form-group-header-lector {
     width: 100%;
     /* height: 6rem; */
     margin-top: 4rem;
@@ -28,6 +28,12 @@
         max-width: 100%;
         margin-bottom: 0;
         justify-content: space-between;
+    }
+    .form-group-header-lector{
+        width: 95rem;
+        max-width: 100%;
+        margin-bottom: 0;
+        justify-content: end;
     }
     .form-group-header h1 {
         margin-bottom: 0;

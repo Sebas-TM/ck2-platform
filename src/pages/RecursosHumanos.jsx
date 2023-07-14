@@ -24,7 +24,7 @@ const RecursosHumanos = () => {
               }`}
               to="/menu/recursos_humanos"
             >
-              Personal
+              Colaboradores
             </Link>
           </li>
           <li>
