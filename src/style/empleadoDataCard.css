@@ -1,0 +1,22 @@
+.empleado-data-card{
+    padding: 2rem;
+    background-color: rgb(233, 230, 230);
+    width: 15rem;
+    height: 8rem;
+    border-radius: 1.5rem;
+}
+
+.empleado-data-card_grafico{
+    height: 40%;
+    font-size: 2rem;
+}
+
+.empleado-data-card_dato{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.empleado-data-card_descripcion p{
+    font-size: 1.2rem;
+}
+

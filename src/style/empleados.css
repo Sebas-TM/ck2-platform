@@ -11,11 +11,34 @@
 
 .contenedor-empleados{
     display: flex;
-    gap: 4rem;
+    max-width: 140rem;
+    margin: 5rem auto;
+    gap: 2rem;
+    max-height: 80rem;
 }
 
 .panel-filtro{
-    height: 100%;
-    width: 20rem;
-    border-right: 1px solid gray;
+    /* height: 100%; */
+    width: 25%;
+    border-right: 1px solid rgb(233, 230, 230);
+}
+
+.form-group-empleados{
+    overflow: scroll;
+}
+
+.form-group-empleados::-webkit-scrollbar {
+    width: 5px;
+}
+
+.form-group-empleados::-webkit-scrollbar-thumb {
+    background: rgb(192, 192, 192);
+    border-radius: 7px;
+}
+
+.empleados-data-card-contenedor{
+    width: 100%;
+    display: flex;
+    /* gap: 2rem; */
+    justify-content: space-evenly;
 }

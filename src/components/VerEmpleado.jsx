@@ -1,47 +1,37 @@
-import { getEmployee } from "../services/employees";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import "../style/verEmpleado.css";
 import { FiChevronLeft } from "react-icons/fi";
 import EmpleadoCard from "./EmpleadoCard";
-import useFetchAndLoad from "../hooks/useFetchAndLoad";
 import { useState, useEffect } from "react";
-import Spinner from "./Spinner";
 import foto_personal from "../image/foto_personal.webp";
 import { config } from "../config";
+import axios from "axios";
 
-const VerEmpleado = () => {
-    const { employeeId } = useParams();
+const VerEmpleado = ({handleModal, setHandleModal, employeeId}) => {
     const [employee, setEmployee] = useState({});
-    const [cargando, setCargando] = useState(false);
-    const { loading, callEndpoint } = useFetchAndLoad();
-    const navigate = useNavigate();
-
     useEffect(() => {
         if (employeeId) {
-            setCargando(true);
-            callEndpoint(getEmployee(parseInt(employeeId)))
-                .then((res) => res.json())
-                .then((res) => {
-                    setEmployee(res);
-                    setCargando(false);
-                });
+            obtenerEmpleado(employeeId)
         } else {
             return () => {};
         }
     }, []);
+
+    const obtenerEmpleado = async (employeeId) => {
+        const res = await axios.get(`${config.API_URL}api/employees/list/${employeeId}`)
+        setEmployee(res.data);
+    }
     return (
-        <>
+        <div className="modal-ver-empleado">
             <section className="contenedor-ver-empleado">
-                {cargando && <Spinner />}
                 <div className="contenedor-ver-empleado__contenedor-boton">
                     <button
-                        onClick={() => navigate(-1)}
+                        onClick={() => setHandleModal(!handleModal)}
                         className="btn_regresar"
                     >
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
-                            // to='/menu/usuarios'
                         >
                             Regresar
                         </Link>
@@ -56,7 +46,7 @@ const VerEmpleado = () => {
                                     className="img_empleados"
                                     src={
                                         employee.imagen
-                                            ? `${config.API_URL}${employee.imagen}`
+                                            ? `${config.API_URL}${employee.imagen}?${Date.now()}`
                                             : foto_personal
                                     }
                                     alt="foto_personal"
@@ -139,7 +129,7 @@ const VerEmpleado = () => {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     );
 };
 
