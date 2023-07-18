@@ -224,6 +224,9 @@
 }
 .contenedor-general-cards {
     margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 @media (min-width: 769px) {
@@ -235,13 +238,13 @@
 .contenedor-cards {
     margin-bottom: 4rem;
     width: 28rem;
-    border: 1px solid gray;
+    border: 1px solid rgb(233, 230, 230);
     padding: 0 2rem;
     border-radius: 0.8rem;
 }
 
 .cards {
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid rgb(233, 230, 230);
     padding-bottom: 2rem;
 }
 

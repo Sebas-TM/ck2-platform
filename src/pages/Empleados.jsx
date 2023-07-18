@@ -16,7 +16,7 @@ import {
     FiSearch,
     FiUsers,
 } from "react-icons/fi";
-import {TfiHeadphoneAlt} from "react-icons/tfi"
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 import Cookies from "universal-cookie";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
@@ -39,8 +39,8 @@ const Empleados = () => {
     const [cargando, setCargando] = useState(false);
     const [tabla, setTabla] = useState([]);
     const [termino, setTermino] = useState();
-    const [handleModal, setHandleModal] = useState(false)
-    const [employeeId, setEmployeeId] = useState()
+    const [handleModal, setHandleModal] = useState(false);
+    const [employeeId, setEmployeeId] = useState();
     const navigate = useNavigate();
     const {
         register,
@@ -54,14 +54,19 @@ const Empleados = () => {
         cantidadEmpleadosPorEstadoActivo,
         setCantidadEmpleadosPorEstadoActivo,
     ] = useState();
-    const [cantidadEmpleadosPorSedeLima, setCantidadEmpleadosPorSedeLima] = useState()
-    const [cantidadEmpleadosPorSedeTrujillo, setCantidadEmpleadosPorSedeTrujillo] = useState()
-    const [cantidadEmpleadosPorPuesto,setCantidadEmpleadosPorPuesto] = useState()
+    const [cantidadEmpleadosPorSedeLima, setCantidadEmpleadosPorSedeLima] =
+        useState();
+    const [
+        cantidadEmpleadosPorSedeTrujillo,
+        setCantidadEmpleadosPorSedeTrujillo,
+    ] = useState();
+    const [cantidadEmpleadosPorPuesto, setCantidadEmpleadosPorPuesto] =
+        useState();
 
     const openHandleModal = (id) => {
-        setHandleModal(!handleModal)
-        setEmployeeId(id)
-    }
+        setHandleModal(!handleModal);
+        setEmployeeId(id);
+    };
 
     const [pagination, setPagination] = useState({
         current_page: 1,
@@ -83,14 +88,12 @@ const Empleados = () => {
 
     useEffect(() => {
         if (allEmployees.length) {
-            setCantidadEmpleadosPorSedeLima(buscarPorDatoSede(
-                "Lima",
-                allEmployees
-            ));
-            setCantidadEmpleadosPorSedeTrujillo(buscarPorDatoSede(
-                "Trujillo",
-                allEmployees
-            ));
+            setCantidadEmpleadosPorSedeLima(
+                buscarPorDatoSede("Lima", allEmployees)
+            );
+            setCantidadEmpleadosPorSedeTrujillo(
+                buscarPorDatoSede("Trujillo", allEmployees)
+            );
             setCantidadEmpleadosPorEstadoActivo(
                 buscarPorDatoEstado("Activo", allEmployees)
             );
@@ -187,50 +190,55 @@ const Empleados = () => {
             </div>
             <div className="form-group form-group-empleados">
                 <div className="empleados-data-card-contenedor">
-                    <EmpleadoDataCard
-                        icono={<FiUsers />}
-                        dato={cantidadEmpleadosPorEstadoActivo}
-                        descripcion={"Colaboradores Activos"}
-                    />
-                    <EmpleadoDataCard 
-                        icono={<FiUsers />}
-                        dato={cantidadEmpleadosPorSedeLima}
-                        descripcion={"Colaboradores Lima"}
-                    />
-                    <EmpleadoDataCard 
-                        icono={<FiUsers />}
-                        dato={cantidadEmpleadosPorSedeTrujillo}
-                        descripcion={"Colaboradores Trujillo"}
-                    />
-                    <EmpleadoDataCard 
-                        icono={<TfiHeadphoneAlt />}
-                        dato={cantidadEmpleadosPorPuesto}
-                        descripcion={"Asesores"}
-                    />
+                    <div className="empleados-data-card">
+                        <EmpleadoDataCard
+                            icono={<FiUsers />}
+                            dato={cantidadEmpleadosPorEstadoActivo}
+                            descripcion={"Colaboradores Activos"}
+                        />
+                        <EmpleadoDataCard
+                            icono={<FiUsers />}
+                            dato={cantidadEmpleadosPorSedeLima}
+                            descripcion={"Colaboradores Lima"}
+                        />
+                        <EmpleadoDataCard
+                            icono={<FiUsers />}
+                            dato={cantidadEmpleadosPorSedeTrujillo}
+                            descripcion={"Colaboradores Trujillo"}
+                        />
+                        <EmpleadoDataCard
+                            icono={<TfiHeadphoneAlt />}
+                            dato={cantidadEmpleadosPorPuesto}
+                            descripcion={"Asesores"}
+                        />
+                    </div>
                 </div>
                 {cargando && <Spinner />}
-                {handleModal && <VerEmpleado handleModal={handleModal} setHandleModal={setHandleModal} employeeId={employeeId}/>}
+                {handleModal && (
+                    <VerEmpleado
+                        handleModal={handleModal}
+                        setHandleModal={setHandleModal}
+                        employeeId={employeeId}
+                    />
+                )}
                 <Toaster position="top-center" richColors />
                 <div
                     className={
                         rol != 3
                             ? "form-group-header"
                             : "form-group-header-lector"
-                    }
-                >
+                    }>
                     <button
                         className={rol != 3 ? "btn_add" : "disable-button"}
                         onClick={() =>
                             navigate(`/menu/recursos_humanos/empleado/crear`)
-                        }
-                    >
+                        }>
                         <FiUserPlus className="icon" />
                         <p className="disable">Agregar</p>
                     </button>
                     <form
                         className="form-buscar-empleados"
-                        onSubmit={handleSubmit(submitData)}
-                    >
+                        onSubmit={handleSubmit(submitData)}>
                         <input
                             className="busqueda"
                             type="text"
@@ -247,8 +255,7 @@ const Empleados = () => {
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tabla-empleados"
-                >
+                    className="tabla tabla-empleados">
                     <thead>
                         <tr>
                             <th></th>
@@ -268,19 +275,21 @@ const Empleados = () => {
                                     sortedEmployee.estado === "No activo"
                                         ? "empleado-no-activo"
                                         : ""
-                                }
-                            >
+                                }>
                                 <td
                                     align="center"
-                                    onClick={() =>openHandleModal(sortedEmployee.id)}
-                                >
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }>
                                     <div className="contenedor-imagenTable">
                                         <img
                                             loading="lazy"
                                             className="img_empleados"
                                             src={
                                                 sortedEmployee.imagen
-                                                    ? `${config.API_URL}${sortedEmployee.imagen}?${Date.now()}`
+                                                    ? `${config.API_URL}${
+                                                          sortedEmployee.imagen
+                                                      }?${Date.now()}`
                                                     : foto_personal
                                             }
                                             alt="foto_personal"
@@ -289,41 +298,45 @@ const Empleados = () => {
                                 </td>
                                 <td
                                     className="data data_nombre"
-                                    onClick={() =>openHandleModal(sortedEmployee.id)}
-                                >
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }>
                                     {sortedEmployee.nombre}
                                 </td>
                                 <td
                                     className="data data_apaterno"
-                                    onClick={() =>openHandleModal(sortedEmployee.id)}
-                                >
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }>
                                     {`${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}
                                 </td>
                                 <td
                                     className="data data_amaterno"
-                                    onClick={() =>openHandleModal(sortedEmployee.id)}
-                                >
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }>
                                     {sortedEmployee.dni}
                                 </td>
                                 <td
                                     className="data data_amaterno"
-                                    onClick={() =>openHandleModal(sortedEmployee.id)}
-                                >
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }>
                                     {sortedEmployee.estado}
                                 </td>
                                 <td className="data data_opciones">
                                     <button
-                                        onClick={() =>openHandleModal(sortedEmployee.id)}
-                                        className="btn_option view"
-                                    >
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                        className="btn_option view">
                                         <FiEye className="icon" />
                                     </button>
 
                                     <Link
                                         className="btn_option wsp"
                                         target="blank"
-                                        to={`https://wa.me/51${sortedEmployee.celular}`}
-                                    >
+                                        to={`https://wa.me/51${sortedEmployee.celular}`}>
                                         <BsWhatsapp className="icon" />
                                     </Link>
 
@@ -337,8 +350,7 @@ const Empleados = () => {
                                             rol != 3
                                                 ? "btn_option edit"
                                                 : "disable-button"
-                                        }
-                                    >
+                                        }>
                                         <FiEdit className="icon" />
                                     </button>
 
@@ -350,8 +362,7 @@ const Empleados = () => {
                                             rol == 1
                                                 ? "btn_option delete"
                                                 : "disable-button"
-                                        }
-                                    >
+                                        }>
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>
@@ -368,16 +379,12 @@ const Empleados = () => {
                                 sortedEmployee.estado === "No activo"
                                     ? "empleado-no-activo contenedor-cards"
                                     : "contenedor-cards"
-                            }
-                        >
+                            }>
                             <div
                                 className="cards cards-employee"
                                 onClick={() =>
-                                    navigate(
-                                        `/menu/recursos_humanos/empleado/${sortedEmployee.id}`
-                                    )
-                                }
-                            >
+                                    openHandleModal(sortedEmployee.id)
+                                }>
                                 <div className="container">
                                     <div className="contenedor-foto">
                                         <div className="contenedor-redondo-foto">
@@ -422,16 +429,16 @@ const Empleados = () => {
                             </div>
                             <div className="data data_opciones">
                                 <button
-                                    onClick={() =>openHandleModal(sortedEmployee.id)}
-                                    className="btn_option view"
-                                >
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }
+                                    className="btn_option view">
                                     <FiEye className="icon" />
                                 </button>
                                 <Link
                                     className="btn_option wsp"
                                     target="blank"
-                                    to={`https://wa.me/51${sortedEmployee.celular}`}
-                                >
+                                    to={`https://wa.me/51${sortedEmployee.celular}`}>
                                     <BsWhatsapp className="icon" />
                                 </Link>
                                 <button
@@ -444,8 +451,7 @@ const Empleados = () => {
                                         rol != 3
                                             ? "btn_option edit"
                                             : "disable-button"
-                                    }
-                                >
+                                    }>
                                     <FiEdit className="icon" />
                                 </button>
                                 <button
@@ -456,8 +462,7 @@ const Empleados = () => {
                                         rol == 1
                                             ? "btn_option delete"
                                             : "disable-button"
-                                    }
-                                >
+                                    }>
                                     <FiTrash className="icon" />
                                 </button>
                             </div>
