@@ -156,7 +156,7 @@ const Empleados = () => {
         }
         setCargando(false);
     };
-
+    console.log(employees);
     const eliminarEmpleado = (employeeId) => {
         swal({
             text: "¿Estás seguro de eliminar este registro?",

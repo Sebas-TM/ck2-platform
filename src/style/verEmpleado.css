@@ -1,128 +1,137 @@
 .modal-ver-empleado {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* filter: blur(5px); */
-    position: fixed;
-    top: 0;
-    z-index: 3;
-    left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* filter: blur(5px); */
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  left: 0;
 }
 
 .contenedor-ver-empleado {
-    /* width: 100%; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-bottom: 3rem;
-    background-color: #fcfcfc;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 1.5rem;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 3rem;
+  background-color: #fcfcfc;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1.5rem;
 }
 .container-ver-empleado {
-    width: 100%;
+  width: 100%;
 }
 
 .contenedor-ver-empleado__contenedor-boton {
-    width: 35rem;
-    display: flex;
-    justify-content: end;
-    padding: 1rem 2rem;
+  width: 28rem;
+  display: flex;
+  justify-content: end;
+  padding: 1rem 2rem;
 }
 
 .ver-empleado-card {
-    border: 1px solid rgb(233, 230, 230);
-    padding: 0 2rem 2rem 2rem;
-    border-radius: 0.8rem;
-    width: 30rem;
-    height: 45rem;
-    overflow: auto;
+  border: 1px solid rgb(233, 230, 230);
+  padding: 0 2rem 2rem 2rem;
+  border-radius: 0.8rem;
+  width: 24rem;
+  height: 45rem;
+  overflow: auto;
 }
 
 @media (min-width: 769px) {
-    .ver-empleado-card {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-        height: auto;
-    }
-    .container-ver-empleado {
-        width: 35%;
-    }
-    .contenedor-empleado {
-        width: 65%;
-    }
-    .contenedor-foto {
-        height: 22rem;
-        width: 15rem;
-    }
+  .ver-empleado-card {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    height: auto;
+  }
+  .container-ver-empleado {
+    width: 35%;
+  }
+  .contenedor-empleado {
+    width: 65%;
+  }
+  .contenedor-foto {
+    height: 22rem;
+    width: 15rem;
+  }
 }
 
 .ver-empleado-card p {
-    font-size: 1.5rem;
-    color: black;
+  font-size: 1.5rem;
+  color: black;
 }
 
 .ver-empleado-card .contenedor-empleado {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 @media (min-width: 769px) {
-    .ver-empleado-card {
-        width: 85rem;
-        min-width: 60rem;
-    }
-    .contenedor-ver-empleado__contenedor-boton {
-        width: 90rem;
-    }
-    .contenedor-ver-empleado {
-        margin-top: 0rem;
-    }
+  .ver-empleado-card {
+    width: 65rem;
+    min-width: 60rem;
+  }
+  .contenedor-ver-empleado__contenedor-boton {
+    width: 72rem;
+  }
+  .contenedor-ver-empleado {
+    margin-top: 0rem;
+  }
+}
+
+@media (min-width: 950px) {
+  .ver-empleado-card{
+    width: 85rem;
+  }
+  .contenedor-ver-empleado__contenedor-boton {
+    width: 90rem;
+  }
 }
 
 .contenedor-datos {
-    display: block;
-    align-items: center;
-    justify-content: space-between;
+  display: block;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @media (min-width: 769px) {
-    .contenedor-datos {
-        display: flex;
-    }
+  .contenedor-datos {
+    display: flex;
+  }
 }
 
 .contenedor-datos .contenedor-datos_texto-dato {
-    width: 100%;
+  width: 100%;
 }
 
 .contenedor-datos .contenedor-datos_texto-dato-info {
-    width: 100%;
+  width: 100%;
 }
 
 @media (min-width: 769px) {
-    .contenedor-datos .contenedor-datos_texto-dato {
-        width: 45%;
-    }
+  .contenedor-datos .contenedor-datos_texto-dato {
+    width: 45%;
+  }
 
-    .contenedor-datos .contenedor-datos_texto-dato-info {
-        width: 55%;
-    }
+  .contenedor-datos .contenedor-datos_texto-dato-info {
+    width: 55%;
+  }
 }
 
 .contenedor-datos .dato-info {
-    color: gray;
-    font-weight: normal;
+  color: gray;
+  font-weight: normal;
 }
 
 .btn_cerrar {
-    background-color: transparent;
-    border: none;
-    font-size: 2rem;
-    color: gray;
-    cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  color: gray;
+  cursor: pointer;
 }
