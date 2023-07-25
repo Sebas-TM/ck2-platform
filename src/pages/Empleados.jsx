@@ -5,7 +5,7 @@ import {
     Outlet,
     useNavigate,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { BsWhatsapp } from "react-icons/bs";
 import {
@@ -38,7 +38,9 @@ const Empleados = () => {
     const [allEmployees, setAllEmployees] = useState([]);
     const [cargando, setCargando] = useState(false);
     const [tabla, setTabla] = useState([]);
+    const [termino, setTermino] = useState("");
     const [handleModal, setHandleModal] = useState(false);
+    const tableRef = useRef(null);
     const [employeeId, setEmployeeId] = useState();
     const navigate = useNavigate();
     const {
@@ -126,7 +128,6 @@ const Empleados = () => {
     };
 
     const obtenerEmpleados = async (page = 1) => {
-        setCargando(true);
         const res = await axios.get(
             `${config.API_URL}api/employees/list?page=${page}`
         );
@@ -134,7 +135,7 @@ const Empleados = () => {
         setEmployees(data);
         setTabla(data);
         setPagination(meta);
-        setCargando(false);
+        tableRef.current.scrollTo(0, 0);
     };
 
     const obtenerTodosEmpleados = async () => {
@@ -145,20 +146,35 @@ const Empleados = () => {
     const submitData = async (data) => {
         setCargando(true);
         if (data.termino) {
-            await axios
-                .post(
-                    `${config.API_URL}api/employees/search?termino=${data.termino}`
-                )
-                .then(res => {
-                    setEmployees(res.data.data)
-                    setPagination(res.data.meta)
-                })
-
+            setTermino(data.termino);
         } else {
+            setTermino("");
             obtenerEmpleados();
+            tableRef.current.scrollTo(0, 0);
         }
         setCargando(false);
     };
+
+    const searchData = async (page = 1) => {
+        await axios
+            .post(
+                `${config.API_URL}api/employees/search?termino=${termino}&page=${page}`
+            )
+            .then((res) => {
+                setEmployees(res.data.data);
+                setPagination(res.data.meta);
+            });
+    };
+
+    useEffect(() => {
+        if (termino) {
+            searchData();
+            tableRef.current.scrollTo(0, 0);
+        } else {
+            return () => {};
+        }
+    }, [termino]);
+
     const eliminarEmpleado = (employeeId) => {
         swal({
             text: "¿Estás seguro de eliminar este registro?",
@@ -181,9 +197,14 @@ const Empleados = () => {
             }
         });
     };
-
     const handlePageChange = ({ selected }) => {
-        obtenerEmpleados(selected + 1);
+        if (termino == "") {
+            obtenerEmpleados(selected + 1);
+            tableRef.current.scrollTo(0, 0);
+        } else {
+            searchData(selected + 1);
+            tableRef.current.scrollTo(0, 0);
+        }
     };
     return (
         <div className="contenedor-empleados">
@@ -229,18 +250,21 @@ const Empleados = () => {
                         rol != 3
                             ? "form-group-header"
                             : "form-group-header-lector"
-                    }>
+                    }
+                >
                     <button
                         className={rol != 3 ? "btn_add" : "disable-button"}
                         onClick={() =>
                             navigate(`/menu/recursos_humanos/empleado/crear`)
-                        }>
+                        }
+                    >
                         <FiUserPlus className="icon" />
                         <p className="disable">Agregar</p>
                     </button>
                     <form
                         className="form-buscar-empleados"
-                        onSubmit={handleSubmit(submitData)}>
+                        onSubmit={handleSubmit(submitData)}
+                    >
                         <input
                             className="busqueda"
                             type="text"
@@ -257,7 +281,9 @@ const Empleados = () => {
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tabla-empleados">
+                    className="tabla tabla-empleados"
+                    ref={tableRef}
+                >
                     <thead>
                         <tr>
                             <th></th>
@@ -277,12 +303,14 @@ const Empleados = () => {
                                     sortedEmployee.estado === "No activo"
                                         ? "empleado-no-activo"
                                         : ""
-                                }>
+                                }
+                            >
                                 <td
                                     align="center"
                                     onClick={() =>
                                         openHandleModal(sortedEmployee.id)
-                                    }>
+                                    }
+                                >
                                     <div className="contenedor-imagenTable">
                                         <img
                                             loading="lazy"
@@ -302,28 +330,32 @@ const Empleados = () => {
                                     className="data data_nombre"
                                     onClick={() =>
                                         openHandleModal(sortedEmployee.id)
-                                    }>
+                                    }
+                                >
                                     {sortedEmployee.nombre}
                                 </td>
                                 <td
                                     className="data data_apaterno"
                                     onClick={() =>
                                         openHandleModal(sortedEmployee.id)
-                                    }>
+                                    }
+                                >
                                     {`${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}
                                 </td>
                                 <td
                                     className="data data_amaterno"
                                     onClick={() =>
                                         openHandleModal(sortedEmployee.id)
-                                    }>
+                                    }
+                                >
                                     {sortedEmployee.dni}
                                 </td>
                                 <td
                                     className="data data_amaterno"
                                     onClick={() =>
                                         openHandleModal(sortedEmployee.id)
-                                    }>
+                                    }
+                                >
                                     {sortedEmployee.estado}
                                 </td>
                                 <td className="data data_opciones">
@@ -331,14 +363,16 @@ const Empleados = () => {
                                         onClick={() =>
                                             openHandleModal(sortedEmployee.id)
                                         }
-                                        className="btn_option view">
+                                        className="btn_option view"
+                                    >
                                         <FiEye className="icon" />
                                     </button>
 
                                     <Link
                                         className="btn_option wsp"
                                         target="blank"
-                                        to={`https://wa.me/51${sortedEmployee.celular}`}>
+                                        to={`https://wa.me/51${sortedEmployee.celular}`}
+                                    >
                                         <BsWhatsapp className="icon" />
                                     </Link>
 
@@ -352,7 +386,8 @@ const Empleados = () => {
                                             rol != 3
                                                 ? "btn_option edit"
                                                 : "disable-button"
-                                        }>
+                                        }
+                                    >
                                         <FiEdit className="icon" />
                                     </button>
 
@@ -364,7 +399,8 @@ const Empleados = () => {
                                             rol == 1
                                                 ? "btn_option delete"
                                                 : "disable-button"
-                                        }>
+                                        }
+                                    >
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>
@@ -381,12 +417,14 @@ const Empleados = () => {
                                 sortedEmployee.estado === "No activo"
                                     ? "empleado-no-activo contenedor-cards"
                                     : "contenedor-cards"
-                            }>
+                            }
+                        >
                             <div
                                 className="cards cards-employee"
                                 onClick={() =>
                                     openHandleModal(sortedEmployee.id)
-                                }>
+                                }
+                            >
                                 <div className="container">
                                     <div className="contenedor-foto">
                                         <div className="contenedor-redondo-foto">
@@ -434,13 +472,15 @@ const Empleados = () => {
                                     onClick={() =>
                                         openHandleModal(sortedEmployee.id)
                                     }
-                                    className="btn_option view">
+                                    className="btn_option view"
+                                >
                                     <FiEye className="icon" />
                                 </button>
                                 <Link
                                     className="btn_option wsp"
                                     target="blank"
-                                    to={`https://wa.me/51${sortedEmployee.celular}`}>
+                                    to={`https://wa.me/51${sortedEmployee.celular}`}
+                                >
                                     <BsWhatsapp className="icon" />
                                 </Link>
                                 <button
@@ -453,7 +493,8 @@ const Empleados = () => {
                                         rol != 3
                                             ? "btn_option edit"
                                             : "disable-button"
-                                    }>
+                                    }
+                                >
                                     <FiEdit className="icon" />
                                 </button>
                                 <button
@@ -464,7 +505,8 @@ const Empleados = () => {
                                         rol == 1
                                             ? "btn_option delete"
                                             : "disable-button"
-                                    }>
+                                    }
+                                >
                                     <FiTrash className="icon" />
                                 </button>
                             </div>
