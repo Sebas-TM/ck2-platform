@@ -201,3 +201,15 @@
 .contenedor_checkbox label {
     font-size: 1rem;
 }
+
+.texto-siguenos-768px{
+    margin-top: 8rem;
+    position: initial;
+    transform: translateX(0%);
+}
+
+@media (min-width:768px){
+    .texto-siguenos-768px{
+        display: none;
+    }
+}

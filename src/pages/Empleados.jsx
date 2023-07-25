@@ -38,7 +38,6 @@ const Empleados = () => {
     const [allEmployees, setAllEmployees] = useState([]);
     const [cargando, setCargando] = useState(false);
     const [tabla, setTabla] = useState([]);
-    const [termino, setTermino] = useState();
     const [handleModal, setHandleModal] = useState(false);
     const [employeeId, setEmployeeId] = useState();
     const navigate = useNavigate();
@@ -150,13 +149,16 @@ const Empleados = () => {
                 .post(
                     `${config.API_URL}api/employees/search?termino=${data.termino}`
                 )
-                .then((res) => setEmployees(res.data.data));
+                .then(res => {
+                    setEmployees(res.data.data)
+                    setPagination(res.data.meta)
+                })
+
         } else {
             obtenerEmpleados();
         }
         setCargando(false);
     };
-    console.log(employees);
     const eliminarEmpleado = (employeeId) => {
         swal({
             text: "¿Estás seguro de eliminar este registro?",

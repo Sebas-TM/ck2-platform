@@ -76,7 +76,8 @@ const Login = () => {
 
                     <form
                         className="form-group"
-                        onSubmit={handleSubmit(onSubmit)}>
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
                         <h1 className="form-group__titulo">
                             ¡Bienvenido a Ck2!
                         </h1>
@@ -132,6 +133,30 @@ const Login = () => {
                             value="Ingresar"
                         />
                     </form>
+                    <div className="texto-siguenos texto-siguenos-768px">
+                        <p>Síguenos en:</p>
+                        <Link
+                            target="blank"
+                            to="https://www.facebook.com/CK2.PE/"
+                            className="link_logo_social_media"
+                        >
+                            <FaFacebookF className="logo_social_media" />
+                        </Link>
+                        <Link
+                            target="blank"
+                            to="https://www.instagram.com/comunik2peru/"
+                            className="link_logo_social_media"
+                        >
+                            <FaInstagram className="logo_social_media" />
+                        </Link>
+                        <Link
+                            target="blank"
+                            to="http://tiktok.com/@grupo.ck2"
+                            className="link_logo_social_media"
+                        >
+                            <FaTiktok className="logo_social_media" />
+                        </Link>
+                    </div>
                 </div>
                 <div className="contenedor-dos">
                     <div className="subcontenedor-dos">
@@ -140,16 +165,28 @@ const Login = () => {
                 </div>
             </div>
             <div className="contenedor-rojo"></div>
-            <div className="texto-siguenos">
+            <div className="texto-siguenos disable">
                 <p>Síguenos en:</p>
-                <Link target="blank" to="https://www.facebook.com/CK2.PE/" className="link_logo_social_media">
+                <Link
+                    target="blank"
+                    to="https://www.facebook.com/CK2.PE/"
+                    className="link_logo_social_media"
+                >
                     <FaFacebookF className="logo_social_media" />
                 </Link>
-                <Link target="blank" to="https://www.instagram.com/comunik2peru/" className="link_logo_social_media">
-                    <FaInstagram className="logo_social_media"/>
+                <Link
+                    target="blank"
+                    to="https://www.instagram.com/comunik2peru/"
+                    className="link_logo_social_media"
+                >
+                    <FaInstagram className="logo_social_media" />
                 </Link>
-                <Link target="blank" to="http://tiktok.com/@grupo.ck2"  className="link_logo_social_media">
-                    <FaTiktok  className="logo_social_media"/>
+                <Link
+                    target="blank"
+                    to="http://tiktok.com/@grupo.ck2"
+                    className="link_logo_social_media"
+                >
+                    <FaTiktok className="logo_social_media" />
                 </Link>
             </div>
         </div>
