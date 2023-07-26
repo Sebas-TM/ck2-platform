@@ -97,6 +97,7 @@
 
 .tabla::-webkit-scrollbar {
     width: 5px;
+    height: 10px;
 }
 
 .tabla::-webkit-scrollbar-thumb {

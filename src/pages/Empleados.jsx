@@ -29,6 +29,7 @@ import ReactPaginate from "react-paginate";
 import EmpleadoDataCard from "../components/EmpleadoDataCard";
 import { useForm } from "react-hook-form";
 import VerEmpleado from "../components/VerEmpleado";
+import SpinnerIcono from "../components/SpinnerIcono";
 
 const cookies = new Cookies();
 
@@ -37,6 +38,7 @@ const Empleados = () => {
     const [employees, setEmployees] = useState([]);
     const [allEmployees, setAllEmployees] = useState([]);
     const [cargando, setCargando] = useState(false);
+    const [cargandoBusqueda, setCargandoBusqueda] = useState(false);
     const [tabla, setTabla] = useState([]);
     const [termino, setTermino] = useState("");
     const [handleModal, setHandleModal] = useState(false);
@@ -128,6 +130,7 @@ const Empleados = () => {
     };
 
     const obtenerEmpleados = async (page = 1) => {
+        setCargandoBusqueda(true);
         const res = await axios.get(
             `${config.API_URL}api/employees/list?page=${page}`
         );
@@ -135,6 +138,7 @@ const Empleados = () => {
         setEmployees(data);
         setTabla(data);
         setPagination(meta);
+        setCargandoBusqueda(false);
         tableRef.current.scrollTo(0, 0);
     };
 
@@ -144,18 +148,21 @@ const Empleados = () => {
     };
 
     const submitData = async (data) => {
-        setCargando(true);
         if (data.termino) {
+            setCargandoBusqueda(true);
+            setCargandoBusqueda(false);
             setTermino(data.termino);
         } else {
+            setCargandoBusqueda(true);
             setTermino("");
             obtenerEmpleados();
             tableRef.current.scrollTo(0, 0);
+            setCargandoBusqueda(false);
         }
-        setCargando(false);
     };
 
     const searchData = async (page = 1) => {
+        setCargandoBusqueda(true);
         await axios
             .post(
                 `${config.API_URL}api/employees/search?termino=${termino}&page=${page}`
@@ -164,6 +171,7 @@ const Empleados = () => {
                 setEmployees(res.data.data);
                 setPagination(res.data.meta);
             });
+        setCargandoBusqueda(false);
     };
 
     useEffect(() => {
@@ -265,6 +273,7 @@ const Empleados = () => {
                         className="form-buscar-empleados"
                         onSubmit={handleSubmit(submitData)}
                     >
+                        {cargandoBusqueda && <SpinnerIcono />}
                         <input
                             className="busqueda"
                             type="text"

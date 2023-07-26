@@ -12,10 +12,10 @@ const Modulos = () => {
             <Link to='/menu/recursos_humanos'>
                 <ModuloCard imagen={area_rrhh} texto={'Gestión de Talento Humano'} />
             </Link>
-            {/* <Link>
+            <Link to='/menu/cobranzas'>
                 <ModuloCard imagen={area_rrhh} texto={'Cobranzas'} />
             </Link>
-            <Link>
+            {/* <Link>
                 <ModuloCard imagen={area_rrhh} texto={'Administración'} />
             </Link>
             <Link>

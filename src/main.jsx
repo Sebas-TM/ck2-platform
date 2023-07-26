@@ -16,6 +16,8 @@ import Postulaciones from './pages/Postulaciones'
 import Gestiones from './pages/Gestiones'
 import Areas from './pages/Areas'
 import Puestos from './pages/Puestos'
+import Cobranzas from './pages/Cobranzas'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -72,6 +74,10 @@ const router = createBrowserRouter([
             element: <Gestiones />
           }
         ]
+      },
+      {
+        path: '/menu/cobranzas',
+        element: <Cobranzas/>
       },
       {
         path: '/menu/areas',
