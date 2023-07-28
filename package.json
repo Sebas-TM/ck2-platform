@@ -12,11 +12,14 @@
     "startArea": "json-server --watch area.json --port=3001"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "axios": "^1.4.0",
     "file-saver": "^2.0.5",
     "json-server": "^0.17.3",
     "md5": "^2.3.0",
     "react": "^18.2.0",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "^18.2.0",
     "react-excel-renderer": "^1.1.0",
     "react-hook-form": "^7.44.3",
