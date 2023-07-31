@@ -3,6 +3,7 @@ import "../style/cobranzas.css";
 import { useState } from "react";
 import { utils as XLSXUtils, readFile as XLSXRead } from "xlsx";
 import DataTable from "react-data-table-component";
+import MUIDataTable from "mui-datatables";
 
 const Cobranzas = () => {
     const { handleSubmit, register } = useForm();
@@ -28,12 +29,10 @@ const Cobranzas = () => {
         setRows(rows);
     };
 
-    console.log(rows);
-    console.log(headers);
-
-    const transformData = data => {
-        return data.map((item, index)=>{
+    const transformData = (data) => {
+        return data.map((item, index) => {
             return {
+                id: index + 1,
                 agente: item[0],
                 supervisor: item[1],
                 fecha: item[2],
@@ -69,28 +68,254 @@ const Cobranzas = () => {
                 observacion: item[32],
                 motivo_no_pago_1: item[33],
                 fecha_gestion: item[34],
-                medio_pago: item[35]            
-            }
-        })
-    }
+                medio_pago: item[35],
+            };
+        });
+    };
 
-    const newRows = transformData(rows)
+    const newRows = transformData(rows);
+
+    // console.log(newRows.length);
 
     const columns = [
-        {name: 'Agente', selector:'agente', sortable: true}
-    ]
+        {
+            name: "id",
+            selector: (row) => row.id,
+            sortable: true,
+        },
+        { name: "agente", selector: (row) => row.agente, sortable: true },
+        {
+            name: "supervisor",
+            selector: (row) => row.supervisor,
+            sortable: true,
+        },
+        { name: "fecha", selector: (row) => row.fecha, sortable: true },
+        {
+            name: "titular_nombres_apellidos",
+            label: "TITULAR - NOMBRES Y APELLIDOS",
+            selector: (row) => row.titular_nombres_apellidos,
+            sortable: true,
+        },
+        {
+            name: "tipo_doc",
+            label: "Tipo DOC",
+            selector: (row) => row.tipo_doc,
+            sortable: true,
+        },
+        {
+            name: "nro_documento",
+            label: "Nro. Documentos",
+            selector: (row) => row.nro_documento,
+            sortable: true,
+        },
+        {
+            name: "celular_grabacion_legal",
+            label: "CELULAR GRABACION LEGAL",
+            selector: (row) => row.celular_grabacion_legal,
+            sortable: true,
+        },
+        {
+            name: "celular_adicional_1",
+            label: "CELULAR ADICIONAL 1",
+            selector: (row) => row.celular_adicional_1,
+            sortable: true,
+        },
+        {
+            name: "celular_adicional_2",
+            label: "CELULAR ADICIONAL 2",
+            selector: (row) => row.celular_adicional_2,
+            sortable: true,
+        },
+        {
+            name: "producto_play",
+            label: "PRODUCTO (PLAY)",
+            selector: (row) => row.producto_play,
+            sortable: true,
+        },
+        {
+            name: "producto",
+            label: "PRODUCTO",
+            selector: (row) => row.producto,
+            sortable: true,
+        },
+        {
+            name: "plan_telefono",
+            label: "PLAN TELEFONO",
+            selector: (row) => row.plan_telefono,
+            sortable: true,
+        },
+        {
+            name: "plan_internet",
+            label: "PLAN INTERNET",
+            selector: (row) => row.plan_internet,
+            sortable: true,
+        },
+        {
+            name: "plan_cable",
+            label: "PLAN CABLE",
+            selector: (row) => row.plan_cable,
+            sortable: true,
+        },
+        {
+            name: "tipo_venta",
+            label: "TIPO DE VENTA",
+            selector: (row) => row.tipo_venta,
+            sortable: true,
+        },
+        {
+            name: "precio_total",
+            label: "PRECIO TOTAL",
+            selector: (row) => row.precio_total,
+            sortable: true,
+        },
+        {
+            name: "sot",
+            label: "SOT",
+            selector: (row) => row.sot,
+            sortable: true,
+        },
+        {
+            name: "sec",
+            label: "SEC",
+            selector: (row) => row.sec,
+            sortable: true,
+        },
+        {
+            name: "contrato",
+            label: "CONTRATO",
+            selector: (row) => row.contrato,
+            sortable: true,
+        },
+        {
+            name: "estado",
+            label: "ESTADO",
+            selector: (row) => row.estado,
+            sortable: true,
+        },
+        {
+            name: "ciclo_facturacion",
+            label: "CICLO FACTURACION",
+            selector: (row) => row.ciclo_facturacion,
+            sortable: true,
+        },
+        {
+            name: "fecha_emision",
+            label: "FECHA DE EMISION",
+            selector: (row) => row.fecha_emision,
+            sortable: true,
+        },
+        {
+            name: "vencimiento_facturas",
+            label: "VENCIMIENTO DE FACTURAS",
+            selector: (row) => row.vencimiento_facturas,
+            sortable: true,
+        },
+        {
+            name: "factura",
+            label: "FACTURA",
+            selector: (row) => row.factura,
+            sortable: true,
+        },
+        {
+            name: "pago",
+            label: "PAGO S/",
+            selector: (row) => row.pago,
+            sortable: true,
+        },
+        {
+            name: "estado_pago",
+            label: "ESTADO DE PAGO",
+            selector: (row) => row.estado_pago,
+            sortable: true,
+        },
+        {
+            name: "fecha_pago_mes_1",
+            label: "FECHA DE PAGO MES 1",
+            selector: (row) => row.fecha_pago_mes_1,
+            sortable: true,
+        },
+        {
+            name: "fecha_pago_mes_2",
+            label: "FECHA DE PAGO MES 2",
+            selector: (row) => row.fecha_pago_mes_2,
+            sortable: true,
+        },
+        {
+            name: "fecha_pago_mes_3",
+            label: "FECHA DE PAGO MES 3",
+            selector: (row) => row.fecha_pago_mes_3,
+            sortable: true,
+        },
+        {
+            name: "seguimiento_recibo",
+            label: "SEGUIMIENTO DE RECIBO",
+            selector: (row) => row.seguimiento_recibo,
+            sortable: true,
+        },
+        {
+            name: "customer_id",
+            label: "COSTUMER ID",
+            selector: (row) => row.customer_id,
+            sortable: true,
+        },
+        {
+            name: "comentario_llamada",
+            label: "COMENTARIO DE LLAMADA",
+            selector: (row) => row.comentario_llamada,
+            sortable: true,
+        },
+        {
+            name: "observacion",
+            label: "OBSERVACION",
+            selector: (row) => row.observacion,
+            sortable: true,
+        },
+        {
+            name: "motivo_no_pago_1",
+            label: "MOTIVO DE NO PAGO 1",
+            selector: (row) => row.motivo_no_pago_1,
+            sortable: true,
+        },
+        {
+            name: "fecha_gestion",
+            label: "FECHA DE GESTION",
+            selector: (row) => row.fecha_gestion,
+            sortable: true,
+        },
+        {
+            name: "medio_pago",
+            label: "MEDIO DE PAGO",
+            selector: (row) => row.medio_pago,
+            sortable: true,
+        },
+    ];
 
     const handleChangeCell = (e) => {
         console.log(e.target.value);
     };
 
+    const paginacionOpciones = {
+        rowsPerPageText: "Filas por página",
+        rangesSeparatorText: "de",
+        selectAllRowsItem: true,
+        selectAllRowsText: "Todos",
+    };
+
+    const guardarDatos = () => {
+        if(newRows.length > 0){
+            console.log(newRows);
+        } else {
+            console.log('No hay datos para cargar');
+        }
+    }
+
     return (
         <div className="contenedorCobranzas">
-            {/* <h1>Data Excel</h1>
+            <h1>Data Excel</h1>
 
             <input type="file" onChange={(e) => handleFile(e)} />
 
-            <table cellSpacing="0" cellPadding="0" className="">
+            {/* <table cellSpacing="0" cellPadding="0" className="">
                 <thead>
                     <tr>
                         {fileName &&
@@ -141,6 +366,18 @@ const Cobranzas = () => {
                     ))}
                 </tbody>
             </table> */}
+
+            {/* <MUIDataTable
+                columns={columns}
+                data={newRows}
+                title="Cobranzas"
+                // pagination
+                // paginationComponentOptions={paginacionOpciones}
+                fixedHeader
+                fixedHeaderScrollHeight="600px"
+            /> */}
+
+            <button onClick={guardarDatos}>Cargar datos</button>
         </div>
     );
 };

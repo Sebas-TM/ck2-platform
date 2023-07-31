@@ -2,14 +2,20 @@
     display: flex;
     gap: 3rem;
     font-family: "Poppins", sans-serif;
-    display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgb(252, 252, 252);
     height: 4rem;
     color: gray;
-    padding: 1rem 0 5rem 0;
+    padding: 1rem 0rem 5rem 0;
     user-select: none;
+}
+
+@media (min-width: 768px) {
+    .pagination {
+        width: 100rem;
+        justify-content: end;
+    }
 }
 .pagination li {
     list-style: none;
@@ -18,7 +24,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: .8rem;
+    border-radius: 0.8rem;
     font-size: 1.4rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -30,12 +36,13 @@
 }
 
 .pagination .active {
-    background-color: gray;
+    /* background-color: gray; */
     font-size: 1.4rem;
     /* padding: 0.7rem 1.4rem; */
     border-radius: 50%;
     transition: all 0.2s ease;
-    color: white;
+    color: #f82b3c;
+    font-weight: bold;
 }
 
 .pagination a {

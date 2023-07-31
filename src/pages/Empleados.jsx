@@ -418,7 +418,7 @@ const Empleados = () => {
                     </tbody>
                 </table>
 
-                <div className="contenedor-general-cards">
+                <div className="contenedor-general-cards" ref={tableRef}>
                     {sortedEmployees.map((sortedEmployee, index) => (
                         <div
                             key={index}
