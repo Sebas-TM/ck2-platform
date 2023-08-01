@@ -4,10 +4,12 @@
 }
 
 .tabla-cobranzas{
-    width: auto;
     margin: 5rem auto 10rem auto;
     max-height: 70rem;
     text-align: center;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    max-width: 1000rem;
 }
 
 .tabla-cobranzas thead th{

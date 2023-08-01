@@ -2,15 +2,24 @@ import { useForm } from "react-hook-form";
 import "../style/cobranzas.css";
 import { useState } from "react";
 import { utils as XLSXUtils, readFile as XLSXRead } from "xlsx";
-import DataTable from "react-data-table-component";
-import MUIDataTable from "mui-datatables";
+import {
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Cobranzas = () => {
     const { handleSubmit, register } = useForm();
     const [fileName, setFileName] = useState(null);
     const [headers, setHeaders] = useState([]);
     const [rows, setRows] = useState([]);
+    const [expanded, setExpanded] = useState(true);
 
+    const handleAccordionChange = () => {
+        setExpanded(!expanded);
+    };
     const handleFile = async (e) => {
         const file = e.target.files[0];
         setFileName(file.name);
@@ -74,7 +83,7 @@ const Cobranzas = () => {
     };
 
     const newRows = transformData(rows);
-
+    const [data, setData] = useState(newRows);
     // console.log(newRows.length);
 
     const columns = [
@@ -101,6 +110,7 @@ const Cobranzas = () => {
             label: "Tipo DOC",
             selector: (row) => row.tipo_doc,
             sortable: true,
+            editable: true,
         },
         {
             name: "nro_documento",
@@ -290,10 +300,6 @@ const Cobranzas = () => {
         },
     ];
 
-    const handleChangeCell = (e) => {
-        console.log(e.target.value);
-    };
-
     const paginacionOpciones = {
         rowsPerPageText: "Filas por página",
         rangesSeparatorText: "de",
@@ -302,12 +308,12 @@ const Cobranzas = () => {
     };
 
     const guardarDatos = () => {
-        if(newRows.length > 0){
+        if (newRows.length > 0) {
             console.log(newRows);
         } else {
-            console.log('No hay datos para cargar');
+            console.log("No hay datos para cargar");
         }
-    }
+    };
 
     return (
         <div className="contenedorCobranzas">
@@ -315,7 +321,11 @@ const Cobranzas = () => {
 
             <input type="file" onChange={(e) => handleFile(e)} />
 
-            {/* <table cellSpacing="0" cellPadding="0" className="">
+            {/* <table
+                cellSpacing="0"
+                cellPadding="0"
+                className="tabla tabla-cobranzas"
+            >
                 <thead>
                     <tr>
                         {fileName &&
@@ -324,48 +334,111 @@ const Cobranzas = () => {
                 </thead>
                 <tbody>
                     {newRows.map((r, i) => (
-                        <tr key={i}>
-                            <td>{r.agente}</td>
-                            <td>{r.supervisor}</td>
-                            <td>{r.fecha}</td>
-                            <td>{r.titular_nombres_apellidos}</td>
-                            <td>{r.tipo_doc}</td>
-                            <td>{r.nro_documento}</td>
-                            <td>{r.celular_grabacion_legal}</td>
-                            <td>{r.celular_adicional_1}</td>
-                            <td>{r.celular_adicional_2}</td>
-                            <td>{r.producto_play}</td>
-                            <td>{r.producto}</td>
-                            <td>{r.plan_telefono}</td>
-                            <td>{r.plan_internet}</td>
-                            <td>{r.plan_cable}</td>
-                            <td>{r.tipo_venta}</td>
-                            <td>{r.precio_total}</td>
-                            <td>{r.sot}</td>
-                            <td>{r.sec}</td>
-                            <td>{r.contrato}</td>
-                            <td>{r.estado}</td>
-                            <td>{r.ciclo_facturacion}</td>
-                            <td>{r.fecha_emision}</td>
-                            <td>{r.vencimiento_facturas}</td>
-                            <td>{r.factura}</td>
-                            <td>{r.pago}</td>
-                            <td>{r.estado_pago}</td>
-                            <td>{r.fecha_pago_mes_1}</td>
-                            <td>{r.fecha_pago_mes_2}</td>
-                            <td>{r.fecha_pago_mes_3}</td>
-                            <td>{r.seguimiento_recibo}</td>
-                            <td>{r.customer_id}</td>
-                            <td>{r.comentario_llamada}</td>
-                            <td>{r.supervisor}</td>
-                            <td>{r.observacion}</td>
-                            <td>{r.motivo_no_pago_1}</td>
-                            <td>{r.fecha_gestion}</td>
-                            <td>{r.medio_pago}</td>
+                        <tr>
+                            <td>
+                                <Accordion key={i}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1a-content"
+                                        id="panel1a-header"
+                                    >
+                                        <Typography>
+                                            <td>{r.agente}</td>
+                                            <td>{r.supervisor}</td>
+                                            <td>{r.fecha}</td>
+                                            <td>
+                                                {r.titular_nombres_apellidos}
+                                            </td>
+                                            <td>{r.tipo_doc}</td>
+                                            <td>{r.nro_documento}</td>
+                                            <td>{r.celular_grabacion_legal}</td>
+                                            <td>{r.celular_adicional_1}</td>
+                                            <td>{r.celular_adicional_2}</td>
+                                            <td>{r.producto_play}</td>
+                                            <td>{r.producto}</td>
+                                            <td>{r.plan_telefono}</td>
+                                            <td>{r.plan_internet}</td>
+                                            <td>{r.plan_cable}</td>
+                                            <td>{r.tipo_venta}</td>
+                                            <td>{r.precio_total}</td>
+                                            <td>{r.sot}</td>
+                                            <td>{r.sec}</td>
+                                            <td>{r.contrato}</td>
+                                            <td>{r.estado}</td>
+                                            <td>{r.ciclo_facturacion}</td>
+                                            <td>{r.fecha_emision}</td>
+                                            <td>{r.vencimiento_facturas}</td>
+                                            <td>{r.factura}</td>
+                                            <td>{r.pago}</td>
+                                            <td>{r.estado_pago}</td>
+                                            <td>{r.fecha_pago_mes_1}</td>
+                                            <td>{r.fecha_pago_mes_2}</td>
+                                            <td>{r.fecha_pago_mes_3}</td>
+                                            <td>{r.seguimiento_recibo}</td>
+                                            <td>{r.customer_id}</td>
+                                            <td>{r.comentario_llamada}</td>
+                                            <td>{r.supervisor}</td>
+                                            <td>{r.observacion}</td>
+                                            <td>{r.motivo_no_pago_1}</td>
+                                            <td>{r.fecha_gestion}</td>
+                                            <td>{r.medio_pago}</td>
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>
+                                            Lorem ipsum dolor sit amet,
+                                            consectetur adipiscing elit.
+                                            Suspendisse malesuada lacus ex, sit
+                                            amet blandit leo lobortis eget.
+                                        </Typography>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table> */}
+
+            <table cellSpacing="0" cellPadding="0" className="tabla">
+                <thead>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Edad</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hector</td>
+                        <td>Apellido</td>
+                        <td>Apellido</td>
+                        <td>24</td>
+                    </tr>
+
+                    <tr>
+                        <td colSpan={3}>
+                            <Accordion
+                                expanded={expanded}
+                                onChange={handleAccordionChange}
+                            >
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <Typography>
+                                        Detalles adicionales:
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Aquí puedes poner más detalles sobre el
+                                        elemento
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
             {/* <MUIDataTable
                 columns={columns}
@@ -377,6 +450,21 @@ const Cobranzas = () => {
                 fixedHeaderScrollHeight="600px"
             /> */}
 
+            {/* <DataTable
+                columns={columns}
+                data={newRows}
+                pagination
+                paginationComponentOptions={paginacionOpciones}
+                fixedHeader
+                fixedHeaderScrollHeight="600px"
+                // highlightOnHover
+                // striped
+                // selectableRows
+                // onRowUpdate={handleUpdate}
+                // data={data}
+                // columns={columns}
+                // onSave={handleUpdate}
+            /> */}
             <button onClick={guardarDatos}>Cargar datos</button>
         </div>
     );
