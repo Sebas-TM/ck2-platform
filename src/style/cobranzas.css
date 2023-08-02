@@ -1,20 +1,109 @@
-
-.contenedorCobranzas{
+.contenedorCobranzas {
     margin-top: 10rem;
 }
 
-.tabla-cobranzas{
+.tabla-cobranzas {
     margin: 5rem auto 10rem auto;
     max-height: 70rem;
     text-align: center;
     font-size: 1.2rem;
     text-transform: uppercase;
-    max-width: 1000rem;
+    max-width: 151rem;
 }
 
-.tabla-cobranzas thead th{
+.tabla-cobranzas thead th {
     min-width: 20rem;
     text-align: center;
     text-transform: uppercase;
 }
 
+/* .accordion-title:hover ~ .accordion-title td:nth-child(1) {
+    border-left: 2px solid red;
+} */
+
+.tabla-cobranzas .columnId-cobranzas {
+    min-width: 3rem;
+}
+.tabla-cobranzas .columnButton-cobranzas {
+    min-width: 7rem;
+}
+.accordion-title td {
+    padding: 0 1rem;
+    transition: all .3 ease;
+}
+
+.accordion-title .accordion-title-tipo_documento {
+    color: gray;
+}
+
+.accordion-content{
+    
+}
+.accordion-content td{
+    background-color: #ebebeb;
+    /* display: none; */
+}
+
+.accordion-content .input-group {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.accordion-content .input-group input {
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(220, 220, 220);
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+}
+
+.input-group label {
+    text-align: start;
+    text-transform: none;
+    color: gray;
+    font-size: 1rem;
+}
+
+.border-red {
+    border-left: 2px solid #f82b3c;
+}
+
+.accordion-title .estado {
+    background-color: gray;
+    color: white;
+    padding: 0.5rem 1rem;
+    width: 10rem;
+    margin: auto;
+    border-radius: 0.5rem;
+}
+
+.accordion-title .cobranza_estado_activo {
+    background-color: #39a739;
+}
+.accordion-title .cobranza_estado_suspendido {
+    background-color: #e1e12f;
+}
+
+.accordion-title .cobranza_estado_de_baja {
+    background-color: #eb4d4d;
+}
+
+.container_btn_cobranzas {
+    padding: 1rem;
+}
+
+.accordion-content .btn_cobranzas {
+    padding: 18rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.icon_flecha_cobranzas{
+    transition: transform .3s
+}
+
+.rotate{
+    transform: rotate(180deg);
+}
