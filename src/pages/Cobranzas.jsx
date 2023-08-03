@@ -8,6 +8,7 @@ const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
     const [headers, setHeaders] = useState([]);
     const [rows, setRows] = useState([]);
+    const [active, setActive] = useState(0);
     const {
         register,
         setValue,
@@ -340,6 +341,8 @@ const Cobranzas = () => {
                                 register={register}
                                 errors={errors}
                                 setValue={setValue}
+                                active={active}
+                                setActive={setActive}
                             />
                         ))}
                     </tbody>
