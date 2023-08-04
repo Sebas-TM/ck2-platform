@@ -8,7 +8,8 @@
     text-align: center;
     font-size: 1.2rem;
     text-transform: uppercase;
-    max-width: 152rem;
+    max-width: 147rem;
+    border-collapse: collapse;
 }
 
 .tabla-cobranzas thead th {
@@ -36,22 +37,21 @@
     color: gray;
 }
 
-.accordion-content {
-    display: none;
-    opacity: 0;
-    max-height: 0;
-    transition: all .3s ease;
-}
-
-.accordion-content.show {
-    display: table-row;
-    opacity: 1;
+.tabla-cobranzas tbody tr td {
     height: auto;
+    padding: 1rem 0;
 }
 
-.accordion-content td {
+.tabla-cobranzas tbody .accordion-content td {
     background-color: #ebebeb;
-    transition: display 0.3s ease;
+    padding: 0;
+    transition: all 0.3 ease;
+}
+
+.border-red {
+    border-left: 2px solid #f82b3c;
+    font-weight: bold;
+    color: #f82b3c;
 }
 
 .accordion-content .input-group {
@@ -75,10 +75,6 @@
     text-transform: none;
     color: gray;
     font-size: 1rem;
-}
-
-.border-red {
-    border-left: 2px solid #f82b3c;
 }
 
 .accordion-title .estado {
@@ -111,6 +107,15 @@
     font-family: "Poppins", sans-serif;
 }
 
+.accordion-content .subcontenedor_td {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.6s ease-in-out;
+}
+
+.subcontenedor_td.show {
+    max-height: 500px;
+}
 .icon_flecha_cobranzas {
     transition: transform 0.3s;
 }

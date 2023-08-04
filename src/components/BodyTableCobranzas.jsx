@@ -43,7 +43,7 @@ const BodyTableCobranzas = ({
         fecha_pago_mes_2,
         fecha_pago_mes_3,
         seguimiento_recibo,
-        customer_id,
+        customerId,
         comentario_llamada,
         observacion,
         motivo_no_pago_1,
@@ -53,7 +53,7 @@ const BodyTableCobranzas = ({
     } = item;
 
     const handleRowIsOpen = (id) => {
-        setActive(id);
+        setActive(id === active ? 0 : id);
 
         setValue("agente", agente);
         setValue("supervisor", supervisor);
@@ -85,19 +85,18 @@ const BodyTableCobranzas = ({
         setValue("fecha_pago_mes_2", fecha_pago_mes_2);
         setValue("fecha_pago_mes_3", fecha_pago_mes_3);
         setValue("seguimiento_recibo", seguimiento_recibo);
-        setValue("customer_id", customer_id);
+        setValue("customerId", customerId);
         setValue("comentario_llamada", comentario_llamada);
         setValue("observacion", observacion);
         setValue("motivo_no_pago_1", motivo_no_pago_1);
         setValue("fecha_gestion", fecha_gestion);
         setValue("medio_pago", medio_pago);
-        console.log(id);
     };
 
     return (
         <>
             <tr className="accordion-title" onClick={() => handleRowIsOpen(id)}>
-                <td className={active === id ? "border-red" : ""}>{id}</td>
+                <td className={active === id ? "border-red" : ""}>{index + 1}</td>
                 <td align="start">{agente}</td>
                 <td align="start">{titular_nombres_apellidos}</td>
                 <td align="start">
@@ -131,28 +130,22 @@ const BodyTableCobranzas = ({
                     />
                 </td>
             </tr>
-            {/* <td style={{display: `${display}`, opacity: `${opacity}`}} > Para modificar display y opacity*/}
 
-            <tr className={`accordion-content ${active === id ? "show" : ""}`}>
-                <td className={active ? "border-red" : ""}></td>
+            <tr className={`accordion-content ${active === id ? "show_tr " : ""}`}>
+                <td className={active === id ? "border-red" : ""}>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}></div>
+                </td>
                 <td>
-                    <div>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
                         <div className="input-group">
                             <label htmlFor="agente">Agente</label>
                             <input
                                 disabled={true}
                                 type="text"
                                 id="agente"
-                                {...register("agente", {
-                                    required: true,
-                                })}
+                                {...register("agente")}
                                 name="agente"
                             />
-                            {errors.agente?.type === "required" && (
-                                <p className="error-message">
-                                    Este campo es obligatorio
-                                </p>
-                            )}
                         </div>
                         <div className="input-group">
                             <label htmlFor="supervisor">Supervisor</label>
@@ -160,16 +153,9 @@ const BodyTableCobranzas = ({
                                 disabled={true}
                                 type="text"
                                 id="supervisor"
-                                {...register("supervisor", {
-                                    required: true,
-                                })}
+                                {...register("supervisor")}
                                 name="supervisor"
                             />
-                            {errors.supervisor?.type === "required" && (
-                                <p className="error-message">
-                                    Este campo es obligatorio
-                                </p>
-                            )}
                         </div>
                         <div className="input-group">
                             <label htmlFor="fecha">Fecha</label>
@@ -198,11 +184,6 @@ const BodyTableCobranzas = ({
                                 name="estado"
                                 {...register("estado")}
                             />
-                            {errors.estado?.type === "required" && (
-                                <p className="error-message">
-                                    Este campo es obligatorio
-                                </p>
-                            )}
                         </div>
                         <div className="input-group">
                             <label htmlFor="ciclo_facturacion">
@@ -218,7 +199,7 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
                         <div className="input-group">
                             <label htmlFor="titular_nombres_apellidos">
                                 Titular
@@ -228,7 +209,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="titular_nombres_apellidos"
                                 name="titular_nombres_apellidos"
-                                defaultValue={titular_nombres_apellidos}
+                                {...register("titular_nombres_apellidos")}
                             />
                         </div>
                         <div className="input-group">
@@ -238,7 +219,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="tipo_doc"
                                 name="tipo_doc"
-                                defaultValue={tipo_doc}
+                                {...register("tipo_doc")}
                             />
                         </div>
                         <div className="input-group">
@@ -250,7 +231,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="nro_documento"
                                 name="nro_documento"
-                                defaultValue={nro_documento}
+                                {...register("nro_documento")}
                             />
                         </div>
                         <div className="input-group">
@@ -261,7 +242,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="fecha_emision"
                                 name="fecha_emision"
-                                defaultValue={fecha_emision}
+                                {...register("fecha_emision")}
                             />
                         </div>
                         <div className="input-group">
@@ -272,7 +253,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="vencimiento_facturas"
                                 name="vencimiento_facturas"
-                                defaultValue={vencimiento_facturas}
+                                {...register("vencimiento_facturas")}
                             />
                         </div>
                         <div className="input-group">
@@ -281,13 +262,13 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="factura"
                                 name="factura"
-                                defaultValue={factura}
+                                {...register("factura")}
                             />
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
                         <div className="input-group">
                             <label htmlFor="celular_grabacion_legal">
                                 Celular de grabación legal
@@ -297,7 +278,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="celular_grabacion_legal"
                                 name="celular_grabacion_legal"
-                                defaultValue={celular_grabacion_legal}
+                                {...register("celular_grabacion_legal")}
                             />
                         </div>
                         <div className="input-group">
@@ -309,7 +290,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="celular_adicional_1"
                                 name="celular_adicional_1"
-                                defaultValue={celular_adicional_1}
+                                {...register("celular_adicional_1")}
                             />
                         </div>
                         <div className="input-group">
@@ -321,7 +302,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="celular_adicional_2"
                                 name="celular_adicional_2"
-                                defaultValue={celular_adicional_2}
+                                {...register("celular_adicional_2")}
                             />
                         </div>
                         <div className="input-group">
@@ -330,7 +311,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="pago"
                                 name="pago"
-                                defaultValue={pago}
+                                {...register("pago")}
                             />
                         </div>
                         <div className="input-group">
@@ -339,7 +320,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="estado_pago"
                                 name="estado_pago"
-                                defaultValue={estado_pago}
+                                {...register("estado_pago")}
                             />
                         </div>
                         <div className="input-group">
@@ -350,13 +331,13 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="fecha_pago_mes_1"
                                 name="fecha_pago_mes_1"
-                                defaultValue={fecha_pago_mes_1}
+                                {...register("fecha_pago_mes_1")}
                             />
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
                         <div className="input-group">
                             <label htmlFor="producto_play">Producto Play</label>
                             <input
@@ -364,7 +345,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="producto_play"
                                 name="producto_play"
-                                defaultValue={producto_play}
+                                {...register("producto_play")}
                             />
                         </div>
                         <div className="input-group">
@@ -374,7 +355,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="producto"
                                 name="producto"
-                                defaultValue={producto}
+                                {...register("producto")}
                             />
                         </div>
                         <div className="input-group">
@@ -384,7 +365,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="tipo_venta"
                                 name="tipo_venta"
-                                defaultValue={tipo_venta}
+                                {...register("tipo_venta")}
                             />
                         </div>
                         <div className="input-group">
@@ -395,7 +376,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="fecha_pago_mes_2"
                                 name="fecha_pago_mes_2"
-                                defaultValue={fecha_pago_mes_2}
+                                {...register("fecha_pago_mes_2")}
                             />
                         </div>
                         <div className="input-group">
@@ -406,7 +387,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="fecha_pago_mes_3"
                                 name="fecha_pago_mes_3"
-                                defaultValue={fecha_pago_mes_3}
+                                {...register("fecha_pago_mes_3")}
                             />
                         </div>
                         <div className="input-group">
@@ -417,13 +398,13 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="seguimiento_recibo"
                                 name="seguimiento_recibo"
-                                defaultValue={seguimiento_recibo}
+                                {...register("seguimiento_recibo")}
                             />
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
                         <div className="input-group">
                             <label htmlFor="plan_telefono">
                                 Plan de teléfono
@@ -433,7 +414,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="plan_telefono"
                                 name="plan_telefono"
-                                defaultValue={plan_telefono}
+                                {...register("plan_telefono")}
                             />
                         </div>
                         <div className="input-group">
@@ -445,7 +426,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="plan_internet"
                                 name="plan_internet"
-                                defaultValue={plan_internet}
+                                {...register("plan_internet")}
                             />
                         </div>
                         <div className="input-group">
@@ -455,16 +436,16 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="plan_cable"
                                 name="plan_cable"
-                                defaultValue={plan_cable}
+                                {...register("plan_cable")}
                             />
                         </div>
                         <div className="input-group">
-                            <label htmlFor="customer_id">Customer ID</label>
+                            <label htmlFor="customerId">Customer ID</label>
                             <input
                                 type="text"
-                                id="customer_id"
-                                name="customer_id"
-                                defaultValue={customer_id}
+                                id="customerId"
+                                name="customerId"
+                                {...register("customerId")}
                             />
                         </div>
                         <div className="input-group">
@@ -475,7 +456,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="comentario_llamada"
                                 name="comentario_llamada"
-                                defaultValue={comentario_llamada}
+                                {...register("comentario_llamada")}
                             />
                         </div>
                         <div className="input-group">
@@ -484,13 +465,13 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="observacion"
                                 name="observacion"
-                                defaultValue={observacion}
+                                {...register("observacion")}
                             />
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div>
+                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
                         <div className="input-group">
                             <label htmlFor="precio_total">Precio total</label>
                             <input
@@ -498,7 +479,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="precio_total"
                                 name="precio_total"
-                                defaultValue={precio_total}
+                                {...register("precio_total")}
                             />
                         </div>
                         <div className="input-group">
@@ -508,7 +489,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="sot"
                                 name="sot"
-                                defaultValue={sot}
+                                {...register("sot")}
                             />
                         </div>
                         <div className="input-group">
@@ -518,7 +499,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="sec"
                                 name="sec"
-                                defaultValue={sec}
+                                {...register("sec")}
                             />
                         </div>
                         <div className="input-group">
@@ -529,7 +510,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="motivo_no_pago_1"
                                 name="motivo_no_pago_1"
-                                defaultValue={motivo_no_pago_1}
+                                {...register("motivo_no_pago_1")}
                             />
                         </div>
                         <div className="input-group">
@@ -540,7 +521,7 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="fecha_gestion"
                                 name="fecha_gestion"
-                                defaultValue={fecha_gestion}
+                                {...register("fecha_gestion")}
                             />
                         </div>
                         <div className="input-group">
@@ -549,13 +530,13 @@ const BodyTableCobranzas = ({
                                 type="text"
                                 id="medio_pago"
                                 name="medio_pago"
-                                defaultValue={medio_pago}
+                                {...register("medio_pago")}
                             />
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div className="container_btn_cobranzas">
+                    <div className={` subcontenedor_td ${active === id ? "show" : ""}`}>
                         <input
                             className="btn_registrar btn_cobranzas"
                             type="submit"
