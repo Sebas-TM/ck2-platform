@@ -1,16 +1,16 @@
-.img_empleados{
+.img_empleados {
     width: 115%;
     height: auto;
     object-fit: contain;
 }
 
-.form-buscar-empleados{
+.form-buscar-empleados {
     display: flex;
-    gap: .5rem;
+    gap: 0.5rem;
     align-items: center;
 }
 
-.contenedor-empleados{
+.contenedor-empleados {
     max-width: 140rem;
     margin: 5rem auto;
     display: flex;
@@ -19,25 +19,29 @@
     max-height: 80rem;
 }
 
-.panel-filtro{
-    border-right: 1px solid rgb(233, 230, 230);
+.panel-filtro {
+    box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    border-radius: 1rem;
+    padding: 2rem;
 }
 
-.form-group-empleados{
+.form-group-empleados {
     /* overflow: scroll; */
     display: block;
 }
 
-@media (min-width:769px){
-    .contenedor-empleados{
+@media (min-width: 769px) {
+    .contenedor-empleados {
         flex-direction: row;
     }
 
-    .panel-filtro{
+    .panel-filtro {
         width: 25%;
     }
 
-    .form-group-empleados{
+    .form-group-empleados {
         /* overflow: scroll; */
         display: flex;
     }
@@ -52,7 +56,7 @@
     border-radius: 7px;
 }
 
-.empleados-data-card-contenedor{
+.empleados-data-card-contenedor {
     width: 100%;
     overflow-x: auto;
     margin: auto;
@@ -61,7 +65,7 @@
     padding: 1rem 0;
 }
 
-.empleados-data-card{
+.empleados-data-card {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,13 +73,19 @@
     gap: 2rem;
 }
 
-@media (min-width:769px){
-    .empleados-data-card-contenedor{
+@media (min-width: 769px) {
+    .empleados-data-card-contenedor {
         overflow: hidden;
         height: 30rem;
+        box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        border-radius: 1rem;
+        padding: 2rem;
+        width: 100rem;
     }
 
-    .empleados-data-card{
+    .empleados-data-card {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -84,5 +94,4 @@
         justify-content: space-evenly;
         width: 100%;
     }
-
 }

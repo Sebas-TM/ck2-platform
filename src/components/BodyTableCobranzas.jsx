@@ -96,7 +96,7 @@ const BodyTableCobranzas = ({
     return (
         <>
             <tr className="accordion-title" onClick={() => handleRowIsOpen(id)}>
-                <td className={active === id ? "border-red" : ""}>{index + 1}</td>
+                <td className={active === id ? "border-red" : ""}>{id}</td>
                 <td align="start">{agente}</td>
                 <td align="start">{titular_nombres_apellidos}</td>
                 <td align="start">

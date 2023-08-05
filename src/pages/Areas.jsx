@@ -145,7 +145,7 @@ const Areas = () => {
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tablaActive">
+                    className="tabla tablaActive ">
                     <thead>
                         <tr>
                             <th>ÁREAS</th>

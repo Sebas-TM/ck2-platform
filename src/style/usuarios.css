@@ -8,7 +8,8 @@
     /* height: 100%; */
 }
 
-.form-group-header, .form-group-header-lector {
+.form-group-header,
+.form-group-header-lector {
     width: 100%;
     /* height: 6rem; */
     margin-top: 4rem;
@@ -16,6 +17,11 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    border-radius: 1rem;
+    padding: 2rem 0;
 }
 
 .form-group-header h1 {
@@ -28,8 +34,13 @@
         max-width: 100%;
         margin-bottom: 0;
         justify-content: space-between;
+        box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        border-radius: 1rem;
+        padding: 2rem;
     }
-    .form-group-header-lector{
+    .form-group-header-lector {
         width: 95rem;
         max-width: 100%;
         margin-bottom: 0;
@@ -49,8 +60,8 @@
     font-family: "Poppins", sans-serif;
 }
 
-@media (min-width:769px){
-    .busqueda{
+@media (min-width: 769px) {
+    .busqueda {
         width: 20rem;
     }
 }
@@ -80,7 +91,7 @@
 }
 .tabla {
     margin-top: 5rem;
-    max-width: 100rem;
+    /* max-width: 100rem; */
     max-height: 50rem;
     overflow: scroll;
     display: none;
@@ -88,6 +99,8 @@
     border-radius: 0.8rem;
     border: 1px solid rgb(235, 235, 235);
 }
+
+
 
 @media (min-width: 769px) {
     .tabla {
@@ -114,7 +127,7 @@
 .tabla thead tr,
 .table__header tr {
     height: 4rem;
-    border-bottom: 1px solid rgb(235, 235, 235);    
+    border-bottom: 1px solid rgb(235, 235, 235);
 }
 
 .tabla thead th,
@@ -132,7 +145,7 @@
 
 .tabla tbody tr {
     cursor: pointer;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 
 .tabla tbody tr:hover {
@@ -145,20 +158,22 @@
     border-top: 1px solid rgb(235, 235, 235);
 }
 
+.tabla-empleados{
+    width: 104rem;
+}
+
 .tabla-empleados tbody tr td {
     /* height: 11rem; */
     padding: 0.5rem 1rem;
 }
 
-
-
 .tabla-empleados thead .nombre,
-.tabla-empleados thead .apellidos{
+.tabla-empleados thead .apellidos {
     width: 20rem;
 }
 
 .tabla-empleados thead .dni,
-.tabla-empleados thead .estado{
+.tabla-empleados thead .estado {
     width: 15rem;
 }
 

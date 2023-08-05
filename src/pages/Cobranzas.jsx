@@ -9,6 +9,10 @@ import { Toaster, toast } from "sonner";
 import swal from "sweetalert";
 import ReactPaginate from "react-paginate";
 import Spinner from "../components/Spinner";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import { FaSave, FaFileExport } from "react-icons/fa";
+import { ImDownload2 } from "react-icons/im";
+import { AiFillDelete } from "react-icons/ai";
 
 const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
@@ -20,7 +24,7 @@ const Cobranzas = () => {
         formState: { errors },
         handleSubmit,
     } = useForm();
-    const [data, setData] = useState([]);
+    const [dataCobranzas, setDataCobranzas] = useState([]);
     const [pagination, setPagination] = useState({
         current_page: 1,
         last_page: 1,
@@ -50,7 +54,7 @@ const Cobranzas = () => {
     const transformData = (data) => {
         return data.map((item) => {
             return {
-                agente: item[0] ? item[1] : "",
+                agente: item[0] ? item[0] : "",
                 supervisor: item[1] ? item[1] : "",
                 fecha: item[2] ? item[2] : "",
                 titular_nombres_apellidos: item[3] ? item[3] : "",
@@ -110,17 +114,18 @@ const Cobranzas = () => {
         }
     };
 
-    const consultarDatos = async (page = 23) => {
+    const consultarDatos = async (page) => {
         setCargando(true);
         const res = await axios.get(
             `${config.API_URL}api/cobranzas/list?page=${page}`
         );
         const { data, meta } = res.data;
-        setData(data);
+        setDataCobranzas(data);
         setPagination(meta);
         setCargando(false);
         console.log(page);
         console.log(pagination);
+        console.log(dataCobranzas);
     };
 
     const eliminarDatos = () => {
@@ -131,13 +136,13 @@ const Cobranzas = () => {
             if (res) {
                 try {
                     axios.delete(`${config.API_URL}api/cobranzas/delete`);
+                    consultarDatos();
                 } catch (e) {
                     console.log(e);
                 }
                 toast.success("Todos los registros fueron eliminados");
             }
         });
-        consultarDatos();
     };
     const submitData = (info) => {
         console.log(info);
@@ -148,15 +153,43 @@ const Cobranzas = () => {
     };
     return (
         <div className="contenedorCobranzas">
-            <h1>Data Excel</h1>
             <Toaster position="top-center" richColors />
-            {cargando && <Spinner />}
-            <input type="file" onChange={(e) => handleFile(e)} />
-            <button onClick={guardarDatos}>Guardar datos</button>
-            <button onClick={consultarDatos}>Consultar datos</button>
-            <button onClick={eliminarDatos}>
-                Elminar datos de la base de datos
-            </button>
+            <div className="header_cobranza">
+                <div className="title">
+                    <h1>Cobranzas</h1>
+                    <h3>Gestión de datos de clientes</h3>
+                </div>
+                <div className="container_buttons_cobranzas">
+                    <label className="uploadExcel" htmlFor="uploadExcel">
+                        <p>
+                            <span>Subir archivo</span>
+                            <RiFileExcel2Fill className="icon_button_cobranza" />
+                        </p>
+                        <input
+                            type="file"
+                            id="uploadExcel"
+                            className="input_uploadExcel"
+                            onChange={(e) => handleFile(e)}
+                        />
+                    </label>
+                    <button className="button_save" onClick={guardarDatos}>
+                        Guardar datos
+                        <FaSave className="icon_button_cobranza " />
+                    </button>
+                    <button className="button_load" onClick={consultarDatos}>
+                        Consultar datos
+                        <ImDownload2 className="icon_button_cobranza" />
+                    </button>
+                    <button className="button_delete" onClick={eliminarDatos}>
+                        Eliminar datos
+                        <AiFillDelete className="icon_button_cobranza" />
+                    </button>
+                    <button className="button_save" onClick={eliminarDatos}>
+                        Exportar datos
+                        <FaFileExport className="icon_button_cobranza" />
+                    </button>
+                </div>
+            </div>
 
             <form onSubmit={handleSubmit(submitData)}>
                 <table
@@ -179,12 +212,12 @@ const Cobranzas = () => {
                     </thead>
 
                     <tbody>
-                        {data.map((item, i) => (
+                        {dataCobranzas.map((item, i) => (
                             <BodyTableCobranzas
                                 item={item}
                                 index={i}
                                 key={i}
-                                data={data}
+                                // data={info}
                                 register={register}
                                 errors={errors}
                                 setValue={setValue}

@@ -1,9 +1,11 @@
 .contenedorCobranzas {
+    max-width: 147rem;
+    margin: auto;
     margin-top: 10rem;
 }
 
 .tabla-cobranzas {
-    margin: 5rem auto 10rem auto;
+    margin: 5rem auto 0 auto;
     max-height: 70rem;
     text-align: center;
     font-size: 1.2rem;
@@ -122,4 +124,93 @@
 
 .rotate {
     transform: rotate(180deg);
+}
+
+.header_cobranza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header_cobranza .title {
+    background-color: white;
+    box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    border-radius: 1rem;
+    padding: 2rem;
+    font-weight: normal;
+}
+
+.header_cobranza .title h3 {
+    color: gray;
+    font-weight: normal;
+}
+
+.uploadExcel {
+    width: 15rem;
+    display: inline-block;
+}
+
+.input_uploadExcel {
+    display: none;
+}
+
+.container_buttons_cobranzas {
+    display: flex;
+    gap: 2rem;
+    background-color: white;
+    box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+    border-radius: 1rem;
+    padding: 2rem;
+    justify-content: center;
+}
+.uploadExcel p {
+    background-color: #39a739;
+    padding: 2rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+}
+.uploadExcel p:hover {
+    background-color: #3a773a;
+}
+.icon_button_cobranza {
+    font-size: 1.8rem;
+}
+
+.container_buttons_cobranzas button {
+    width: 15rem;
+    padding: 2rem 1rem;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 1rem;
+}
+
+.button_save {
+    background-color: #1f2ce2;
+}
+
+.button_load {
+    background-color: #d8d530;
+}
+
+.button_delete {
+    background-color: #d63636;
 }
