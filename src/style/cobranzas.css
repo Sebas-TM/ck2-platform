@@ -92,7 +92,7 @@
     background-color: #39a739;
 }
 .accordion-title .cobranza_estado_suspendido {
-    background-color: #e1e12f;
+    background-color: #d3d32b;
 }
 
 .accordion-title .cobranza_estado_de_baja {
@@ -168,7 +168,7 @@
     justify-content: center;
 }
 .uploadExcel p {
-    background-color: #39a739;
+    background-color: #676966;
     padding: 2rem 1rem;
     display: flex;
     gap: 0.5rem;
@@ -181,7 +181,7 @@
     border-radius: 1rem;
 }
 .uploadExcel p:hover {
-    background-color: #3a773a;
+    background-color: #858784;
 }
 .icon_button_cobranza {
     font-size: 1.8rem;
@@ -204,13 +204,23 @@
 }
 
 .button_save {
-    background-color: #1f2ce2;
+    background-color: #676966;
+}
+.button_save:hover {
+    background-color: #858784;
 }
 
 .button_load {
-    background-color: #d8d530;
+    background-color: #676966;
+}
+.button_load:hover {
+    background-color: #858784;
 }
 
 .button_delete {
     background-color: #d63636;
+}
+
+.button_delete:hover {
+    background-color: #ff5656;
 }

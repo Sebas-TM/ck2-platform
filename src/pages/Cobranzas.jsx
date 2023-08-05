@@ -123,9 +123,6 @@ const Cobranzas = () => {
         setDataCobranzas(data);
         setPagination(meta);
         setCargando(false);
-        console.log(page);
-        console.log(pagination);
-        console.log(dataCobranzas);
     };
 
     const eliminarDatos = () => {
@@ -136,7 +133,6 @@ const Cobranzas = () => {
             if (res) {
                 try {
                     axios.delete(`${config.API_URL}api/cobranzas/delete`);
-                    consultarDatos();
                 } catch (e) {
                     console.log(e);
                 }
@@ -173,19 +169,19 @@ const Cobranzas = () => {
                         />
                     </label>
                     <button className="button_save" onClick={guardarDatos}>
-                        Guardar datos
+                        Guardar
                         <FaSave className="icon_button_cobranza " />
                     </button>
                     <button className="button_load" onClick={consultarDatos}>
-                        Consultar datos
+                        Consultar
                         <ImDownload2 className="icon_button_cobranza" />
                     </button>
                     <button className="button_delete" onClick={eliminarDatos}>
-                        Eliminar datos
+                        Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
                     </button>
-                    <button className="button_save" onClick={eliminarDatos}>
-                        Exportar datos
+                    <button className="button_save" onClick={()=>{console.log('Exportar datos');}}>
+                        Exportar
                         <FaFileExport className="icon_button_cobranza" />
                     </button>
                 </div>
