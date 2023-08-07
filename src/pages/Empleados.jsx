@@ -42,6 +42,7 @@ const Empleados = () => {
     const [tabla, setTabla] = useState([]);
     const [termino, setTermino] = useState("");
     const [handleModal, setHandleModal] = useState(false);
+    const tableRef1 = useRef(null);
     const tableRef = useRef(null);
     const [employeeId, setEmployeeId] = useState();
     const navigate = useNavigate();
@@ -139,6 +140,7 @@ const Empleados = () => {
         setTabla(data);
         setPagination(meta);
         setCargandoBusqueda(false);
+        tableRef1.current.scrollTo(0, 0);
         tableRef.current.scrollTo(0, 0);
     };
 
@@ -178,6 +180,7 @@ const Empleados = () => {
         if (termino) {
             searchData();
             tableRef.current.scrollTo(0, 0);
+            tableRef1.current.scrollTo(0, 0);
         } else {
             return () => {};
         }
@@ -209,9 +212,11 @@ const Empleados = () => {
         if (termino == "") {
             obtenerEmpleados(selected + 1);
             tableRef.current.scrollTo(0, 0);
+            tableRef1.current.scrollTo(0, 0);
         } else {
             searchData(selected + 1);
             tableRef.current.scrollTo(0, 0);
+            tableRef1.current.scrollTo(0, 0);
         }
     };
     return (
@@ -291,7 +296,7 @@ const Empleados = () => {
                     cellSpacing="0"
                     cellPadding="0"
                     className="tabla tabla-empleados"
-                    ref={tableRef}
+                    ref={tableRef1}
                 >
                     <thead>
                         <tr>

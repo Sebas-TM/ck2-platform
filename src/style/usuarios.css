@@ -92,15 +92,13 @@
 .tabla {
     margin-top: 5rem;
     /* max-width: 100rem; */
-    max-height: 50rem;
+    max-height: 35rem;
     overflow: scroll;
     display: none;
     font-size: 1.5rem;
     border-radius: 0.8rem;
     border: 1px solid rgb(235, 235, 235);
 }
-
-
 
 @media (min-width: 769px) {
     .tabla {
@@ -158,7 +156,7 @@
     border-top: 1px solid rgb(235, 235, 235);
 }
 
-.tabla-empleados{
+.tabla-empleados {
     width: 104rem;
 }
 
@@ -290,8 +288,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: end;
-    background-color: #f82b3c;
-    padding: 1rem 1rem 1.5rem 1rem;
+    padding: 1rem 1rem 1rem 1rem;
     border-radius: 0px 0px 200px 200px;
 }
 
@@ -316,7 +313,7 @@
 }
 
 .contenedor-redondo-foto {
-    /* border: 1px solid gray; */
+    border: .5rem solid #f82b3c;
     height: 9rem;
     width: 9rem;
     overflow: hidden;
@@ -330,6 +327,7 @@
     .contenedor-redondo-foto {
         height: 15rem;
         width: 15rem;
+        border: 1.5rem solid #f82b3c;
     }
 }
 

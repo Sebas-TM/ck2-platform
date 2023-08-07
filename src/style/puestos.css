@@ -11,7 +11,6 @@
     align-items: center;
     justify-content: center;
     margin: 0;
-    height: 40rem;
 }
 
 .form-table {
@@ -25,18 +24,19 @@
     text-transform: uppercase;
 }
 
-.btn_registrar-table{
+.btn_registrar-table {
     width: 100%;
 }
 @media (min-width: 769px) {
     .form-group-table {
         flex-direction: row;
         width: 80rem;
-        height: 100vh; 
-        padding-top: 0;       
+        height: 100vh;
+        padding-top: 0;
     }
     .form-group-header-table {
         margin-bottom: 0;
+        height: 40rem;
         width: 50%;
     }
 }

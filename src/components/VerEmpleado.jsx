@@ -27,7 +27,7 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
         setCargando(false);
     };
     return (
-        <div className="modal-ver-empleado">
+        <div className="modal-ver-empleado" >
             <section className="contenedor-ver-empleado">
                 <div className="contenedor-ver-empleado__contenedor-boton">
                     <button

@@ -28,7 +28,6 @@
 }
 
 .form-group-empleados {
-    /* overflow: scroll; */
     display: block;
 }
 
@@ -42,7 +41,6 @@
     }
 
     .form-group-empleados {
-        /* overflow: scroll; */
         display: flex;
     }
 }
