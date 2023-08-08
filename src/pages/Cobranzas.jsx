@@ -13,6 +13,8 @@ import { RiFileExcel2Fill } from "react-icons/ri";
 import { FaSave, FaFileExport } from "react-icons/fa";
 import { ImDownload2 } from "react-icons/im";
 import { AiFillDelete } from "react-icons/ai";
+import SpinnerContenido from "../components/SpinnerContenido";
+import SpinnerIcono from "../components/SpinnerIcono";
 
 const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
@@ -32,7 +34,8 @@ const Cobranzas = () => {
         total: 0,
     });
     const tableRef = useRef(null);
-    const [cargando, setCargando] = useState(false);
+    const [cargandoConsulta, setCargandoConsulta] = useState(false);
+    const [cargandoGuardar, setCargandoGuardar] = useState(false);
 
     const handleFile = async (e) => {
         const file = e.target.files[0];
@@ -95,9 +98,10 @@ const Cobranzas = () => {
     };
 
     const dataExcel = transformData(rows);
-
     const guardarDatos = async () => {
         if (dataExcel.length > 0) {
+            console.log(dataExcel);
+            setCargandoGuardar(true);
             await axios
                 .post(`${config.API_URL}api/cobranzas/insert`, dataExcel, {
                     headers: {
@@ -105,24 +109,25 @@ const Cobranzas = () => {
                     },
                     body: JSON.stringify(dataExcel),
                 })
-                .catch((error) => {
-                    console.log(error);
+                .then(() => toast.success("Datos registrados"))
+                .catch((res) => {
+                    toast.success(res.status)
                 });
-            toast.success("Datos registrados");
+            setCargandoGuardar(false);
         } else {
             console.log("No hay datos para cargar");
         }
     };
 
     const consultarDatos = async (page) => {
-        setCargando(true);
+        setCargandoConsulta(true);
         const res = await axios.get(
             `${config.API_URL}api/cobranzas/list?page=${page}`
         );
         const { data, meta } = res.data;
         setDataCobranzas(data);
         setPagination(meta);
-        setCargando(false);
+        setCargandoConsulta(false);
     };
 
     const eliminarDatos = () => {
@@ -170,17 +175,30 @@ const Cobranzas = () => {
                     </label>
                     <button className="button_save" onClick={guardarDatos}>
                         Guardar
-                        <FaSave className="icon_button_cobranza " />
+                        {cargandoGuardar ? (
+                            <SpinnerIcono />
+                        ) : (
+                            <FaSave className="icon_button_cobranza " />
+                        )}
                     </button>
                     <button className="button_load" onClick={consultarDatos}>
                         Consultar
-                        <ImDownload2 className="icon_button_cobranza" />
+                        {cargandoConsulta ? (
+                            <SpinnerIcono />
+                        ) : (
+                            <ImDownload2 className="icon_button_cobranza" />
+                        )}
                     </button>
                     <button className="button_delete" onClick={eliminarDatos}>
                         Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
                     </button>
-                    <button className="button_save" onClick={()=>{console.log('Exportar datos');}}>
+                    <button
+                        className="button_save"
+                        onClick={() => {
+                            console.log("Exportar datos");
+                        }}
+                    >
                         Exportar
                         <FaFileExport className="icon_button_cobranza" />
                     </button>

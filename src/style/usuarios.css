@@ -56,7 +56,7 @@
     border-radius: 0.8rem;
     border: 1px solid gray;
     outline: none;
-    width: 15rem;
+    width: 12rem;
     font-family: "Poppins", sans-serif;
 }
 
@@ -158,6 +158,8 @@
 
 .tabla-empleados {
     width: 104rem;
+    max-height: 40rem;
+
 }
 
 .tabla-empleados tbody tr td {
@@ -254,7 +256,7 @@
 
 .contenedor-cards {
     margin-bottom: 4rem;
-    width: 28rem;
+    width: 25rem;
     border: 1px solid rgb(233, 230, 230);
     padding: 0 2rem;
     border-radius: 0.8rem;

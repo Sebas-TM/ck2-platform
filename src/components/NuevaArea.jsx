@@ -6,12 +6,14 @@ import { useForm } from "react-hook-form";
 import { getArea, postArea, updateArea } from "../services/areas";
 import { Toaster, toast } from "sonner";
 import Spinner from "./Spinner";
+import SpinnerIcono from "./SpinnerIcono";
 import axios from "axios";
 import { config } from "../config";
 const NuevaArea = () => {
     const navigate = useNavigate();
     const { areaId } = useParams();
     const [cargando, setCargando] = useState(false);
+    const [cargandoSubmit, setCargandoSubmit] = useState(false);
     const {
         register,
         setValue,
@@ -30,10 +32,13 @@ const NuevaArea = () => {
     }, [areaId]);
 
     const obtenerArea = async () => {
-        const res = await axios.get(`${config.API_URL}api/areas/list/${areaId}`);
+        const res = await axios.get(
+            `${config.API_URL}api/areas/list/${areaId}`
+        );
         setValue("area", res.data.area);
     };
     const submitData = async (data) => {
+        setCargandoSubmit(true);
         if (!areaId) {
             await axios.post(`${config.API_URL}api/areas/create`, data, {
                 headers: {
@@ -41,13 +46,19 @@ const NuevaArea = () => {
                 },
             });
             toast.success("Datos registrados!");
+            setCargandoSubmit(false);
         } else {
-            await axios.post(`${config.API_URL}api/areas/update/${areaId}`, data, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+            await axios.post(
+                `${config.API_URL}api/areas/update/${areaId}`,
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
             toast.success("Datos actualizados!");
+            setCargandoSubmit(false);
         }
     };
 
@@ -59,7 +70,8 @@ const NuevaArea = () => {
                 <div className="contenedor-form-header">
                     <button
                         onClick={() => navigate("/menu/areas")}
-                        className="btn_regresar">
+                        className="btn_regresar"
+                    >
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
@@ -93,13 +105,15 @@ const NuevaArea = () => {
                         </div>
                     </div>
                     <div className="form-group__input-group input-area">
-                        <input
-                            type="submit"
-                            className="btn_registrar"
-                            value={
-                                areaId ? "Guardar cambios" : "Registrar área"
-                            }
-                        />
+                        <button className="btn_registrar">
+                            {cargandoSubmit ? (
+                                <SpinnerIcono />
+                            ) : employeeId ? (
+                                "Guardar cambios"
+                            ) : (
+                                "Registrar área"
+                            )}
+                        </button>
                     </div>
                 </form>
             </div>

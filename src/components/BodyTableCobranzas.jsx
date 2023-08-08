@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../style/cobranzas.css";
 import { FiChevronDown } from "react-icons/fi";
+import { config } from "../config";
+import axios from "axios";
 
 const BodyTableCobranzas = ({
     item,
@@ -93,6 +95,13 @@ const BodyTableCobranzas = ({
         setValue("medio_pago", medio_pago);
     };
 
+    const listRow = async (id) => {
+        const res = await axios.get(
+            `${config.API_URL}api/cobranzas/list/${id}`
+        );
+        const { data } = res;
+    };
+
     return (
         <>
             <tr className="accordion-title" onClick={() => handleRowIsOpen(id)}>
@@ -131,12 +140,24 @@ const BodyTableCobranzas = ({
                 </td>
             </tr>
 
-            <tr className={`accordion-content ${active === id ? "show_tr " : ""}`}>
+            <tr
+                className={`accordion-content ${
+                    active === id ? "show_tr " : ""
+                }`}
+            >
                 <td className={active === id ? "border-red" : ""}>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}></div>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    ></div>
                 </td>
                 <td>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <div className="input-group">
                             <label htmlFor="agente">Agente</label>
                             <input
@@ -199,7 +220,11 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <div className="input-group">
                             <label htmlFor="titular_nombres_apellidos">
                                 Titular
@@ -268,7 +293,11 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <div className="input-group">
                             <label htmlFor="celular_grabacion_legal">
                                 Celular de grabación legal
@@ -337,7 +366,11 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <div className="input-group">
                             <label htmlFor="producto_play">Producto Play</label>
                             <input
@@ -404,7 +437,11 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <div className="input-group">
                             <label htmlFor="plan_telefono">
                                 Plan de teléfono
@@ -471,7 +508,11 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div className={`subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={`subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <div className="input-group">
                             <label htmlFor="precio_total">Precio total</label>
                             <input
@@ -536,7 +577,11 @@ const BodyTableCobranzas = ({
                     </div>
                 </td>
                 <td>
-                    <div className={` subcontenedor_td ${active === id ? "show" : ""}`}>
+                    <div
+                        className={` subcontenedor_td ${
+                            active === id ? "show" : ""
+                        }`}
+                    >
                         <input
                             className="btn_registrar btn_cobranzas"
                             type="submit"

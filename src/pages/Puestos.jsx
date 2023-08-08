@@ -3,9 +3,10 @@ import axios from "axios";
 import { config } from "../config";
 import { Toaster, toast } from "sonner";
 import Spinner from "../components/Spinner";
-import { FiEdit, FiTrash } from "react-icons/fi";
+import { FiEdit, FiTrash,FiChevronLeft } from "react-icons/fi";
 import Cookies from "universal-cookie";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import "../style/puestos.css";
 
@@ -13,7 +14,7 @@ const cookies = new Cookies();
 
 const Puestos = () => {
     const rol = cookies.get("rol");
-
+    const navigate = useNavigate()
     const [puestos, setPuestos] = useState([]);
     const [puestoId, setPuestoId] = useState();
     const [cargando, setCargando] = useState(false);
@@ -108,6 +109,10 @@ const Puestos = () => {
                     >
                         <div className="subcontenedor">
                             <div className="form-group__input-group input-area input-area-table">
+                            <button className="btn_regresar btn_regresar_area" onClick={()=>navigate(-1)}>
+                                    <FiChevronLeft />
+                                    <p>Regresar</p>
+                                </button>
                                 <label htmlFor="puesto">
                                     {puestoId
                                         ? "Editar"

@@ -15,8 +15,10 @@ import {
     FiEye,
     FiSearch,
     FiUsers,
+    FiChevronDown,
 } from "react-icons/fi";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
+import { FiGrid } from "react-icons/fi";
 import Cookies from "universal-cookie";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
@@ -45,6 +47,7 @@ const Empleados = () => {
     const tableRef1 = useRef(null);
     const tableRef = useRef(null);
     const [employeeId, setEmployeeId] = useState();
+    const [panelIsOpen, setPanelIsOpen] = useState(false);
     const navigate = useNavigate();
     const {
         register,
@@ -52,7 +55,6 @@ const Empleados = () => {
         formState: { errors },
         handleSubmit,
     } = useForm();
-
     const sortedEmployees = employees.sort((a, b) => b.id - a.id);
     const [
         cantidadEmpleadosPorEstadoActivo,
@@ -219,10 +221,34 @@ const Empleados = () => {
             tableRef1.current.scrollTo(0, 0);
         }
     };
+
+    const handlePanelIsOpen = () => {
+        setPanelIsOpen(!panelIsOpen);
+    };
     return (
         <div className="contenedor-empleados">
-            <div className="panel-filtro">
-                <h1>Total de registros: {allEmployees.length}</h1>
+            <div
+                className={`panel-filtro ${panelIsOpen ? "show" : ""}`}
+                onClick={handlePanelIsOpen}
+            >
+                <div className="panel_filtro_titulo">
+                    <h1>Total de registros: {allEmployees.length}</h1>
+                    <FiChevronDown  className={`panel_filtro_titulo_arrow ${panelIsOpen ? "show" : ""}`}/>
+                </div>
+                <Link
+                    to="/menu/areas"
+                    className={`link_filtro ${rol == 3 ? "isNotAdmin" : " "}`}
+                >
+                    <FiGrid className="link_filtro_icon" />
+                    <p>Áreas</p>
+                </Link>
+                <Link
+                    to="/menu/puestos"
+                    className={`link_filtro ${rol == 3 ? "isNotAdmin" : " "}`}
+                >
+                    <FiGrid className="link_filtro_icon" />
+                    <p>Puestos</p>
+                </Link>
             </div>
             <div className="form-group form-group-empleados">
                 <div className="empleados-data-card-contenedor">
@@ -278,7 +304,6 @@ const Empleados = () => {
                         className="form-buscar-empleados"
                         onSubmit={handleSubmit(submitData)}
                     >
-                        {cargandoBusqueda && <SpinnerIcono />}
                         <input
                             className="busqueda"
                             type="text"
@@ -288,141 +313,10 @@ const Empleados = () => {
                             placeholder="Realizar búsqueda"
                         />
                         <button className="btn_add" type="submit">
-                            <FiSearch className="icon" />
+                            {cargandoBusqueda ? <SpinnerIcono/> : <FiSearch className="icon" />}
                         </button>
                     </form>
                 </div>
-                <table
-                    cellSpacing="0"
-                    cellPadding="0"
-                    className="tabla tabla-empleados"
-                    ref={tableRef1}
-                >
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th className="nombre">Nombre</th>
-                            <th className="apellidos">Apellidos</th>
-                            {/* <th>Apellido materno</th> */}
-                            <th className="dni">DNI</th>
-                            <th className="estado">Estado</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sortedEmployees.map((sortedEmployee, index) => (
-                            <tr
-                                key={sortedEmployee.id}
-                                className={
-                                    sortedEmployee.estado === "No activo"
-                                        ? "empleado-no-activo"
-                                        : ""
-                                }
-                            >
-                                <td
-                                    align="center"
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
-                                >
-                                    <div className="contenedor-imagenTable">
-                                        <img
-                                            loading="lazy"
-                                            className="img_empleados"
-                                            src={
-                                                sortedEmployee.imagen
-                                                    ? `${config.API_URL}${
-                                                          sortedEmployee.imagen
-                                                      }?${Date.now()}`
-                                                    : foto_personal
-                                            }
-                                            alt="foto_personal"
-                                        />
-                                    </div>
-                                </td>
-                                <td
-                                    className="data data_nombre"
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
-                                >
-                                    {sortedEmployee.nombre}
-                                </td>
-                                <td
-                                    className="data data_apaterno"
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
-                                >
-                                    {`${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}
-                                </td>
-                                <td
-                                    className="data data_amaterno"
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
-                                >
-                                    {sortedEmployee.dni}
-                                </td>
-                                <td
-                                    className="data data_amaterno"
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
-                                >
-                                    {sortedEmployee.estado}
-                                </td>
-                                <td className="data data_opciones">
-                                    <button
-                                        onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
-                                        }
-                                        className="btn_option view"
-                                    >
-                                        <FiEye className="icon" />
-                                    </button>
-
-                                    <Link
-                                        className="btn_option wsp"
-                                        target="blank"
-                                        to={`https://wa.me/51${sortedEmployee.celular}`}
-                                    >
-                                        <BsWhatsapp className="icon" />
-                                    </Link>
-
-                                    <button
-                                        onClick={() =>
-                                            navigate(
-                                                `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
-                                            )
-                                        }
-                                        className={
-                                            rol != 3
-                                                ? "btn_option edit"
-                                                : "disable-button"
-                                        }
-                                    >
-                                        <FiEdit className="icon" />
-                                    </button>
-
-                                    <button
-                                        onClick={() =>
-                                            eliminarEmpleado(sortedEmployee.id)
-                                        }
-                                        className={
-                                            rol == 1
-                                                ? "btn_option delete"
-                                                : "disable-button"
-                                        }
-                                    >
-                                        <FiTrash className="icon" />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
                 <div className="contenedor-general-cards" ref={tableRef}>
                     {sortedEmployees.map((sortedEmployee, index) => (
                         <div
@@ -527,21 +421,158 @@ const Empleados = () => {
                         </div>
                     ))}
                 </div>
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel=">"
-                    previousLabel="<"
-                    pageCount={pagination.last_page}
-                    pageRangeDisplayed={3}
-                    marginPagesDisplayed={3}
-                    onPageChange={handlePageChange}
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    activeLinkClassName="page-num"
-                    pageLinkClassName="page-num"
-                    previousLinkClassName="page-num"
-                    nextLinkClassName="page-num"
-                />
+                <div>
+                    <table
+                        cellSpacing="0"
+                        cellPadding="0"
+                        className="tabla tabla-empleados"
+                        ref={tableRef1}
+                    >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th className="nombre">Nombre</th>
+                                <th className="apellidos">Apellidos</th>
+                                {/* <th>Apellido materno</th> */}
+                                <th className="dni">DNI</th>
+                                <th className="estado">Estado</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sortedEmployees.map((sortedEmployee, index) => (
+                                <tr
+                                    key={sortedEmployee.id}
+                                    className={
+                                        sortedEmployee.estado === "No activo"
+                                            ? "empleado-no-activo"
+                                            : ""
+                                    }
+                                >
+                                    <td
+                                        align="center"
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                    >
+                                        <div className="contenedor-imagenTable">
+                                            <img
+                                                loading="lazy"
+                                                className="img_empleados"
+                                                src={
+                                                    sortedEmployee.imagen
+                                                        ? `${config.API_URL}${
+                                                              sortedEmployee.imagen
+                                                          }?${Date.now()}`
+                                                        : foto_personal
+                                                }
+                                                alt="foto_personal"
+                                            />
+                                        </div>
+                                    </td>
+                                    <td
+                                        className="data data_nombre"
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                    >
+                                        {sortedEmployee.nombre}
+                                    </td>
+                                    <td
+                                        className="data data_apaterno"
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                    >
+                                        {`${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}
+                                    </td>
+                                    <td
+                                        className="data data_amaterno"
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                    >
+                                        {sortedEmployee.dni}
+                                    </td>
+                                    <td
+                                        className="data data_amaterno"
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                    >
+                                        {sortedEmployee.estado}
+                                    </td>
+                                    <td className="data data_opciones">
+                                        <button
+                                            onClick={() =>
+                                                openHandleModal(
+                                                    sortedEmployee.id
+                                                )
+                                            }
+                                            className="btn_option view"
+                                        >
+                                            <FiEye className="icon" />
+                                        </button>
+
+                                        <Link
+                                            className="btn_option wsp"
+                                            target="blank"
+                                            to={`https://wa.me/51${sortedEmployee.celular}`}
+                                        >
+                                            <BsWhatsapp className="icon" />
+                                        </Link>
+
+                                        <button
+                                            onClick={() =>
+                                                navigate(
+                                                    `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
+                                                )
+                                            }
+                                            className={
+                                                rol != 3
+                                                    ? "btn_option edit"
+                                                    : "disable-button"
+                                            }
+                                        >
+                                            <FiEdit className="icon" />
+                                        </button>
+
+                                        <button
+                                            onClick={() =>
+                                                eliminarEmpleado(
+                                                    sortedEmployee.id
+                                                )
+                                            }
+                                            className={
+                                                rol == 1
+                                                    ? "btn_option delete"
+                                                    : "disable-button"
+                                            }
+                                        >
+                                            <FiTrash className="icon" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel=">"
+                        previousLabel="<"
+                        pageCount={pagination.last_page}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={3}
+                        onPageChange={handlePageChange}
+                        containerClassName="pagination"
+                        activeClassName="active"
+                        activeLinkClassName="page-num"
+                        pageLinkClassName="page-num"
+                        previousLinkClassName="page-num"
+                        nextLinkClassName="page-num"
+                    />
+                </div>
             </div>
         </div>
     );

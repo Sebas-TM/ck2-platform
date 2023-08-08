@@ -9,11 +9,13 @@ import Spinner from "./Spinner";
 import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from "../config";
 import axios from "axios";
+import SpinnerIcono from "./SpinnerIcono";
 
 const NuevoEmpleado = () => {
     const navigate = useNavigate();
     const { employeeId } = useParams();
     const [cargando, setCargando] = useState(false);
+    const [cargandoSubmit, setCargandoSubmit] = useState(false);
     const [areas, setAreas] = useState([]);
     const [puestos, setPuestos] = useState([]);
     const [empleados, setEmpleados] = useState([]);
@@ -97,7 +99,7 @@ const NuevoEmpleado = () => {
     }, [employeeId]);
 
     const submitData = async (data) => {
-        setCargando(true);
+        setCargandoSubmit(true);
         const formData = {
             nombre: data.nombre,
             apellido_paterno: data.apellido_paterno,
@@ -130,7 +132,7 @@ const NuevoEmpleado = () => {
                 })
                 .then(() => {
                     toast.success("Datos registrados!");
-                    setCargando(false);
+                    setCargandoSubmit(false);
 
                     setValue("nombre", "");
                     setValue("apellido_paterno", "");
@@ -152,7 +154,7 @@ const NuevoEmpleado = () => {
                 })
                 .catch((error) => {
                     toast.error(error.response.data.message);
-                    setCargando(false);
+                    setCargandoSubmit(false);
                 });
         } else {
             await axios
@@ -167,26 +169,26 @@ const NuevoEmpleado = () => {
                 )
                 .then(() => {
                     toast.success("Datos actualizados!");
-                    setCargando(false);
+                    setCargandoSubmit(false);
                 })
                 .catch((error) => {
                     toast.error(error.response.data.message);
                     console.log(error);
-                    setCargando(false);
+                    setCargandoSubmit(false);
                 });
         }
     };
 
     return (
         <section className="contenedor_nuevo-dato">
-            {cargando && <Spinner />}
             <Toaster position="top-center" richColors />
             <div className="contenedor-form">
                 {/* <Toaster /> */}
                 <div className="contenedor-form-header">
                     <button
                         onClick={() => navigate(-1)}
-                        className="btn_regresar">
+                        className="btn_regresar"
+                    >
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
@@ -263,7 +265,8 @@ const NuevoEmpleado = () => {
                                 <label htmlFor="imagen">Foto</label>
                                 <label
                                     className="label_imagen"
-                                    htmlFor="imagen">
+                                    htmlFor="imagen"
+                                >
                                     <p>
                                         {imagen != ""
                                             ? "Imagen seleccionada"
@@ -306,7 +309,8 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="estado"
-                                    id="estado">
+                                    id="estado"
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="Activo">Activo</option>
                                     <option value="No activo">No activo</option>
@@ -476,7 +480,8 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="relacion_contacto"
-                                    id="relacion_contacto">
+                                    id="relacion_contacto"
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="Padre">Padre</option>
                                     <option value="Madre">Madre</option>
@@ -499,7 +504,8 @@ const NuevoEmpleado = () => {
                                         required: true,
                                     })}
                                     name="area"
-                                    id="area">
+                                    id="area"
+                                >
                                     <option value="">--Seleccione--</option>
                                     {areas.map((area) => (
                                         <option value={area.area} key={area.id}>
@@ -522,12 +528,14 @@ const NuevoEmpleado = () => {
                                     id="puesto"
                                     {...register("puesto", {
                                         required: true,
-                                    })}>
+                                    })}
+                                >
                                     <option value="">--Seleccione--</option>
                                     {puestos.map((puesto) => (
                                         <option
                                             value={puesto.puesto}
-                                            key={puesto.id}>
+                                            key={puesto.id}
+                                        >
                                             {puesto.puesto}
                                         </option>
                                     ))}
@@ -557,7 +565,8 @@ const NuevoEmpleado = () => {
                                     {empleados.map((empleado) => (
                                         <option
                                             key={empleado.id}
-                                            value={`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}>{`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}</option>
+                                            value={`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}
+                                        >{`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}</option>
                                     ))}
                                 </datalist>
                                 {errors.jefe_inmediato?.type === "required" && (
@@ -596,7 +605,8 @@ const NuevoEmpleado = () => {
                                     id="grupo"
                                     {...register("grupo", {
                                         required: true,
-                                    })}>
+                                    })}
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="COMUNIK2">COMUNIK2</option>
                                     <option value="GLOBAL">GLOBAL</option>
@@ -614,7 +624,8 @@ const NuevoEmpleado = () => {
                                     id="sede"
                                     {...register("sede", {
                                         required: true,
-                                    })}>
+                                    })}
+                                >
                                     <option value="">--Seleccione--</option>
                                     <option value="Lima">Lima</option>
                                     <option value="Trujillo">Trujillo</option>
@@ -628,15 +639,15 @@ const NuevoEmpleado = () => {
                         </div>
                     </div>
                     <div className="form-group__input-group">
-                        <input
-                            type="submit"
-                            className="btn_registrar"
-                            value={
-                                employeeId
-                                    ? "Guardar cambios"
-                                    : "Registrar personal"
-                            }
-                        />
+                        <button className="btn_registrar">
+                            {cargandoSubmit ? (
+                                <SpinnerIcono />
+                            ) : employeeId ? (
+                                "Guardar cambios"
+                            ) : (
+                                "Registrar personal"
+                            )}
+                        </button>
                     </div>
                 </form>
             </div>

@@ -1,9 +1,9 @@
 .sk-chase {
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height: 15px;
     position: relative;
     animation: sk-chase 2.5s infinite linear both;
-    margin-right: 1rem;
+    /* margin-right: 1rem; */
   }
   
   .sk-chase-dot {

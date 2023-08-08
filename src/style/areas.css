@@ -8,7 +8,28 @@
     max-height: 40rem;
 }
 
+.btn_regresar_area{
+    width: 4rem;
+    font-family: 'Poppins', sans-serif;
+}
 
+.btn_regresar_area p{
+    display: none;
+}
+
+.container_btn_regresar{
+    width: 4rem;
+}
+
+@media (min-width:768px){
+    .btn_regresar_area p{
+        display: block;
+    }
+    .btn_regresar_area{
+        width: auto;
+        font-family: 'Poppins', sans-serif;
+    }
+}
 .swal-modal{
     width: 35rem;
 }

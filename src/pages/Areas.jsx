@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FiEdit, FiTrash, FiPlus } from "react-icons/fi";
+import { FiEdit, FiTrash, FiPlus, FiChevronLeft } from "react-icons/fi";
 import "../style/areas.css";
 import { Toaster, toast } from "sonner";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
+import SpinnerIcono from "../components/SpinnerIcono";
 import axios from "axios";
 import { config } from "../config";
 import Cookies from "universal-cookie";
@@ -19,17 +20,17 @@ const Areas = () => {
         window.location.href = "/menu";
     }
 
-    const navigate = useNavigate();
     const [areas, setAreas] = useState([]);
     const [areaId, setAreaId] = useState();
     const [cargando, setCargando] = useState(false);
+    const [cargandoSubmit, setCargandoSubmit] = useState(false);
     const {
         register,
         setValue,
         formState: { errors },
         handleSubmit,
     } = useForm();
-
+    const navigate = useNavigate();
     const obtenerAreas = async () => {
         try {
             const res = await axios.get(`${config.API_URL}api/areas/list`);
@@ -50,13 +51,16 @@ const Areas = () => {
 
     const obtenerArea = async (areaId) => {
         setAreaId(areaId);
-        const res = await axios.get(`${config.API_URL}api/areas/list/${areaId}`);
+        const res = await axios.get(
+            `${config.API_URL}api/areas/list/${areaId}`
+        );
         setValue("area", res.data.area);
     };
 
     const sortedAreas = areas.sort((a, b) => b.id - a.id);
 
     const submitData = async (data) => {
+        setCargandoSubmit(true);
         if (!areaId) {
             await axios.post(`${config.API_URL}api/areas/create`, data, {
                 headers: {
@@ -66,16 +70,22 @@ const Areas = () => {
             toast.success("Dato registrado!");
             obtenerAreas();
             setValue("area", "");
+            setCargandoSubmit(false);
         } else {
-            await axios.post(`${config.API_URL}api/areas/update/${areaId}`, data, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+            await axios.post(
+                `${config.API_URL}api/areas/update/${areaId}`,
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
             toast.success("Dato actualizado!");
             obtenerAreas();
             setAreaId();
             setValue("area", "");
+            setCargandoSubmit(false);
         }
     };
 
@@ -105,9 +115,19 @@ const Areas = () => {
 
             <div className="form-group form-group-table">
                 <div className="form-group-header form-group-header-table">
+                    <div className="container_btn_regresar">
+                        <button
+                            className="btn_regresar btn_regresar_area"
+                            onClick={() => navigate(-1)}
+                        >
+                            <FiChevronLeft />
+                            <p>Regresar</p>
+                        </button>
+                    </div>
                     <form
                         onSubmit={handleSubmit(submitData)}
-                        className="form-table">
+                        className="form-table"
+                    >
                         <div className="subcontenedor">
                             <div className="form-group__input-group input-area input-area-table">
                                 <label htmlFor="area">
@@ -130,22 +150,23 @@ const Areas = () => {
                             </div>
                         </div>
                         <div className="form-group__input-group input-area input-area-table">
-                            <input
-                                type="submit"
-                                className="btn_registrar btn_registrar-table"
-                                value={
-                                    areaId
-                                        ? "Guardar cambios"
-                                        : "Registrar area"
-                                }
-                            />
+                            <button className="btn_registrar">
+                                {cargandoSubmit ? (
+                                    <SpinnerIcono />
+                                ) : areaId ? (
+                                    "Guardar cambios"
+                                ) : (
+                                    "Registrar área"
+                                )}
+                            </button>
                         </div>
                     </form>
                 </div>
                 <table
                     cellSpacing="0"
                     cellPadding="0"
-                    className="tabla tablaActive ">
+                    className="tabla tablaActive "
+                >
                     <thead>
                         <tr>
                             <th>ÁREAS</th>
@@ -163,7 +184,8 @@ const Areas = () => {
                                         onClick={() =>
                                             obtenerArea(sortedArea.id)
                                         }
-                                        className="btn_option edit">
+                                        className="btn_option edit"
+                                    >
                                         <FiEdit className="icon" />
                                     </button>
                                     <button
@@ -174,7 +196,8 @@ const Areas = () => {
                                             rol == 1
                                                 ? "btn_option delete"
                                                 : "disable-button"
-                                        }>
+                                        }
+                                    >
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>

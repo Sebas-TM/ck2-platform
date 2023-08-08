@@ -11,12 +11,22 @@
     align-items: center;
     justify-content: center;
     margin: 0;
+    padding: 2rem 0 2rem 0;
+    flex-direction: column;
 }
 
 .form-table {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
 }
 
+.form-table .subcontenedor{
+    width: 80%;
+}
 .input-area-table {
     width: 80%;
     text-align: center;
@@ -36,7 +46,7 @@
     }
     .form-group-header-table {
         margin-bottom: 0;
-        height: 40rem;
+        height: 36rem;
         width: 50%;
     }
 }

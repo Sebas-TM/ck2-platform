@@ -25,10 +25,63 @@
     -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
     border-radius: 1rem;
     padding: 2rem;
+    overflow: hidden;
+    min-height: 2.2rem;
+    transition: all 0.3s ease;
 }
 
+.panel-filtro.show {
+    min-height: 15rem;
+    overflow: initial;
+}
+
+.panel-filtro .panel_filtro_titulo {
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panel-filtro .panel_filtro_titulo h1 {
+    font-size: 1.5rem;
+}
+.panel_filtro_titulo_arrow {
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+.panel_filtro_titulo_arrow.show {
+    transform: rotate(-180deg);
+}
+
+@media (min-width: 768px) {
+    .panel_filtro_titulo_arrow {
+        display: none;
+    }
+}
 .form-group-empleados {
     display: block;
+}
+
+.panel-filtro .link_filtro {
+    padding: 0.5rem 1rem;
+    border-radius: 0.8rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.panel-filtro .link_filtro:hover {
+    background-color: rgb(233, 230, 230);
+}
+.link_filtro_icon {
+    color: black;
+    font-size: 1.5rem;
+}
+.panel-filtro .link_filtro p {
+    font-size: 1.5rem;
+    color: black;
 }
 
 @media (min-width: 769px) {
@@ -74,7 +127,7 @@
 @media (min-width: 769px) {
     .empleados-data-card-contenedor {
         overflow: hidden;
-        height: 30rem;
+        max-height: 30rem;
         box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
         -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
