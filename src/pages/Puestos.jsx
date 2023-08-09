@@ -3,21 +3,23 @@ import axios from "axios";
 import { config } from "../config";
 import { Toaster, toast } from "sonner";
 import Spinner from "../components/Spinner";
-import { FiEdit, FiTrash,FiChevronLeft } from "react-icons/fi";
+import { FiEdit, FiTrash, FiChevronLeft } from "react-icons/fi";
 import Cookies from "universal-cookie";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import "../style/puestos.css";
+import SpinnerIcono from "../components/SpinnerIcono";
 
 const cookies = new Cookies();
 
 const Puestos = () => {
     const rol = cookies.get("rol");
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [puestos, setPuestos] = useState([]);
     const [puestoId, setPuestoId] = useState();
     const [cargando, setCargando] = useState(false);
+    const [cargandoSubmit, setCargandoSubmit] = useState(false);
     const {
         register,
         setValue,
@@ -51,6 +53,7 @@ const Puestos = () => {
     const sortedPuestos = puestos.sort((a, b) => b.id - a.id);
 
     const submitData = async (data) => {
+        setCargandoSubmit(true);
         if (!puestoId) {
             await axios.post(`${config.API_URL}api/positions/create`, data, {
                 headers: {
@@ -60,6 +63,7 @@ const Puestos = () => {
             toast.success("Dato registrado!");
             obtenerPuestos();
             setValue("puesto", "");
+            setCargandoSubmit(false);
         } else {
             await axios.post(
                 `${config.API_URL}api/positions/update/${puestoId}`,
@@ -74,6 +78,7 @@ const Puestos = () => {
             obtenerPuestos();
             setPuestoId();
             setValue("puesto", "");
+            setCargandoSubmit(false);
         }
     };
 
@@ -103,20 +108,23 @@ const Puestos = () => {
             {cargando && <Spinner />}
             <div className="form-group form-group-table">
                 <div className="form-group-header form-group-header-table">
+                    <div className="container_btn_regresar">
+                        <button
+                            className="btn_regresar btn_regresar_area"
+                            onClick={() => navigate(-1)}
+                        >
+                            <FiChevronLeft />
+                            <p>Regresar</p>
+                        </button>
+                    </div>
                     <form
                         onSubmit={handleSubmit(submitData)}
                         className="form-table"
                     >
                         <div className="subcontenedor">
                             <div className="form-group__input-group input-area input-area-table">
-                            <button className="btn_regresar btn_regresar_area" onClick={()=>navigate(-1)}>
-                                    <FiChevronLeft />
-                                    <p>Regresar</p>
-                                </button>
                                 <label htmlFor="puesto">
-                                    {puestoId
-                                        ? "Editar"
-                                        : "Agregar"} puesto
+                                    {puestoId ? "Editar" : "Agregar"} puesto
                                 </label>
                                 <input
                                     type="text"
@@ -135,15 +143,15 @@ const Puestos = () => {
                             </div>
                         </div>
                         <div className="form-group__input-group input-area input-area-table">
-                            <input
-                                type="submit"
-                                className="btn_registrar btn_registrar-table"
-                                value={
-                                    puestoId
-                                        ? "Guardar cambios"
-                                        : "Registrar puesto"
-                                }
-                            />
+                            <button className="btn_registrar">
+                                {cargandoSubmit ? (
+                                    <SpinnerIcono />
+                                ) : puestoId ? (
+                                    "Guardar cambios"
+                                ) : (
+                                    "Registrar puesto"
+                                )}
+                            </button>
                         </div>
                     </form>
                 </div>

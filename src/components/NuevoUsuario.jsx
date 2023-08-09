@@ -10,6 +10,7 @@ import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from "../config";
 import axios from "axios";
 import Spinner from "./Spinner";
+import SpinnerIcono from "./SpinnerIcono";
 
 const NuevoUsuario = () => {
     const navigate = useNavigate();
@@ -22,9 +23,10 @@ const NuevoUsuario = () => {
     } = useForm();
     const [imagen, setImagen] = useState("");
     const [cargando, setCargando] = useState(false);
+    const [cargandoSubmit, setCargandoSubmit] = useState(false);
 
     const submitData = async (data) => {
-        setCargando(true);
+        setCargandoSubmit(true);
         const formData = {
             nombre: data.nombre,
             apellido_paterno: data.apellido_paterno,
@@ -48,7 +50,7 @@ const NuevoUsuario = () => {
                 })
                 .then(() => {
                     toast.success("Usuario creado correctamente");
-                    setCargando(false);
+                    setCargandoSubmit(false);
                     
                     setValue("nombre", "");
                     setValue("apellido_paterno", "");
@@ -61,7 +63,7 @@ const NuevoUsuario = () => {
                 .catch((error) => {
                     // console.log(error);
                     toast.error(error.response.data.message);
-                    setCargando(false);
+                    setCargandoSubmit(false);
                 });
         } else {
             await axios
@@ -72,12 +74,12 @@ const NuevoUsuario = () => {
                 })
                 .then(() => {
                     toast.success("Datos actualizados!");
-                    setCargando(false);
+                    setCargandoSubmit(false);
                 })
                 .catch((error) => {
                     // console.log(error);
                     toast.error(error.response.data.message);
-                    setCargando(false);
+                    setCargandoSubmit(false);
                 });
         }
     };
@@ -323,13 +325,15 @@ const NuevoUsuario = () => {
                         </div>
                     </div>
                     <div className="form-group__input-group input-area">
-                        <input
-                            type="submit"
-                            className="btn_registrar"
-                            value={
-                                userId ? "Guardar cambios" : "Registrar usuario"
-                            }
-                        />
+                    <button className="btn_registrar">
+                                {cargandoSubmit ? (
+                                    <SpinnerIcono />
+                                ) : userId ? (
+                                    "Guardar cambios"
+                                ) : (
+                                    "Registrar usuario"
+                                )}
+                            </button>
                     </div>
                 </form>
             </div>

@@ -32,27 +32,21 @@ const NuevoEmpleado = () => {
 
     const obtenerAreas = async () => {
         try {
-            setCargando(true);
             const res = await axios.get(`${config.API_URL}api/areas/list`);
             setAreas(res.data);
-            setCargando(false);
         } catch (e) {
             console.log(e);
         }
     };
 
     const obtenerPuestos = async () => {
-        setCargando(true);
         const res = await axios.get(`${config.API_URL}api/positions/list`);
         setPuestos(res.data);
-        setCargando(false);
     };
 
     const obtenerEmpleados = async () => {
-        setCargando(true);
         const res = await axios.get(`${config.API_URL}api/employees/listAll`);
         setEmpleados(res.data);
-        setCargando(false);
     };
 
     const obtenerEmpleado = async () => {
@@ -79,6 +73,7 @@ const NuevoEmpleado = () => {
     };
     useEffect(() => {
         const fetchData = async () => {
+            setCargando(true)
             if (employeeId) {
                 try {
                     await obtenerAreas();
@@ -93,6 +88,7 @@ const NuevoEmpleado = () => {
                 await obtenerPuestos();
                 await obtenerEmpleados();
             }
+            setCargando(false)
         };
 
         fetchData();
@@ -183,7 +179,6 @@ const NuevoEmpleado = () => {
         <section className="contenedor_nuevo-dato">
             <Toaster position="top-center" richColors />
             <div className="contenedor-form">
-                {/* <Toaster /> */}
                 <div className="contenedor-form-header">
                     <button
                         onClick={() => navigate(-1)}
@@ -192,7 +187,6 @@ const NuevoEmpleado = () => {
                         <FiChevronLeft />
                         <Link
                             className="btn_regresar_texto"
-                            // to='/menu/usuarios'
                         >
                             Regresar
                         </Link>
@@ -644,7 +638,7 @@ const NuevoEmpleado = () => {
                                 <SpinnerIcono />
                             ) : employeeId ? (
                                 "Guardar cambios"
-                            ) : (
+                            ) : (   
                                 "Registrar personal"
                             )}
                         </button>

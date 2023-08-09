@@ -67,7 +67,10 @@
 }
 
 .form-group__boton {
-    padding: 0.7rem 1.5rem;
+    height: 3.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     background: #f82b3c;
     color: white;

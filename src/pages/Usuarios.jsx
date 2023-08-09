@@ -8,20 +8,19 @@ import swal from "sweetalert";
 import Spinner from "../components/Spinner";
 import { config } from "../config";
 import axios from "axios";
+import SpinnerIcono from "../components/SpinnerIcono";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Usuarios = () => {
     const cookies = new Cookies();
     const rol = cookies.get("rol");
     const [users, setUsers] = useState([]);
     const [tabla, setTabla] = useState([]);
-    const [cargando, setCargando] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            setCargando(true);
             await obtenerUsuarios();
-            setCargando(false);
         };
         fetchData();
     }, []);
@@ -101,23 +100,24 @@ const Usuarios = () => {
 
     return (
         <>
-            {users.length < 1 && <Spinner />}
             <Toaster position="top-center" richColors />
             <div className="form-group pt-10">
-                <div className="form-group-header">
+                <div className="form-group-header form-group-header_usuarios">
                     <button
                         className={rol != 3 ? "btn_add" : "disable-button"}
-                        onClick={() => navigate(`/menu/usuarios/crear`)}>
+                        onClick={() => navigate(`/menu/usuarios/crear`)}
+                    >
                         <FiUserPlus className="icon" />
                         <p className="disable">Agregar</p>
                     </button>
+
                     <input
                         className="busqueda"
                         type="text"
                         id="busqueda"
                         name="busqueda"
                         onChange={handleChange}
-                        placeholder="Realizar búsqueda"
+                        placeholder="Buscar..."
                     />
                 </div>
                 <table cellSpacing="0" cellPadding="0" className="tabla">
@@ -162,12 +162,14 @@ const Usuarios = () => {
                                                 `/menu/usuarios/${user.id}/editar`
                                             )
                                         }
-                                        className="btn_option edit">
+                                        className="btn_option edit"
+                                    >
                                         <FiEdit className="icon" />
                                     </button>
                                     <button
                                         onClick={() => eliminarUsuario(user.id)}
-                                        className="btn_option delete">
+                                        className="btn_option delete"
+                                    >
                                         <FiTrash className="icon" />
                                     </button>
                                 </td>
@@ -175,6 +177,9 @@ const Usuarios = () => {
                         ))}
                     </tbody>
                 </table>
+                {users.length < 1 && (
+                    <ErrorMessage/>
+                )}
                 <div className="contenedor-general-cards">
                     {users.map((user, index) => (
                         <div key={index} className="contenedor-cards">
@@ -221,12 +226,14 @@ const Usuarios = () => {
                                             `/menu/usuarios/${user.id}/editar`
                                         )
                                     }
-                                    className="btn_option edit">
+                                    className="btn_option edit"
+                                >
                                     <FiEdit className="icon" />
                                 </button>
                                 <button
                                     onClick={() => eliminarUsuario(user.id)}
-                                    className="btn_option delete">
+                                    className="btn_option delete"
+                                >
                                     <FiTrash className="icon" />
                                 </button>
                             </div>

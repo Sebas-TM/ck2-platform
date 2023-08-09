@@ -22,6 +22,7 @@ import { FiGrid } from "react-icons/fi";
 import Cookies from "universal-cookie";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
+import ErrorMessage from "../components/ErrorMessage";
 import foto_personal from "../image/foto_personal.webp";
 import { config } from "../config";
 import "../style/empleados.css";
@@ -56,18 +57,6 @@ const Empleados = () => {
         handleSubmit,
     } = useForm();
     const sortedEmployees = employees.sort((a, b) => b.id - a.id);
-    const [
-        cantidadEmpleadosPorEstadoActivo,
-        setCantidadEmpleadosPorEstadoActivo,
-    ] = useState();
-    const [cantidadEmpleadosPorSedeLima, setCantidadEmpleadosPorSedeLima] =
-        useState();
-    const [
-        cantidadEmpleadosPorSedeTrujillo,
-        setCantidadEmpleadosPorSedeTrujillo,
-    ] = useState();
-    const [cantidadEmpleadosPorPuesto, setCantidadEmpleadosPorPuesto] =
-        useState();
 
     const openHandleModal = (id) => {
         setHandleModal(!handleModal);
@@ -81,57 +70,74 @@ const Empleados = () => {
         total: 0,
     });
 
+    const [activeEmployees, setActiveEmployees] = useState(0);
+    const [activeEmployeesData, setActiveEmployeesData] = useState([]);
+    const [activeEmployeesPagination, setActiveEmployeesPagination] = useState(
+        {}
+    );
+    const [sedeLima, setSedeLima] = useState(0);
+    const [sedeLimaData, setSedeLimaData] = useState([]);
+    const [sedeLimaPagination, setSedeLimaPagination] = useState({});
+    const [sedeTrujillo, setSedeTrujillo] = useState(0);
+    const [sedeTrujilloData, setSedeTrujilloData] = useState([]);
+    const [sedeTrujilloPagination, setSedeTrujilloPagination] = useState({});
+    const [asesor, setAsesor] = useState(0);
+    const [asesorData, setAsesorData] = useState([]);
+    const [asesorPagination, setAsesorPagination] = useState({});
+
     useEffect(() => {
         const fetchData = async () => {
             setCargando(true);
             await obtenerEmpleados();
-            await obtenerTodosEmpleados();
+            await filterCard("Trujillo", "sede", 1);
+            await filterCard("Lima", "sede", 1);
+            await filterCard("asesor(a)", "puesto", 1);
+            await filterCard("activo", "estado", 1);
             setCargando(false);
         };
 
         fetchData();
     }, []);
 
-    useEffect(() => {
-        if (allEmployees.length) {
-            setCantidadEmpleadosPorSedeLima(
-                buscarPorDatoSede("Lima", allEmployees)
+    const filterCard = async (termino, columna, page = 1) => {
+        if (termino == "activo") {
+            const res = await axios.post(
+                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
             );
-            setCantidadEmpleadosPorSedeTrujillo(
-                buscarPorDatoSede("Trujillo", allEmployees)
+            const { data, meta } = res.data;
+
+            setActiveEmployees(meta.total);
+            setActiveEmployeesData(data);
+            setActiveEmployeesPagination(meta);
+        } else if (termino == "Trujillo") {
+            const res = await axios.post(
+                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
             );
-            setCantidadEmpleadosPorEstadoActivo(
-                buscarPorDatoEstado("Activo", allEmployees)
+            const { data, meta } = res.data;
+
+            setSedeTrujillo(meta.total);
+            setSedeTrujilloData(data);
+            setSedeTrujilloPagination(meta);
+        } else if (termino == "Lima") {
+            const res = await axios.post(
+                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
             );
-            setCantidadEmpleadosPorPuesto(
-                buscarPorDatoPuesto("Asesor(a)", allEmployees)
+            const { data, meta } = res.data;
+
+            setSedeLima(meta.total);
+            setSedeLimaData(data);
+            setSedeLimaPagination(meta);
+        } else if (termino == "asesor(a)") {
+            const res = await axios.post(
+                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
             );
-        } else {
-            return () => {};
+            const { data, meta } = res.data;
+
+            setAsesor(meta.total);
+            setAsesorData(data);
+            setAsesorPagination(meta);
         }
-    }, [allEmployees]);
-
-    const buscarPorDatoSede = (valor, arreglo) => {
-        const repeticiones = arreglo.filter(
-            (item) => item.sede === valor
-        ).length;
-        return repeticiones;
     };
-
-    const buscarPorDatoEstado = (valor, arreglo) => {
-        const repeticiones = arreglo.filter(
-            (item) => item.estado === valor
-        ).length;
-        return repeticiones;
-    };
-
-    const buscarPorDatoPuesto = (valor, arreglo) => {
-        const repeticiones = arreglo.filter(
-            (item) => item.puesto === valor
-        ).length;
-        return repeticiones;
-    };
-
     const obtenerEmpleados = async (page = 1) => {
         setCargandoBusqueda(true);
         const res = await axios.get(
@@ -141,28 +147,22 @@ const Empleados = () => {
         setEmployees(data);
         setTabla(data);
         setPagination(meta);
+        setAllEmployees(meta.total);
         setCargandoBusqueda(false);
         tableRef1.current.scrollTo(0, 0);
         tableRef.current.scrollTo(0, 0);
     };
 
-    const obtenerTodosEmpleados = async () => {
-        const res = await axios.get(`${config.API_URL}api/employees/listAll`);
-        setAllEmployees(res.data);
-    };
-
     const submitData = async (data) => {
+        setCargandoBusqueda(true);
         if (data.termino) {
-            setCargandoBusqueda(true);
-            setCargandoBusqueda(false);
             setTermino(data.termino);
         } else {
-            setCargandoBusqueda(true);
             setTermino("");
             obtenerEmpleados();
             tableRef.current.scrollTo(0, 0);
-            setCargandoBusqueda(false);
         }
+        setCargandoBusqueda(false);
     };
 
     const searchData = async (page = 1) => {
@@ -220,11 +220,13 @@ const Empleados = () => {
             tableRef.current.scrollTo(0, 0);
             tableRef1.current.scrollTo(0, 0);
         }
+        // filterCard("Lima","sede",selected+1)
     };
 
     const handlePanelIsOpen = () => {
         setPanelIsOpen(!panelIsOpen);
     };
+
     return (
         <div className="contenedor-empleados">
             <div
@@ -232,19 +234,27 @@ const Empleados = () => {
                 onClick={handlePanelIsOpen}
             >
                 <div className="panel_filtro_titulo">
-                    <h1>Total de registros: {allEmployees.length}</h1>
-                    <FiChevronDown  className={`panel_filtro_titulo_arrow ${panelIsOpen ? "show" : ""}`}/>
+                    <h1>Total de registros: {allEmployees}</h1>
+                    <FiChevronDown
+                        className={`panel_filtro_titulo_arrow ${
+                            panelIsOpen ? "show" : ""
+                        }`}
+                    />
                 </div>
                 <Link
                     to="/menu/areas"
-                    className={`link_filtro ${rol == 3 ? "isNotAdmin" : " "}`}
+                    className={`link_filtro ${
+                            panelIsOpen ? "show" : ""
+                        }`}
                 >
                     <FiGrid className="link_filtro_icon" />
                     <p>Áreas</p>
                 </Link>
                 <Link
                     to="/menu/puestos"
-                    className={`link_filtro ${rol == 3 ? "isNotAdmin" : " "}`}
+                    className={`link_filtro ${
+                            panelIsOpen ? "show" : ""
+                        }`}
                 >
                     <FiGrid className="link_filtro_icon" />
                     <p>Puestos</p>
@@ -253,26 +263,54 @@ const Empleados = () => {
             <div className="form-group form-group-empleados">
                 <div className="empleados-data-card-contenedor">
                     <div className="empleados-data-card">
-                        <EmpleadoDataCard
-                            icono={<FiUsers />}
-                            dato={cantidadEmpleadosPorEstadoActivo}
-                            descripcion={"Colaboradores Activos"}
-                        />
-                        <EmpleadoDataCard
-                            icono={<FiUsers />}
-                            dato={cantidadEmpleadosPorSedeLima}
-                            descripcion={"Colaboradores Lima"}
-                        />
-                        <EmpleadoDataCard
-                            icono={<FiUsers />}
-                            dato={cantidadEmpleadosPorSedeTrujillo}
-                            descripcion={"Colaboradores Trujillo"}
-                        />
-                        <EmpleadoDataCard
-                            icono={<TfiHeadphoneAlt />}
-                            dato={cantidadEmpleadosPorPuesto}
-                            descripcion={"Asesores"}
-                        />
+                        <button
+                            onClick={() => {
+                                setEmployees(activeEmployeesData);
+                                setPagination(activeEmployeesPagination);
+                            }}
+                        >
+                            <EmpleadoDataCard
+                                icono={<FiUsers />}
+                                dato={activeEmployees}
+                                descripcion={"Colaboradores Activos"}
+                            />
+                        </button>
+                        <button
+                            onClick={() => {
+                                setEmployees(sedeLimaData);
+                                setPagination(sedeLimaPagination);
+                            }}
+                        >
+                            <EmpleadoDataCard
+                                icono={<FiUsers />}
+                                dato={sedeLima}
+                                descripcion={"Colaboradores Lima"}
+                            />
+                        </button>
+                        <button
+                            onClick={() => {
+                                setEmployees(sedeTrujilloData);
+                                setPagination(sedeTrujilloPagination);
+                            }}
+                        >
+                            <EmpleadoDataCard
+                                icono={<FiUsers />}
+                                dato={sedeTrujillo}
+                                descripcion={"Colaboradores Trujillo"}
+                            />
+                        </button>
+                        <button
+                            onClick={() => {
+                                setEmployees(asesorData);
+                                setPagination(asesorPagination);
+                            }}
+                        >
+                            <EmpleadoDataCard
+                                icono={<TfiHeadphoneAlt />}
+                                dato={asesor}
+                                descripcion={"Asesores"}
+                            />
+                        </button>
                     </div>
                 </div>
                 {cargando && <Spinner />}
@@ -310,117 +348,18 @@ const Empleados = () => {
                             id="termino"
                             name="termino"
                             {...register("termino")}
-                            placeholder="Realizar búsqueda"
+                            placeholder="Buscar..."
                         />
                         <button className="btn_add" type="submit">
-                            {cargandoBusqueda ? <SpinnerIcono/> : <FiSearch className="icon" />}
+                            {cargandoBusqueda ? (
+                                <SpinnerIcono />
+                            ) : (
+                                <FiSearch className="icon" />
+                            )}
                         </button>
                     </form>
                 </div>
-                <div className="contenedor-general-cards" ref={tableRef}>
-                    {sortedEmployees.map((sortedEmployee, index) => (
-                        <div
-                            key={index}
-                            className={
-                                sortedEmployee.estado === "No activo"
-                                    ? "empleado-no-activo contenedor-cards"
-                                    : "contenedor-cards"
-                            }
-                        >
-                            <div
-                                className="cards cards-employee"
-                                onClick={() =>
-                                    openHandleModal(sortedEmployee.id)
-                                }
-                            >
-                                <div className="container">
-                                    <div className="contenedor-foto">
-                                        <div className="contenedor-redondo-foto">
-                                            <img
-                                                loading="lazy"
-                                                src={
-                                                    sortedEmployee.imagen
-                                                        ? `${config.API_URL}${sortedEmployee.imagen}`
-                                                        : foto_personal
-                                                }
-                                                alt="foto_personal"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="datos-principales">
-                                        <p className="datos-principales_nombre">{`${sortedEmployee.nombre} ${sortedEmployee.apellido_paterno}`}</p>
-                                        <p className="datos-principales_dni">
-                                            {sortedEmployee.dni}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="contenedor-info">
-                                    <div className="contenedor-datos">
-                                        <p className="dato">Celular:</p>
-                                        <p className="dato-info">
-                                            {sortedEmployee.celular}
-                                        </p>
-                                    </div>
-                                    <div className="contenedor-datos">
-                                        <p className="dato">Área:</p>
-                                        <p className="dato-info">
-                                            {sortedEmployee.area}
-                                        </p>
-                                    </div>
-                                    <div className="contenedor-datos">
-                                        <p className="dato">Estado:</p>
-                                        <p className="dato-info">
-                                            {sortedEmployee.estado}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="data data_opciones">
-                                <button
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
-                                    className="btn_option view"
-                                >
-                                    <FiEye className="icon" />
-                                </button>
-                                <Link
-                                    className="btn_option wsp"
-                                    target="blank"
-                                    to={`https://wa.me/51${sortedEmployee.celular}`}
-                                >
-                                    <BsWhatsapp className="icon" />
-                                </Link>
-                                <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
-                                        )
-                                    }
-                                    className={
-                                        rol != 3
-                                            ? "btn_option edit"
-                                            : "disable-button"
-                                    }
-                                >
-                                    <FiEdit className="icon" />
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        eliminarEmpleado(sortedEmployee.id)
-                                    }
-                                    className={
-                                        rol == 1
-                                            ? "btn_option delete"
-                                            : "disable-button"
-                                    }
-                                >
-                                    <FiTrash className="icon" />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+
                 <div>
                     <table
                         cellSpacing="0"
@@ -487,7 +426,7 @@ const Empleados = () => {
                                         {`${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}
                                     </td>
                                     <td
-                                        className="data data_amaterno"
+                                        className="data data_dni"
                                         onClick={() =>
                                             openHandleModal(sortedEmployee.id)
                                         }
@@ -495,7 +434,7 @@ const Empleados = () => {
                                         {sortedEmployee.dni}
                                     </td>
                                     <td
-                                        className="data data_amaterno"
+                                        className="data data_estado"
                                         onClick={() =>
                                             openHandleModal(sortedEmployee.id)
                                         }
@@ -556,7 +495,111 @@ const Empleados = () => {
                             ))}
                         </tbody>
                     </table>
-
+                    {employees.length < 1 && <ErrorMessage />}
+                    <div className="contenedor-general-cards" ref={tableRef}>
+                        {sortedEmployees.map((sortedEmployee, index) => (
+                            <div
+                                key={index}
+                                className={
+                                    sortedEmployee.estado === "No activo"
+                                        ? "empleado-no-activo contenedor-cards"
+                                        : "contenedor-cards"
+                                }
+                            >
+                                <div
+                                    className="cards cards-employee"
+                                    onClick={() =>
+                                        openHandleModal(sortedEmployee.id)
+                                    }
+                                >
+                                    <div className="container">
+                                        <div className="contenedor-foto">
+                                            <div className="contenedor-redondo-foto">
+                                                <img
+                                                    loading="lazy"
+                                                    src={
+                                                        sortedEmployee.imagen
+                                                            ? `${config.API_URL}${sortedEmployee.imagen}`
+                                                            : foto_personal
+                                                    }
+                                                    alt="foto_personal"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="datos-principales">
+                                            <p className="datos-principales_nombre">{`${sortedEmployee.nombre} ${sortedEmployee.apellido_paterno}`}</p>
+                                            <p className="datos-principales_dni">
+                                                {sortedEmployee.dni}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="contenedor-info">
+                                        <div className="contenedor-datos">
+                                            <p className="dato">Celular:</p>
+                                            <p className="dato-info">
+                                                {sortedEmployee.celular}
+                                            </p>
+                                        </div>
+                                        <div className="contenedor-datos">
+                                            <p className="dato">Área:</p>
+                                            <p className="dato-info">
+                                                {sortedEmployee.area}
+                                            </p>
+                                        </div>
+                                        <div className="contenedor-datos">
+                                            <p className="dato">Estado:</p>
+                                            <p className="dato-info">
+                                                {sortedEmployee.estado}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="data data_opciones">
+                                    <button
+                                        onClick={() =>
+                                            openHandleModal(sortedEmployee.id)
+                                        }
+                                        className="btn_option view"
+                                    >
+                                        <FiEye className="icon" />
+                                    </button>
+                                    <Link
+                                        className="btn_option wsp"
+                                        target="blank"
+                                        to={`https://wa.me/51${sortedEmployee.celular}`}
+                                    >
+                                        <BsWhatsapp className="icon" />
+                                    </Link>
+                                    <button
+                                        onClick={() =>
+                                            navigate(
+                                                `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
+                                            )
+                                        }
+                                        className={
+                                            rol != 3
+                                                ? "btn_option edit"
+                                                : "disable-button"
+                                        }
+                                    >
+                                        <FiEdit className="icon" />
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            eliminarEmpleado(sortedEmployee.id)
+                                        }
+                                        className={
+                                            rol == 1
+                                                ? "btn_option delete"
+                                                : "disable-button"
+                                        }
+                                    >
+                                        <FiTrash className="icon" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                     <ReactPaginate
                         breakLabel="..."
                         nextLabel=">"

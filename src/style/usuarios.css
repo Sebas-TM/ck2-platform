@@ -10,10 +10,8 @@
 
 .form-group-header,
 .form-group-header-lector {
-    width: 100%;
-    /* height: 6rem; */
-    margin-top: 4rem;
-    margin-bottom: 3rem;
+    width: 27rem;
+    margin: 4rem auto 3rem auto;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -30,8 +28,6 @@
 
 @media (min-width: 769px) {
     .form-group-header {
-        width: 100rem;
-        max-width: 100%;
         margin-bottom: 0;
         justify-content: space-between;
         box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
@@ -39,6 +35,7 @@
         -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
         border-radius: 1rem;
         padding: 2rem;
+        width: auto;
     }
     .form-group-header-lector {
         width: 95rem;
@@ -51,6 +48,17 @@
     }
 }
 
+@media (min-width: 1300px) {
+    .form-group-header {
+        width: 100rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .form-group-header_usuarios {
+        width: 62rem;
+    }
+}
 .busqueda {
     padding: 0.5rem 1rem;
     border-radius: 0.8rem;
@@ -95,7 +103,7 @@
     max-height: 35rem;
     overflow: scroll;
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border-radius: 0.8rem;
     border: 1px solid rgb(235, 235, 235);
 }
@@ -124,8 +132,12 @@
 
 .tabla thead tr,
 .table__header tr {
-    height: 4rem;
+    height: 5rem;
     border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+.tabla-empleados tr {
+    height: 4rem;
 }
 
 .tabla thead th,
@@ -156,10 +168,29 @@
     border-top: 1px solid rgb(235, 235, 235);
 }
 
-.tabla-empleados {
-    width: 104rem;
-    max-height: 40rem;
+.tabla-empleados tbody tr td {
+    height: 4rem;
+}
+.tabla-empleados thead tr .dni,
+.tabla-empleados thead tr .estado {
+    text-align: center;
+}
 
+.tabla-empleados tbody tr .data_dni,
+.tabla-empleados tbody tr .data_estado {
+    text-align: center;
+}
+
+.tabla-empleados {
+    max-height: 40rem;
+    max-width: 104rem;
+    margin: 5rem auto 0 auto;
+}
+
+@media (min-width: 1300px) {
+    .tabla-empleados {
+        width: 104rem;
+    }
 }
 
 .tabla-empleados tbody tr td {
@@ -231,8 +262,8 @@
 }
 
 .contenedor-imagenTable {
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -258,13 +289,13 @@
     margin-bottom: 4rem;
     width: 25rem;
     border: 1px solid rgb(233, 230, 230);
-    padding: 0 2rem;
+    padding: 0 1rem;
     border-radius: 0.8rem;
 }
 
 .cards {
     border-bottom: 1px solid rgb(233, 230, 230);
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
 }
 
 .cards-employee {
@@ -298,24 +329,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
     width: 60%;
 }
 
 .container .datos-principales .datos-principales_nombre {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #f82b3c;
     font-weight: bold;
     text-align: center;
 }
 .container .datos-principales .datos-principales_dni {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: gray;
     text-align: center;
 }
 
 .contenedor-redondo-foto {
-    border: .5rem solid #f82b3c;
+    border: 0.5rem solid #f82b3c;
     height: 9rem;
     width: 9rem;
     overflow: hidden;
@@ -339,7 +369,7 @@
 }
 
 .cards .contenedor-datos p {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 .empleado-no-activo {

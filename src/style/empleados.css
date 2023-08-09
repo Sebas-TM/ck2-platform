@@ -54,7 +54,7 @@
     transform: rotate(-180deg);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1300px) {
     .panel_filtro_titulo_arrow {
         display: none;
     }
@@ -75,6 +75,16 @@
 .panel-filtro .link_filtro:hover {
     background-color: rgb(233, 230, 230);
 }
+
+.panel-filtro .link_filtro {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.panel-filtro .link_filtro.show {
+    opacity: 1;
+}
+
 .link_filtro_icon {
     color: black;
     font-size: 1.5rem;
@@ -84,11 +94,14 @@
     color: black;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1300px) {
     .contenedor-empleados {
         flex-direction: row;
     }
-
+    .panel-filtro .link_filtro {
+        opacity: 1;
+        transition: opacity 0.4s ease;
+    }
     .panel-filtro {
         width: 25%;
     }
@@ -108,7 +121,6 @@
 }
 
 .empleados-data-card-contenedor {
-    width: 100%;
     overflow-x: auto;
     margin: auto;
     display: flex;
@@ -124,7 +136,20 @@
     gap: 2rem;
 }
 
-@media (min-width: 769px) {
+.empleados-data-card button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+}
+
+@media (min-width: 1300px) {
+    .empleados-data-card-contenedor {
+        width: 100rem;
+    }
+}
+
+@media (min-width: 900px) {
     .empleados-data-card-contenedor {
         overflow: hidden;
         max-height: 30rem;
@@ -133,7 +158,6 @@
         -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
         border-radius: 1rem;
         padding: 2rem;
-        width: 100rem;
     }
 
     .empleados-data-card {

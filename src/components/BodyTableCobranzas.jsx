@@ -583,7 +583,7 @@ const BodyTableCobranzas = ({
                         }`}
                     >
                         <input
-                            className="btn_registrar btn_cobranzas"
+                            className=" btn_cobranzas"
                             type="submit"
                             value="Guardar"
                         />

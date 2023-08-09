@@ -18,7 +18,7 @@
 }
 
 .container_btn_regresar{
-    width: 4rem;
+    width: 25rem;
 }
 
 @media (min-width:768px){
@@ -28,6 +28,9 @@
     .btn_regresar_area{
         width: auto;
         font-family: 'Poppins', sans-serif;
+    }
+    .container_btn_regresar{
+        width: 36rem;
     }
 }
 .swal-modal{

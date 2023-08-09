@@ -1,0 +1,8 @@
+.error_message_filter {
+    color: gray;
+    margin: 5rem 0;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+}

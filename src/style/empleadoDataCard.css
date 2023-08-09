@@ -4,6 +4,9 @@
     width: 15rem;
     height: 8rem;
     border-radius: 1.5rem;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
 }
 
 .empleado-data-card_grafico{

@@ -12,6 +12,7 @@ import { loginUser } from "../services/users";
 import { useNavigate, Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 import login from "../image/Login.png";
+import SpinnerIcono from "../components/SpinnerIcono";
 
 const cookies = new Cookies();
 const Login = () => {
@@ -65,7 +66,6 @@ const Login = () => {
     return (
         <div className="contenedor-login">
             <div className="contenedor-principal">
-                {cargando && <Spinner />}
                 <Toaster position="top-center" richColors />
                 <div className="contenedor-uno">
                     <img
@@ -127,11 +127,10 @@ const Login = () => {
                                 </label>
                             </div>
                         </div>
-                        <input
-                            className="form-group__boton"
-                            type="submit"
-                            value="Ingresar"
-                        />
+
+                        <button className="form-group__boton">
+                            {cargando ? <SpinnerIcono /> : "Ingresar"}
+                        </button>
                     </form>
                     <div className="texto-siguenos texto-siguenos-768px">
                         <p>Síguenos en:</p>

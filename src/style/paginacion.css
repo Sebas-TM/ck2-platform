@@ -9,9 +9,10 @@
     color: gray;
     padding: 1rem 0rem 5rem 0;
     user-select: none;
+    margin-bottom: 2rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1300px) {
     .pagination {
         padding: 1rem 0rem 0rem 0;
         justify-content: end;
