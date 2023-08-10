@@ -11,13 +11,10 @@
 .form-group-header,
 .form-group-header-lector {
     width: 27rem;
-    margin: 4rem auto 3rem auto;
+    margin: 1rem auto 3rem auto;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
     border-radius: 1rem;
     padding: 2rem 0;
 }
@@ -29,19 +26,18 @@
 @media (min-width: 769px) {
     .form-group-header {
         margin-bottom: 0;
-        justify-content: space-between;
-        box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
-        -webkit-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
+        justify-content: end;
         border-radius: 1rem;
         padding: 2rem;
         width: auto;
+        gap: 2rem;
     }
     .form-group-header-lector {
         width: 95rem;
         max-width: 100%;
         margin-bottom: 0;
         justify-content: end;
+        padding: 2rem;
     }
     .form-group-header h1 {
         margin-bottom: 0;
@@ -60,7 +56,7 @@
     }
 }
 .busqueda {
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     border-radius: 0.8rem;
     border: 1px solid gray;
     outline: none;
@@ -84,7 +80,7 @@
     border: none;
     border-radius: 0.8rem;
     /* margin-left: 2rem; */
-    padding: 0.7rem 1.5rem;
+    padding: 1rem 1.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
     color: white;
@@ -98,8 +94,8 @@
     background-color: #bd1e2b;
 }
 .tabla {
-    margin-top: 5rem;
     /* max-width: 100rem; */
+    margin-top: 5rem;
     max-height: 35rem;
     overflow: scroll;
     display: none;
@@ -111,6 +107,9 @@
 @media (min-width: 769px) {
     .tabla {
         display: block;
+    }
+    .btn_add {
+        padding: .7rem 1.5rem;
     }
 }
 
@@ -182,9 +181,9 @@
 }
 
 .tabla-empleados {
-    max-height: 40rem;
+    max-height: 50rem;
     max-width: 104rem;
-    margin: 5rem auto 0 auto;
+    margin: 0rem auto 0 auto;
 }
 
 @media (min-width: 1300px) {
@@ -359,7 +358,7 @@
     .contenedor-redondo-foto {
         height: 15rem;
         width: 15rem;
-        border: 1.5rem solid #f82b3c;
+        border: 0.5rem solid #f82b3c;
     }
 }
 

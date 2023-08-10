@@ -243,18 +243,14 @@ const Empleados = () => {
                 </div>
                 <Link
                     to="/menu/areas"
-                    className={`link_filtro ${
-                            panelIsOpen ? "show" : ""
-                        }`}
+                    className={`link_filtro ${panelIsOpen ? "show" : ""}`}
                 >
                     <FiGrid className="link_filtro_icon" />
                     <p>Áreas</p>
                 </Link>
                 <Link
                     to="/menu/puestos"
-                    className={`link_filtro ${
-                            panelIsOpen ? "show" : ""
-                        }`}
+                    className={`link_filtro ${panelIsOpen ? "show" : ""}`}
                 >
                     <FiGrid className="link_filtro_icon" />
                     <p>Puestos</p>
@@ -329,15 +325,6 @@ const Empleados = () => {
                             : "form-group-header-lector"
                     }
                 >
-                    <button
-                        className={rol != 3 ? "btn_add" : "disable-button"}
-                        onClick={() =>
-                            navigate(`/menu/recursos_humanos/empleado/crear`)
-                        }
-                    >
-                        <FiUserPlus className="icon" />
-                        <p className="disable">Agregar</p>
-                    </button>
                     <form
                         className="form-buscar-empleados"
                         onSubmit={handleSubmit(submitData)}
@@ -358,6 +345,15 @@ const Empleados = () => {
                             )}
                         </button>
                     </form>
+                    <button
+                        className={rol != 3 ? "btn_add" : "disable-button"}
+                        onClick={() =>
+                            navigate(`/menu/recursos_humanos/empleado/crear`)
+                        }
+                    >
+                        <FiUserPlus className="icon" />
+                        <p className="disable">Agregar</p>
+                    </button>
                 </div>
 
                 <div>

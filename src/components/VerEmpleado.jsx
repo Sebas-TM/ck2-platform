@@ -26,6 +26,7 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
         setEmployee(res.data);
         setCargando(false);
     };
+
     return (
         <div className="modal-ver-empleado" >
             <section className="contenedor-ver-empleado">
@@ -40,15 +41,15 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
                     {cargando && <SpinnerContenido />}
                     {!cargando && (
                         <div className="container container-ver-empleado">
-                            <div className="contenedor-foto">
-                                <div className="contenedor-redondo-foto">
+                            <div className="contenedor-foto contenedor_foto_modal">
+                                <div className="contenedor-redondo-foto contenedor_redondo_foto_modal">
                                     <img
                                         loading="lazy"
                                         className="img_empleados"
                                         src={
                                             employee.imagen
                                                 ? `${config.API_URL}${
-                                                      employee.imagen
+                                                      employee.imagen_hd
                                                   }?${Date.now()}`
                                                 : foto_personal
                                         }
@@ -57,8 +58,8 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
                                 </div>
                             </div>
                             <div className="datos-principales">
-                                <p className="datos-principales_nombre">{`${employee.nombre} ${employee.apellido_paterno} ${employee.apellido_materno}`}</p>
-                                <p className="datos-principales_dni">
+                                <p className="datos-principales_nombre datos-principales_nombre_modal">{`${employee.nombre} ${employee.apellido_paterno} ${employee.apellido_materno}`}</p>
+                                <p className="datos-principales_dni datos-principales_dni_modal">
                                     {employee.dni}
                                 </p>
                             </div>

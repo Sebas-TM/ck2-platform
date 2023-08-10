@@ -1,15 +1,16 @@
-import '../style/empleadoDataCard.css'
+import "../style/empleadoDataCard.css";
 
-const EmpleadoDataCard = ({icono, dato, descripcion}) =>{
-    return(
+const EmpleadoDataCard = ({ icono, dato, descripcion }) => {
+    return (
         <div className="empleado-data-card">
-            <div className="empleado-data-card_grafico">{icono}</div>
-            <p className="empleado-data-card_dato">{dato}</p>
+            <p>{descripcion}</p>
+
             <div className="empleado-data-card_descripcion">
-                <p>{descripcion}</p>
+                <p className="empleado-data-card_dato">{dato}</p>
+                <div className="empleado-data-card_grafico">{icono}</div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default EmpleadoDataCard
+export default EmpleadoDataCard;
