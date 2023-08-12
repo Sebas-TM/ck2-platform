@@ -13,10 +13,6 @@
     flex-direction: column;
 }
 
-@media (min-width: 1300px) {
-    .container_form_table_pagination {
-    }
-}
 
 .form-group-header,
 .form-group-header-lector {
