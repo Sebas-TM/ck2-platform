@@ -10,10 +10,11 @@ import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from "../config";
 import axios from "axios";
 import SpinnerIcono from "./SpinnerIcono";
+import '../style/nuevoEmpleado.css'
 
-const NuevoEmpleado = () => {
+const NuevoEmpleado = ({ employeeIdEdit }) => {
     const navigate = useNavigate();
-    const { employeeId } = useParams();
+    // const { employeeIdEdit } = useParams();
     const [cargando, setCargando] = useState(false);
     const [cargandoSubmit, setCargandoSubmit] = useState(false);
     const [areas, setAreas] = useState([]);
@@ -29,7 +30,7 @@ const NuevoEmpleado = () => {
     // useEffect(() => {
     //   obtenerAreas();
     // }, []);
-
+    console.log(employeeIdEdit);
     const obtenerAreas = async () => {
         try {
             const res = await axios.get(`${config.API_URL}api/areas/list`);
@@ -51,7 +52,7 @@ const NuevoEmpleado = () => {
 
     const obtenerEmpleado = async () => {
         const res = await axios.get(
-            `${config.API_URL}api/employees/list/${employeeId}`
+            `${config.API_URL}api/employees/list/${employeeIdEdit}`
         );
         setValue("nombre", res.data.nombre);
         setValue("apellido_paterno", res.data.apellido_paterno);
@@ -73,8 +74,8 @@ const NuevoEmpleado = () => {
     };
     useEffect(() => {
         const fetchData = async () => {
-            setCargando(true)
-            if (employeeId) {
+            setCargando(true);
+            if (employeeIdEdit) {
                 try {
                     await obtenerAreas();
                     await obtenerPuestos();
@@ -88,11 +89,11 @@ const NuevoEmpleado = () => {
                 await obtenerPuestos();
                 await obtenerEmpleados();
             }
-            setCargando(false)
+            setCargando(false);
         };
 
         fetchData();
-    }, [employeeId]);
+    }, [employeeIdEdit]);
 
     const submitData = async (data) => {
         setCargandoSubmit(true);
@@ -119,7 +120,7 @@ const NuevoEmpleado = () => {
             formData.imagen = imagen;
         }
 
-        if (!employeeId) {
+        if (!employeeIdEdit) {
             await axios
                 .post(`${config.API_URL}api/employees/create`, formData, {
                     headers: {
@@ -155,7 +156,7 @@ const NuevoEmpleado = () => {
         } else {
             await axios
                 .post(
-                    `${config.API_URL}api/employees/update/${employeeId}`,
+                    `${config.API_URL}api/employees/update/${employeeIdEdit}`,
                     formData,
                     {
                         headers: {
@@ -176,476 +177,489 @@ const NuevoEmpleado = () => {
     };
 
     return (
-        <section className="contenedor_nuevo-dato">
-            <Toaster position="top-center" richColors />
-            <div className="contenedor-form">
-                <div className="contenedor-form-header">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="btn_regresar"
-                    >
-                        <FiChevronLeft />
-                        <Link
-                            className="btn_regresar_texto"
+        <div className="modal-ver-empleado">
+            <section className="contenedor_nuevo-dato">
+                <Toaster position="top-center" richColors />
+                <div className="contenedor-form">
+                    <div className="contenedor-form-header">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="btn_regresar"
                         >
-                            Regresar
-                        </Link>
-                    </button>
-                    <h1 className="contenedor-form__texto">
-                        {employeeId ? "Editar personal" : "Nuevo personal"}
-                    </h1>
-                </div>
-                <form onSubmit={handleSubmit(submitData)}>
-                    <div className="subcontenedor">
-                        <div className="subcontenedor-form">
-                            <div className="form-group__input-group">
-                                <label htmlFor="nombre">Nombre</label>
-                                <input
-                                    type="text"
-                                    {...register("nombre", {
-                                        required: true,
-                                    })}
-                                    name="nombre"
-                                    id="nombre"
-                                    placeholder="Ingrese su nombre"
-                                />
-                                {errors.nombre?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="apellido_paterno">
-                                    Apellido paterno
-                                </label>
-                                <input
-                                    type="text"
-                                    {...register("apellido_paterno", {
-                                        required: true,
-                                    })}
-                                    name="apellido_paterno"
-                                    id="apellido_paterno"
-                                    placeholder="Ingrese su apellido paterno"
-                                />
-                                {errors.apellido_paterno?.type ===
-                                    "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="apellido_materno">
-                                    Apellido materno
-                                </label>
-                                <input
-                                    type="text"
-                                    {...register("apellido_materno", {
-                                        required: true,
-                                    })}
-                                    name="apellido_materno"
-                                    id="apellido_materno"
-                                    placeholder="Ingrese su apellido materno"
-                                />
-                                {errors.apellido_materno?.type ===
-                                    "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="imagen">Foto</label>
-                                <label
-                                    className="label_imagen"
-                                    htmlFor="imagen"
-                                >
-                                    <p>
-                                        {imagen != ""
-                                            ? "Imagen seleccionada"
-                                            : "Subir imagen"}
-                                    </p>
-                                    <div className="contenedor-icon_imagen">
-                                        <BiImageAdd
-                                            className={
-                                                imagen != ""
-                                                    ? "input_imagen BiImageAdd"
-                                                    : "icon_imagen"
-                                            }
-                                        />
-                                        <BiImage
-                                            className={
-                                                imagen != ""
-                                                    ? "icon_imagen BiImage"
-                                                    : "input_imagen"
-                                            }
-                                        />
-                                    </div>
-                                </label>
-                                <input
-                                    type="file"
-                                    {...register("imagen")}
-                                    name="imagen"
-                                    id="imagen"
-                                    className="input_imagen"
-                                    accept="image/jpeg, image/png"
-                                    onChange={(e) =>
-                                        setImagen(e.target.files[0])
-                                    }
-                                />
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="estado">Estado</label>
-                                <select
-                                    className="estado"
-                                    {...register("estado", {
-                                        required: true,
-                                    })}
-                                    name="estado"
-                                    id="estado"
-                                >
-                                    <option value="">--Seleccione--</option>
-                                    <option value="Activo">Activo</option>
-                                    <option value="No activo">No activo</option>
-                                </select>
-                                {errors.estado?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="dni">DNI</label>
-                                <input
-                                    type="text"
-                                    {...register("dni", {
-                                        required: true,
-                                        pattern: /^[0-9]+$/,
-                                        maxLength: 8,
-                                        minLength: 8,
-                                    })}
-                                    name="dni"
-                                    id="dni"
-                                    placeholder="Ingrese su DNI"
-                                />
-                                {errors.dni?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                                {errors.dni?.type === "maxLength" && (
-                                    <p className="error-message">
-                                        Ingresar DNI correcto
-                                    </p>
-                                )}
-                                {errors.dni?.type === "minLength" && (
-                                    <p className="error-message">
-                                        Ingresar DNI correcto
-                                    </p>
-                                )}
-                                {errors.dni?.type === "pattern" && (
-                                    <p className="error-message">
-                                        Ingresar DNI correcto
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                        <div className="subcontenedor-form">
-                            <div className="form-group__input-group">
-                                <label htmlFor="correo">Correo</label>
-                                <input
-                                    type="email"
-                                    {...register("correo", {
-                                        required: true,
-                                    })}
-                                    name="correo"
-                                    id="correo"
-                                    placeholder="Ingrese su correo"
-                                />
-                                {errors.correo?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="celular">Celular</label>
-                                <input
-                                    type="tel"
-                                    {...register("celular", {
-                                        required: true,
-                                        pattern: /^[0-9]+$/,
-                                        maxLength: 9,
-                                        minLength: 9,
-                                    })}
-                                    name="celular"
-                                    id="celular"
-                                    placeholder="Ingrese su número de celular"
-                                />
-                                {errors.celular?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                                {errors.celular?.type === "maxLength" && (
-                                    <p className="error-message">
-                                        Ingresar número de celular correcto
-                                    </p>
-                                )}
-                                {errors.celular?.type === "minLength" && (
-                                    <p className="error-message">
-                                        Ingresar número de celular correcto
-                                    </p>
-                                )}
-                                {errors.celular?.type === "pattern" && (
-                                    <p className="error-message">
-                                        Ingresar número de celular correcto
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="nombre_contacto">
-                                    Nombre de contacto de emergencia
-                                </label>
-                                <input
-                                    type="text"
-                                    {...register("nombre_contacto", {
-                                        required: true,
-                                    })}
-                                    name="nombre_contacto"
-                                    id="nombre_contacto"
-                                    placeholder="Ingrese el dato"
-                                />
-                                {errors.nombre_contacto?.type ===
-                                    "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="numero_contacto">
-                                    Número de contacto de emergencia
-                                </label>
-                                <input
-                                    type="text"
-                                    {...register("numero_contacto", {
-                                        required: true,
-                                        pattern: /^[0-9]+$/,
-                                        maxLength: 9,
-                                        minLength: 9,
-                                    })}
-                                    name="numero_contacto"
-                                    id="numero_contacto"
-                                    placeholder="Ingrese el número de celular"
-                                />
-                                {errors.numero_contacto?.type ===
-                                    "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                                {errors.numero_contacto?.type ===
-                                    "maxLength" && (
-                                    <p className="error-message">
-                                        Ingresar número de celular correcto
-                                    </p>
-                                )}
-                                {errors.numero_contacto?.type ===
-                                    "minLength" && (
-                                    <p className="error-message">
-                                        Ingresar número de celular correcto
-                                    </p>
-                                )}
-                                {errors.numero_contacto?.type === "pattern" && (
-                                    <p className="error-message">
-                                        Ingresar número de celular correcto
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="relacion_contacto">
-                                    Relación del contacto
-                                </label>
-                                <select
-                                    className="relacion_contacto"
-                                    {...register("relacion_contacto", {
-                                        required: true,
-                                    })}
-                                    name="relacion_contacto"
-                                    id="relacion_contacto"
-                                >
-                                    <option value="">--Seleccione--</option>
-                                    <option value="Padre">Padre</option>
-                                    <option value="Madre">Madre</option>
-                                    <option value="Esposo(a)">Esposo(a)</option>
-                                    <option value="Hijo(a)">Hijo(a)</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
-                                {errors.relacion_contacto?.type ===
-                                    "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="area">Área</label>
-                                <select
-                                    className="area"
-                                    {...register("area", {
-                                        required: true,
-                                    })}
-                                    name="area"
-                                    id="area"
-                                >
-                                    <option value="">--Seleccione--</option>
-                                    {areas.map((area) => (
-                                        <option value={area.area} key={area.id}>
-                                            {area.area}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.area?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                        <div className="subcontenedor-form">
-                            <div className="form-group__input-group">
-                                <label htmlFor="puesto">Puesto</label>
-                                <select
-                                    name="puesto"
-                                    id="puesto"
-                                    {...register("puesto", {
-                                        required: true,
-                                    })}
-                                >
-                                    <option value="">--Seleccione--</option>
-                                    {puestos.map((puesto) => (
-                                        <option
-                                            value={puesto.puesto}
-                                            key={puesto.id}
-                                        >
-                                            {puesto.puesto}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.puesto?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="jefe_inmediato">
-                                    Jefe inmediato
-                                </label>
-                                <input
-                                    type="text"
-                                    {...register("jefe_inmediato", {
-                                        required: true,
-                                    })}
-                                    list="options"
-                                    name="jefe_inmediato"
-                                    id="jefe_inmediato"
-                                    placeholder="Ingrese el jefe inmediato"
-                                />
-                                <datalist id="options">
-                                    <option value="S.J">S.J</option>
-                                    {empleados.map((empleado) => (
-                                        <option
-                                            key={empleado.id}
-                                            value={`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}
-                                        >{`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}</option>
-                                    ))}
-                                </datalist>
-                                {errors.jefe_inmediato?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="fecha_certificacion">
-                                    Fecha de certificación
-                                </label>
-                                <input
-                                    type="month"
-                                    min="AAAA-MM"
-                                    max="AAAA-MM"
-                                    step="1"
-                                    {...register("fecha_certificacion", {
-                                        required: true,
-                                    })}
-                                    name="fecha_certificacion"
-                                    id="fecha_certificacion"
-                                    placeholder="Ingrese el mes de certificación"
-                                />
-                                {errors.fecha_certificacion?.type ===
-                                    "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="grupo">Grupo</label>
-                                <select
-                                    name="grupo"
-                                    id="grupo"
-                                    {...register("grupo", {
-                                        required: true,
-                                    })}
-                                >
-                                    <option value="">--Seleccione--</option>
-                                    <option value="COMUNIK2">COMUNIK2</option>
-                                    <option value="GLOBAL">GLOBAL</option>
-                                </select>
-                                {errors.grupo?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-group__input-group">
-                                <label htmlFor="sede">Sede</label>
-                                <select
-                                    name="sede"
-                                    id="sede"
-                                    {...register("sede", {
-                                        required: true,
-                                    })}
-                                >
-                                    <option value="">--Seleccione--</option>
-                                    <option value="Lima">Lima</option>
-                                    <option value="Trujillo">Trujillo</option>
-                                </select>
-                                {errors.sede?.type === "required" && (
-                                    <p className="error-message">
-                                        Este campo es obligatorio
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group__input-group">
-                        <button className="btn_registrar">
-                            {cargandoSubmit ? (
-                                <SpinnerIcono />
-                            ) : employeeId ? (
-                                "Guardar cambios"
-                            ) : (   
-                                "Registrar personal"
-                            )}
+                            <FiChevronLeft />
+                            <Link className="btn_regresar_texto">Regresar</Link>
                         </button>
+                        <h1 className="contenedor-form__texto">
+                            {employeeIdEdit
+                                ? "Editar personal"
+                                : "Nuevo personal"}
+                        </h1>
                     </div>
-                </form>
-            </div>
-        </section>
+                    <form onSubmit={handleSubmit(submitData)}>
+                        <div className="subcontenedor">
+                            <div className="subcontenedor-form">
+                                <div className="form-group__input-group">
+                                    <label htmlFor="nombre">Nombre</label>
+                                    <input
+                                        type="text"
+                                        {...register("nombre", {
+                                            required: true,
+                                        })}
+                                        name="nombre"
+                                        id="nombre"
+                                        placeholder="Ingrese su nombre"
+                                    />
+                                    {errors.nombre?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="apellido_paterno">
+                                        Apellido paterno
+                                    </label>
+                                    <input
+                                        type="text"
+                                        {...register("apellido_paterno", {
+                                            required: true,
+                                        })}
+                                        name="apellido_paterno"
+                                        id="apellido_paterno"
+                                        placeholder="Ingrese su apellido paterno"
+                                    />
+                                    {errors.apellido_paterno?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="apellido_materno">
+                                        Apellido materno
+                                    </label>
+                                    <input
+                                        type="text"
+                                        {...register("apellido_materno", {
+                                            required: true,
+                                        })}
+                                        name="apellido_materno"
+                                        id="apellido_materno"
+                                        placeholder="Ingrese su apellido materno"
+                                    />
+                                    {errors.apellido_materno?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="imagen">Foto</label>
+                                    <label
+                                        className="label_imagen"
+                                        htmlFor="imagen"
+                                    >
+                                        <p>
+                                            {imagen != ""
+                                                ? "Imagen seleccionada"
+                                                : "Subir imagen"}
+                                        </p>
+                                        <div className="contenedor-icon_imagen">
+                                            <BiImageAdd
+                                                className={
+                                                    imagen != ""
+                                                        ? "input_imagen BiImageAdd"
+                                                        : "icon_imagen"
+                                                }
+                                            />
+                                            <BiImage
+                                                className={
+                                                    imagen != ""
+                                                        ? "icon_imagen BiImage"
+                                                        : "input_imagen"
+                                                }
+                                            />
+                                        </div>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        {...register("imagen")}
+                                        name="imagen"
+                                        id="imagen"
+                                        className="input_imagen"
+                                        accept="image/jpeg, image/png"
+                                        onChange={(e) =>
+                                            setImagen(e.target.files[0])
+                                        }
+                                    />
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="estado">Estado</label>
+                                    <select
+                                        className="estado"
+                                        {...register("estado", {
+                                            required: true,
+                                        })}
+                                        name="estado"
+                                        id="estado"
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="No activo">
+                                            No activo
+                                        </option>
+                                    </select>
+                                    {errors.estado?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="dni">DNI</label>
+                                    <input
+                                        type="text"
+                                        {...register("dni", {
+                                            required: true,
+                                            pattern: /^[0-9]+$/,
+                                            maxLength: 8,
+                                            minLength: 8,
+                                        })}
+                                        name="dni"
+                                        id="dni"
+                                        placeholder="Ingrese su DNI"
+                                    />
+                                    {errors.dni?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                    {errors.dni?.type === "maxLength" && (
+                                        <p className="error-message">
+                                            Ingresar DNI correcto
+                                        </p>
+                                    )}
+                                    {errors.dni?.type === "minLength" && (
+                                        <p className="error-message">
+                                            Ingresar DNI correcto
+                                        </p>
+                                    )}
+                                    {errors.dni?.type === "pattern" && (
+                                        <p className="error-message">
+                                            Ingresar DNI correcto
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="subcontenedor-form">
+                                <div className="form-group__input-group">
+                                    <label htmlFor="correo">Correo</label>
+                                    <input
+                                        type="email"
+                                        {...register("correo", {
+                                            required: true,
+                                        })}
+                                        name="correo"
+                                        id="correo"
+                                        placeholder="Ingrese su correo"
+                                    />
+                                    {errors.correo?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="celular">Celular</label>
+                                    <input
+                                        type="tel"
+                                        {...register("celular", {
+                                            required: true,
+                                            pattern: /^[0-9]+$/,
+                                            maxLength: 9,
+                                            minLength: 9,
+                                        })}
+                                        name="celular"
+                                        id="celular"
+                                        placeholder="Ingrese su número de celular"
+                                    />
+                                    {errors.celular?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                    {errors.celular?.type === "maxLength" && (
+                                        <p className="error-message">
+                                            Ingresar número de celular correcto
+                                        </p>
+                                    )}
+                                    {errors.celular?.type === "minLength" && (
+                                        <p className="error-message">
+                                            Ingresar número de celular correcto
+                                        </p>
+                                    )}
+                                    {errors.celular?.type === "pattern" && (
+                                        <p className="error-message">
+                                            Ingresar número de celular correcto
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="nombre_contacto">
+                                        Nombre de contacto de emergencia
+                                    </label>
+                                    <input
+                                        type="text"
+                                        {...register("nombre_contacto", {
+                                            required: true,
+                                        })}
+                                        name="nombre_contacto"
+                                        id="nombre_contacto"
+                                        placeholder="Ingrese el dato"
+                                    />
+                                    {errors.nombre_contacto?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="numero_contacto">
+                                        Número de contacto de emergencia
+                                    </label>
+                                    <input
+                                        type="text"
+                                        {...register("numero_contacto", {
+                                            required: true,
+                                            pattern: /^[0-9]+$/,
+                                            maxLength: 9,
+                                            minLength: 9,
+                                        })}
+                                        name="numero_contacto"
+                                        id="numero_contacto"
+                                        placeholder="Ingrese el número de celular"
+                                    />
+                                    {errors.numero_contacto?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                    {errors.numero_contacto?.type ===
+                                        "maxLength" && (
+                                        <p className="error-message">
+                                            Ingresar número de celular correcto
+                                        </p>
+                                    )}
+                                    {errors.numero_contacto?.type ===
+                                        "minLength" && (
+                                        <p className="error-message">
+                                            Ingresar número de celular correcto
+                                        </p>
+                                    )}
+                                    {errors.numero_contacto?.type ===
+                                        "pattern" && (
+                                        <p className="error-message">
+                                            Ingresar número de celular correcto
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="relacion_contacto">
+                                        Relación del contacto
+                                    </label>
+                                    <select
+                                        className="relacion_contacto"
+                                        {...register("relacion_contacto", {
+                                            required: true,
+                                        })}
+                                        name="relacion_contacto"
+                                        id="relacion_contacto"
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        <option value="Padre">Padre</option>
+                                        <option value="Madre">Madre</option>
+                                        <option value="Esposo(a)">
+                                            Esposo(a)
+                                        </option>
+                                        <option value="Hijo(a)">Hijo(a)</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                    {errors.relacion_contacto?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="area">Área</label>
+                                    <select
+                                        className="area"
+                                        {...register("area", {
+                                            required: true,
+                                        })}
+                                        name="area"
+                                        id="area"
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        {areas.map((area) => (
+                                            <option
+                                                value={area.area}
+                                                key={area.id}
+                                            >
+                                                {area.area}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.area?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="subcontenedor-form">
+                                <div className="form-group__input-group">
+                                    <label htmlFor="puesto">Puesto</label>
+                                    <select
+                                        name="puesto"
+                                        id="puesto"
+                                        {...register("puesto", {
+                                            required: true,
+                                        })}
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        {puestos.map((puesto) => (
+                                            <option
+                                                value={puesto.puesto}
+                                                key={puesto.id}
+                                            >
+                                                {puesto.puesto}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.puesto?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="jefe_inmediato">
+                                        Jefe inmediato
+                                    </label>
+                                    <input
+                                        type="text"
+                                        {...register("jefe_inmediato", {
+                                            required: true,
+                                        })}
+                                        list="options"
+                                        name="jefe_inmediato"
+                                        id="jefe_inmediato"
+                                        placeholder="Ingrese el jefe inmediato"
+                                    />
+                                    <datalist id="options">
+                                        <option value="S.J">S.J</option>
+                                        {empleados.map((empleado) => (
+                                            <option
+                                                key={empleado.id}
+                                                value={`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}
+                                            >{`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno}`}</option>
+                                        ))}
+                                    </datalist>
+                                    {errors.jefe_inmediato?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="fecha_certificacion">
+                                        Fecha de certificación
+                                    </label>
+                                    <input
+                                        type="month"
+                                        min="AAAA-MM"
+                                        max="AAAA-MM"
+                                        step="1"
+                                        {...register("fecha_certificacion", {
+                                            required: true,
+                                        })}
+                                        name="fecha_certificacion"
+                                        id="fecha_certificacion"
+                                        placeholder="Ingrese el mes de certificación"
+                                    />
+                                    {errors.fecha_certificacion?.type ===
+                                        "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="grupo">Grupo</label>
+                                    <select
+                                        name="grupo"
+                                        id="grupo"
+                                        {...register("grupo", {
+                                            required: true,
+                                        })}
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        <option value="COMUNIK2">
+                                            COMUNIK2
+                                        </option>
+                                        <option value="GLOBAL">GLOBAL</option>
+                                    </select>
+                                    {errors.grupo?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group__input-group">
+                                    <label htmlFor="sede">Sede</label>
+                                    <select
+                                        name="sede"
+                                        id="sede"
+                                        {...register("sede", {
+                                            required: true,
+                                        })}
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        <option value="Lima">Lima</option>
+                                        <option value="Trujillo">
+                                            Trujillo
+                                        </option>
+                                    </select>
+                                    {errors.sede?.type === "required" && (
+                                        <p className="error-message">
+                                            Este campo es obligatorio
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group__input-group">
+                            <button className="btn_registrar">
+                                {cargandoSubmit ? (
+                                    <SpinnerIcono />
+                                ) : employeeIdEdit ? (
+                                    "Guardar cambios"
+                                ) : (
+                                    "Registrar personal"
+                                )}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
     );
 };
 

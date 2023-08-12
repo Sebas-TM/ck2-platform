@@ -15,14 +15,14 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 3rem;
     background-color: #fcfcfc;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 1.5rem;
+    /* border-radius: 2rem; */
     z-index: 3;
+    padding-top: 2rem;
 }
 .container-ver-empleado {
     width: 100%;
@@ -36,9 +36,10 @@
 }
 
 .ver-empleado-card {
-    border: 1px solid rgb(233, 230, 230);
+    /* border: 1px solid rgb(233, 230, 230); */
+    /* border: 1px solid #f82b3c; */
     padding: 0 2rem 2rem 2rem;
-    border-radius: 0.8rem;
+    border-radius: 1.5rem;
     width: 24rem;
     height: 45rem;
     overflow: auto;
@@ -93,6 +94,9 @@
         width: 65rem;
         min-width: 60rem;
     }
+    .ver-empleado-card p {
+        font-size: 1.4rem;
+    }
     .contenedor-ver-empleado__contenedor-boton {
         width: 72rem;
     }
@@ -100,14 +104,14 @@
         margin-top: 0rem;
     }
     .contenedor_foto_modal {
-      width: 19rem;
-      height: 19rem;
-  }
-  
+        width: 19rem;
+        height: 19rem;
+    }
+
     .contenedor_redondo_foto_modal {
-      height: 17rem;
-      width: 17rem;
-  }
+        height: 17rem;
+        width: 17rem;
+    }
 }
 
 @media (min-width: 950px) {
@@ -155,9 +159,21 @@
 }
 
 .btn_cerrar {
-    background-color: transparent;
+    background-color: #f82b3c;
     border: none;
-    font-size: 2rem;
-    color: gray;
+    font-size: 1.2rem;
+    color: white;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    font-family: "Poppins", sans-serif;
+    margin-right: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn_cerrar:hover {
+    background-color: #bd1e2b;
 }

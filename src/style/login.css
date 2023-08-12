@@ -205,14 +205,14 @@
     font-size: 1rem;
 }
 
-.texto-siguenos-768px{
+.texto-siguenos-769px{
     margin-top: 8rem;
     position: initial;
     transform: translateX(0%);
 }
 
-@media (min-width:768px){
-    .texto-siguenos-768px{
+@media (min-width:769px){
+    .texto-siguenos-769px{
         display: none;
     }
 }

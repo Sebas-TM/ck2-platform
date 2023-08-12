@@ -28,15 +28,8 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
     };
 
     return (
-        <div className="modal-ver-empleado" >
+        <div className="modal-ver-empleado">
             <section className="contenedor-ver-empleado">
-                <div className="contenedor-ver-empleado__contenedor-boton">
-                    <button
-                        onClick={() => setHandleModal(!handleModal)}
-                        className="btn_cerrar">
-                        <FiX />
-                    </button>
-                </div>
                 <div className="ver-empleado-card">
                     {cargando && <SpinnerContenido />}
                     {!cargando && (
@@ -77,7 +70,8 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
                             />
                             <Link
                                 target="blank"
-                                to={`https://wa.me/51${employee.celular}`}>
+                                to={`https://wa.me/51${employee.celular}`}
+                            >
                                 <EmpleadoCard
                                     dato={"Celular:"}
                                     dato_info={employee.celular}
@@ -133,6 +127,14 @@ const VerEmpleado = ({ handleModal, setHandleModal, employeeId }) => {
                             />
                         </div>
                     )}
+                </div>
+                <div className="contenedor-ver-empleado__contenedor-boton">
+                    <button
+                        onClick={() => setHandleModal(!handleModal)}
+                        className="btn_cerrar"
+                    >
+                        Cerrar
+                    </button>
                 </div>
             </section>
         </div>

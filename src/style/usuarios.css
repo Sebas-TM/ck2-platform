@@ -8,10 +8,19 @@
     /* height: 100%; */
 }
 
+.container_form_table_pagination {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1300px) {
+    .container_form_table_pagination {
+    }
+}
+
 .form-group-header,
 .form-group-header-lector {
-    width: 27rem;
-    margin: 1rem auto 3rem auto;
+    margin: 1rem 0 0 0;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -28,16 +37,20 @@
         margin-bottom: 0;
         justify-content: end;
         border-radius: 1rem;
-        padding: 2rem;
+        padding: 2rem 0;
         width: auto;
         gap: 2rem;
+        min-width: 82rem;
+        max-width: 105rem;
     }
     .form-group-header-lector {
-        width: 95rem;
+        min-width: 82rem;
+        max-width: 105rem;
+
         max-width: 100%;
         margin-bottom: 0;
         justify-content: end;
-        padding: 2rem;
+        padding: 2rem 0;
     }
     .form-group-header h1 {
         margin-bottom: 0;
@@ -46,11 +59,11 @@
 
 @media (min-width: 1300px) {
     .form-group-header {
-        width: 100rem;
+        /* width: 100rem; */
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .form-group-header_usuarios {
         width: 62rem;
     }
@@ -94,7 +107,6 @@
     background-color: #bd1e2b;
 }
 .tabla {
-    /* max-width: 100rem; */
     margin-top: 5rem;
     max-height: 35rem;
     overflow: scroll;
@@ -109,7 +121,7 @@
         display: block;
     }
     .btn_add {
-        padding: .7rem 1.5rem;
+        padding: 0.7rem 1.5rem;
     }
 }
 
@@ -131,17 +143,17 @@
 
 .tabla thead tr,
 .table__header tr {
-    height: 5rem;
+    height: 3.5rem;
     border-bottom: 1px solid rgb(235, 235, 235);
 }
 
 .tabla-empleados tr {
-    height: 4rem;
+    height: 3.5rem;
 }
 
 .tabla thead th,
 .table__header th {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: normal;
     color: gray;
     text-align: start;
@@ -162,33 +174,24 @@
 }
 
 .tabla tbody tr td {
-    height: 5rem;
+    height: 4rem;
     /* border: 1px solid #8080801b; */
     border-top: 1px solid rgb(235, 235, 235);
 }
 
 .tabla-empleados tbody tr td {
     height: 4rem;
-}
-.tabla-empleados thead tr .dni,
-.tabla-empleados thead tr .estado {
-    text-align: center;
-}
-
-.tabla-empleados tbody tr .data_dni,
-.tabla-empleados tbody tr .data_estado {
-    text-align: center;
+    color: black;
 }
 
 .tabla-empleados {
     max-height: 50rem;
-    max-width: 104rem;
     margin: 0rem auto 0 auto;
 }
 
 @media (min-width: 1300px) {
     .tabla-empleados {
-        width: 104rem;
+        /* width: 104rem; */
     }
 }
 
@@ -197,18 +200,56 @@
     padding: 0.5rem 1rem;
 }
 
-.tabla-empleados thead .nombre,
-.tabla-empleados thead .apellidos {
-    width: 20rem;
+.tabla-empleados thead .nombre {
+    width: 35rem;
+}
+.tabla-empleados thead .area {
+    width: 12rem;
+}
+.tabla-empleados thead .estado,
+.tabla-empleados thead .sede {
+    width: 5rem;
 }
 
-.tabla-empleados thead .dni,
 .tabla-empleados thead .estado {
-    width: 15rem;
+    text-align: center;
 }
 
 .data {
     padding: 0.5rem 1rem;
+}
+
+.data_estado p {
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: auto;
+}
+
+.data_estado p {
+    background-color: green;
+}
+
+.data_estado .p_estado_activo {
+    background-color: green;
+}
+
+.data_estado .p_estado_no_activo {
+    background-color: #c7c7c7;
+}
+
+.data_nombre_container .colaborador,
+.data_nombre_container .puesto {
+    color: #f82b3c;
+    font-weight: bold;
+}
+
+.data_nombre_container .dni,
+.data_nombre_container .area {
+    color: gray;
+    font-size: 1.1rem;
 }
 
 .data_id {
@@ -268,9 +309,10 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    border: 1px solid rgb(233, 230, 230);
 }
 .contenedor-general-cards {
-    margin-top: 5rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;

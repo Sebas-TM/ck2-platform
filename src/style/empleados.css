@@ -26,9 +26,15 @@
     padding: 2rem;
     overflow: hidden;
     min-height: 2.2rem;
+    max-height: 2.2rem;
     transition: all 0.3s ease;
 }
 
+@media (min-width: 1300px) {
+    .panel-filtro {
+        max-height: 100%;
+    }
+}
 .panel-filtro.show {
     min-height: 15rem;
     overflow: initial;
@@ -124,7 +130,7 @@
     margin: auto;
     display: flex;
     align-items: center;
-    padding: 1rem .5rem;
+    padding: 1rem 0.5rem;
 }
 
 .empleados-data-card {

@@ -33,6 +33,7 @@ import EmpleadoDataCard from "../components/EmpleadoDataCard";
 import { useForm } from "react-hook-form";
 import VerEmpleado from "../components/VerEmpleado";
 import SpinnerIcono from "../components/SpinnerIcono";
+import NuevoEmpleado from "../components/NuevoEmpleado";
 
 const cookies = new Cookies();
 
@@ -48,6 +49,7 @@ const Empleados = () => {
     const tableRef1 = useRef(null);
     const tableRef = useRef(null);
     const [employeeId, setEmployeeId] = useState();
+    const [employeeIdEdit, setEmployeeIdEdit] = useState();
     const [panelIsOpen, setPanelIsOpen] = useState(false);
     const navigate = useNavigate();
     const {
@@ -71,28 +73,20 @@ const Empleados = () => {
     });
 
     const [activeEmployees, setActiveEmployees] = useState(0);
-    const [activeEmployeesData, setActiveEmployeesData] = useState([]);
-    const [activeEmployeesPagination, setActiveEmployeesPagination] = useState(
-        {}
-    );
     const [sedeLima, setSedeLima] = useState(0);
-    const [sedeLimaData, setSedeLimaData] = useState([]);
-    const [sedeLimaPagination, setSedeLimaPagination] = useState({});
     const [sedeTrujillo, setSedeTrujillo] = useState(0);
-    const [sedeTrujilloData, setSedeTrujilloData] = useState([]);
-    const [sedeTrujilloPagination, setSedeTrujilloPagination] = useState({});
     const [asesor, setAsesor] = useState(0);
-    const [asesorData, setAsesorData] = useState([]);
-    const [asesorPagination, setAsesorPagination] = useState({});
+    const [filtro, setFiltro] = useState("");
+    const [columna, setColumna] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
             setCargando(true);
             await obtenerEmpleados();
-            await filterCard("Trujillo", "sede", 1);
-            await filterCard("Lima", "sede", 1);
-            await filterCard("asesor(a)", "puesto", 1);
-            await filterCard("activo", "estado", 1);
+            setSedeTrujillo(await filterCard("Trujillo", "sede", 1));
+            setSedeLima(await filterCard("Lima", "sede", 1));
+            setAsesor(await filterCard("asesor(a)", "puesto", 1));
+            setActiveEmployees(await filterCard("activo", "estado", 1));
             setCargando(false);
         };
 
@@ -100,44 +94,29 @@ const Empleados = () => {
     }, []);
 
     const filterCard = async (termino, columna, page = 1) => {
-        if (termino == "activo") {
-            const res = await axios.post(
-                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
-            );
-            const { data, meta } = res.data;
+        const res = await axios.post(
+            `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
+        );
 
-            setActiveEmployees(meta.total);
-            setActiveEmployeesData(data);
-            setActiveEmployeesPagination(meta);
-        } else if (termino == "Trujillo") {
-            const res = await axios.post(
-                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
-            );
-            const { data, meta } = res.data;
+        const { meta, data } = res.data;
 
-            setSedeTrujillo(meta.total);
-            setSedeTrujilloData(data);
-            setSedeTrujilloPagination(meta);
-        } else if (termino == "Lima") {
-            const res = await axios.post(
-                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
-            );
-            const { data, meta } = res.data;
-
-            setSedeLima(meta.total);
-            setSedeLimaData(data);
-            setSedeLimaPagination(meta);
-        } else if (termino == "asesor(a)") {
-            const res = await axios.post(
-                `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
-            );
-            const { data, meta } = res.data;
-
-            setAsesor(meta.total);
-            setAsesorData(data);
-            setAsesorPagination(meta);
-        }
+        return meta.total;
     };
+
+    const filter = async (filtro, columna, page = 1) => {
+        const res = await axios.post(
+            `${config.API_URL}api/employees/filterCard?termino=${filtro}&columna=${columna}&page=${page}`
+        );
+        const { data, meta } = res.data;
+
+        setFiltro(filtro);
+        setColumna(columna);
+        setEmployees(data);
+        setPagination(meta);
+        tableRef.current.scrollTo(0, 0);
+        tableRef1.current.scrollTo(0, 0);
+    };
+
     const obtenerEmpleados = async (page = 1) => {
         setCargandoBusqueda(true);
         const res = await axios.get(
@@ -211,24 +190,27 @@ const Empleados = () => {
         });
     };
     const handlePageChange = ({ selected }) => {
-        if (termino == "") {
-            obtenerEmpleados(selected + 1);
-            tableRef.current.scrollTo(0, 0);
-            tableRef1.current.scrollTo(0, 0);
+        if (filtro == "") {
+            if (termino == "") {
+                obtenerEmpleados(selected + 1);
+            } else {
+                searchData(selected + 1);
+            }
         } else {
-            searchData(selected + 1);
-            tableRef.current.scrollTo(0, 0);
-            tableRef1.current.scrollTo(0, 0);
+            filter(filtro, columna, selected + 1);
         }
-        // filterCard("Lima","sede",selected+1)
+
+        tableRef.current.scrollTo(0, 0);
+        tableRef1.current.scrollTo(0, 0);
     };
 
     const handlePanelIsOpen = () => {
         setPanelIsOpen(!panelIsOpen);
     };
-
+    console.log(employeeId);
     return (
         <div className="contenedor-empleados">
+            {employeeIdEdit && <NuevoEmpleado employeeIdEdit={employeeIdEdit}/>}
             <div
                 className={`panel-filtro ${panelIsOpen ? "show" : ""}`}
                 onClick={handlePanelIsOpen}
@@ -259,36 +241,21 @@ const Empleados = () => {
             <div className="form-group form-group-empleados">
                 <div className="empleados-data-card-contenedor">
                     <div className="empleados-data-card">
-                        <button
-                            onClick={() => {
-                                setEmployees(activeEmployeesData);
-                                setPagination(activeEmployeesPagination);
-                            }}
-                        >
+                        <button onClick={() => filter("activo", "estado", 1)}>
                             <EmpleadoDataCard
                                 icono={<FiUsers />}
                                 dato={activeEmployees}
                                 descripcion={"Colaboradores Activos"}
                             />
                         </button>
-                        <button
-                            onClick={() => {
-                                setEmployees(sedeLimaData);
-                                setPagination(sedeLimaPagination);
-                            }}
-                        >
+                        <button onClick={() => filter("Lima", "sede", 1)}>
                             <EmpleadoDataCard
                                 icono={<FiUsers />}
                                 dato={sedeLima}
                                 descripcion={"Colaboradores Lima"}
                             />
                         </button>
-                        <button
-                            onClick={() => {
-                                setEmployees(sedeTrujilloData);
-                                setPagination(sedeTrujilloPagination);
-                            }}
-                        >
+                        <button onClick={() => filter("Trujillo", "sede", 1)}>
                             <EmpleadoDataCard
                                 icono={<FiUsers />}
                                 dato={sedeTrujillo}
@@ -296,10 +263,7 @@ const Empleados = () => {
                             />
                         </button>
                         <button
-                            onClick={() => {
-                                setEmployees(asesorData);
-                                setPagination(asesorPagination);
-                            }}
+                            onClick={() => filter("asesor(a)", "puesto", 1)}
                         >
                             <EmpleadoDataCard
                                 icono={<TfiHeadphoneAlt />}
@@ -318,45 +282,47 @@ const Empleados = () => {
                     />
                 )}
                 <Toaster position="top-center" richColors />
-                <div
-                    className={
-                        rol != 3
-                            ? "form-group-header"
-                            : "form-group-header-lector"
-                    }
-                >
-                    <form
-                        className="form-buscar-empleados"
-                        onSubmit={handleSubmit(submitData)}
-                    >
-                        <input
-                            className="busqueda"
-                            type="text"
-                            id="termino"
-                            name="termino"
-                            {...register("termino")}
-                            placeholder="Buscar..."
-                        />
-                        <button className="btn_add" type="submit">
-                            {cargandoBusqueda ? (
-                                <SpinnerIcono />
-                            ) : (
-                                <FiSearch className="icon" />
-                            )}
-                        </button>
-                    </form>
-                    <button
-                        className={rol != 3 ? "btn_add" : "disable-button"}
-                        onClick={() =>
-                            navigate(`/menu/recursos_humanos/empleado/crear`)
+
+                <div className="container_form_table_pagination">
+                    <div
+                        className={
+                            rol != 3
+                                ? "form-group-header"
+                                : "form-group-header-lector"
                         }
                     >
-                        <FiUserPlus className="icon" />
-                        <p className="disable">Agregar</p>
-                    </button>
-                </div>
-
-                <div>
+                        <form
+                            className="form-buscar-empleados"
+                            onSubmit={handleSubmit(submitData)}
+                        >
+                            <input
+                                className="busqueda"
+                                type="text"
+                                id="termino"
+                                name="termino"
+                                {...register("termino")}
+                                placeholder="Buscar..."
+                            />
+                            <button className="btn_add" type="submit">
+                                {cargandoBusqueda ? (
+                                    <SpinnerIcono />
+                                ) : (
+                                    <FiSearch className="icon" />
+                                )}
+                            </button>
+                        </form>
+                        <button
+                            className={rol != 3 ? "btn_add" : "disable-button"}
+                            onClick={() =>
+                                navigate(
+                                    `/menu/recursos_humanos/empleado/crear`
+                                )
+                            }
+                        >
+                            <FiUserPlus className="icon" />
+                            <p className="disable">Agregar</p>
+                        </button>
+                    </div>
                     <table
                         cellSpacing="0"
                         cellPadding="0"
@@ -366,24 +332,16 @@ const Empleados = () => {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th className="nombre">Nombre</th>
-                                <th className="apellidos">Apellidos</th>
-                                {/* <th>Apellido materno</th> */}
-                                <th className="dni">DNI</th>
+                                <th className="nombre">Colaborador(a)</th>
+                                <th className="area">Área</th>
+                                <th className="sede">Sede</th>
                                 <th className="estado">Estado</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {sortedEmployees.map((sortedEmployee, index) => (
-                                <tr
-                                    key={sortedEmployee.id}
-                                    className={
-                                        sortedEmployee.estado === "No activo"
-                                            ? "empleado-no-activo"
-                                            : ""
-                                    }
-                                >
+                                <tr key={sortedEmployee.id}>
                                     <td
                                         align="center"
                                         onClick={() =>
@@ -411,23 +369,37 @@ const Empleados = () => {
                                             openHandleModal(sortedEmployee.id)
                                         }
                                     >
-                                        {sortedEmployee.nombre}
+                                        <div className="data_nombre_container">
+                                            <p className="colaborador">{`${sortedEmployee.nombre} ${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}</p>
+                                            <p className="dni">
+                                                {sortedEmployee.dni}
+                                            </p>
+                                        </div>
                                     </td>
                                     <td
-                                        className="data data_apaterno"
+                                        className="data data_area_puesto"
                                         onClick={() =>
                                             openHandleModal(sortedEmployee.id)
                                         }
                                     >
-                                        {`${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}
+                                        <div className="data_nombre_container">
+                                            <p className="puesto">
+                                                {sortedEmployee.puesto}
+                                            </p>
+                                            <p className="area">
+                                                {sortedEmployee.area}
+                                            </p>
+                                        </div>
                                     </td>
                                     <td
-                                        className="data data_dni"
+                                        className="data data_sede"
                                         onClick={() =>
                                             openHandleModal(sortedEmployee.id)
                                         }
                                     >
-                                        {sortedEmployee.dni}
+                                        <p className="p_sede_lima">
+                                            {sortedEmployee.sede}
+                                        </p>
                                     </td>
                                     <td
                                         className="data data_estado"
@@ -435,7 +407,14 @@ const Empleados = () => {
                                             openHandleModal(sortedEmployee.id)
                                         }
                                     >
-                                        {sortedEmployee.estado}
+                                        <p
+                                            className={
+                                                sortedEmployee.estado ==
+                                                "Activo"
+                                                    ? "p_estado_activo"
+                                                    : "p_estado_no_activo"
+                                            }
+                                        ></p>
                                     </td>
                                     <td className="data data_opciones">
                                         <button
@@ -459,9 +438,10 @@ const Empleados = () => {
 
                                         <button
                                             onClick={() =>
-                                                navigate(
-                                                    `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
-                                                )
+                                                // navigate(
+                                                //     `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
+                                                // )
+                                                setEmployeeIdEdit(sortedEmployee.id)
                                             }
                                             className={
                                                 rol != 3

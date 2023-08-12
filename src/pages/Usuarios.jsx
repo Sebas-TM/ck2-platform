@@ -103,14 +103,6 @@ const Usuarios = () => {
             <Toaster position="top-center" richColors />
             <div className="form-group pt-10">
                 <div className="form-group-header form-group-header_usuarios">
-                    <button
-                        className={rol != 3 ? "btn_add" : "disable-button"}
-                        onClick={() => navigate(`/menu/usuarios/crear`)}
-                    >
-                        <FiUserPlus className="icon" />
-                        <p className="disable">Agregar</p>
-                    </button>
-
                     <input
                         className="busqueda"
                         type="text"
@@ -119,6 +111,13 @@ const Usuarios = () => {
                         onChange={handleChange}
                         placeholder="Buscar..."
                     />
+                    <button
+                        className={rol != 3 ? "btn_add" : "disable-button"}
+                        onClick={() => navigate(`/menu/usuarios/crear`)}
+                    >
+                        <FiUserPlus className="icon" />
+                        <p className="disable">Agregar</p>
+                    </button>
                 </div>
                 <table cellSpacing="0" cellPadding="0" className="tabla">
                     <thead>
@@ -177,9 +176,7 @@ const Usuarios = () => {
                         ))}
                     </tbody>
                 </table>
-                {users.length < 1 && (
-                    <ErrorMessage/>
-                )}
+                {users.length < 1 && <ErrorMessage />}
                 <div className="contenedor-general-cards">
                     {users.map((user, index) => (
                         <div key={index} className="contenedor-cards">

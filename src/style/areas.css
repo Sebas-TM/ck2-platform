@@ -21,7 +21,7 @@
     width: 25rem;
 }
 
-@media (min-width:768px){
+@media (min-width:769px){
     .btn_regresar_area p{
         display: block;
     }

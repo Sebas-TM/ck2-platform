@@ -132,7 +132,7 @@ const Login = () => {
                             {cargando ? <SpinnerIcono /> : "Ingresar"}
                         </button>
                     </form>
-                    <div className="texto-siguenos texto-siguenos-768px">
+                    <div className="texto-siguenos texto-siguenos-769px">
                         <p>Síguenos en:</p>
                         <Link
                             target="blank"

@@ -4,7 +4,7 @@
     place-items: center;
 }
 
-@media (min-width:768px){
+@media (min-width:769px){
   .contenedor-spinnerContenido{
     height: auto;
     width: 100%;
