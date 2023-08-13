@@ -10,9 +10,9 @@ import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from "../config";
 import axios from "axios";
 import SpinnerIcono from "./SpinnerIcono";
-import '../style/nuevoEmpleado.css'
+import "../style/nuevoEmpleado.css";
 
-const NuevoEmpleado = ({ employeeIdEdit }) => {
+const NuevoEmpleado = ({ employeeIdEdit, setEmployeeIdEdit }) => {
     const navigate = useNavigate();
     // const { employeeIdEdit } = useParams();
     const [cargando, setCargando] = useState(false);
@@ -152,6 +152,7 @@ const NuevoEmpleado = ({ employeeIdEdit }) => {
                 .catch((error) => {
                     toast.error(error.response.data.message);
                     setCargandoSubmit(false);
+
                 });
         } else {
             await axios
@@ -167,11 +168,15 @@ const NuevoEmpleado = ({ employeeIdEdit }) => {
                 .then(() => {
                     toast.success("Datos actualizados!");
                     setCargandoSubmit(false);
+                    setEmployeeIdEdit(null)
+
                 })
                 .catch((error) => {
                     toast.error(error.response.data.message);
                     console.log(error);
                     setCargandoSubmit(false);
+                    setEmployeeIdEdit(null)
+
                 });
         }
     };
@@ -179,16 +184,9 @@ const NuevoEmpleado = ({ employeeIdEdit }) => {
     return (
         <div className="modal-ver-empleado">
             <section className="contenedor_nuevo-dato">
-                <Toaster position="top-center" richColors />
+                {/* <Toaster position="top-center" richColors /> */}
                 <div className="contenedor-form">
                     <div className="contenedor-form-header">
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="btn_regresar"
-                        >
-                            <FiChevronLeft />
-                            <Link className="btn_regresar_texto">Regresar</Link>
-                        </button>
                         <h1 className="contenedor-form__texto">
                             {employeeIdEdit
                                 ? "Editar personal"
@@ -645,7 +643,13 @@ const NuevoEmpleado = ({ employeeIdEdit }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="form-group__input-group">
+                        <div className="form_modal_buttons">
+                            <p
+                                onClick={() => setEmployeeIdEdit(null)}
+                                className="btn_cancelar"
+                            >
+                                Cancelar
+                            </p>
                             <button className="btn_registrar">
                                 {cargandoSubmit ? (
                                     <SpinnerIcono />

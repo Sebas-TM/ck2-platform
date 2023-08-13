@@ -210,7 +210,12 @@ const Empleados = () => {
     console.log(employeeId);
     return (
         <div className="contenedor-empleados">
-            {employeeIdEdit && <NuevoEmpleado employeeIdEdit={employeeIdEdit}/>}
+            {employeeIdEdit && (
+                <NuevoEmpleado
+                    employeeIdEdit={employeeIdEdit}
+                    setEmployeeIdEdit={setEmployeeIdEdit}
+                />
+            )}
             <div
                 className={`panel-filtro ${panelIsOpen ? "show" : ""}`}
                 onClick={handlePanelIsOpen}
@@ -441,7 +446,9 @@ const Empleados = () => {
                                                 // navigate(
                                                 //     `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
                                                 // )
-                                                setEmployeeIdEdit(sortedEmployee.id)
+                                                setEmployeeIdEdit(
+                                                    sortedEmployee.id
+                                                )
                                             }
                                             className={
                                                 rol != 3

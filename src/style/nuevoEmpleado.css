@@ -1,8 +1,45 @@
-.contenedor_nuevo-dato{
+.contenedor_nuevo-dato {
     background-color: white;
-    width: 100rem;
+    width: 33rem;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.form_modal_buttons {
+    align-items: center;
+    justify-content: end;
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .form_modal_buttons {
+        margin-top: 0rem;
+    }
+    .contenedor_nuevo-dato {
+        width: 100rem;
+    }
+}
+
+.form_modal_buttons .btn_cancelar {
+    height: 3.4rem;
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: gray;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 15rem;
+    justify-content: center;
+    border-radius: 0.8rem;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.4rem;
+}
+
+.form_modal_buttons .btn_registrar {
+    margin: 0;
 }
