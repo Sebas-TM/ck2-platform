@@ -71,7 +71,7 @@
     border-radius: 7px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     @media (min-height: 700px) {
         .subcontenedor {
             max-height: 50rem;

@@ -44,7 +44,8 @@ const Empleados = () => {
     const [cargando, setCargando] = useState(false);
     const [cargandoBusqueda, setCargandoBusqueda] = useState(false);
     const [tabla, setTabla] = useState([]);
-    const [termino, setTermino] = useState("");
+    const [termino, setTermino] = useState();
+    const [page, setPage] = useState();
     const [handleModal, setHandleModal] = useState(false);
     const tableRef1 = useRef(null);
     const tableRef = useRef(null);
@@ -58,8 +59,6 @@ const Empleados = () => {
         formState: { errors },
         handleSubmit,
     } = useForm();
-    const sortedEmployees = employees.sort((a, b) => b.id - a.id);
-
     const openHandleModal = (id) => {
         setHandleModal(!handleModal);
         setEmployeeId(id);
@@ -76,8 +75,9 @@ const Empleados = () => {
     const [sedeLima, setSedeLima] = useState(0);
     const [sedeTrujillo, setSedeTrujillo] = useState(0);
     const [asesor, setAsesor] = useState(0);
-    const [filtro, setFiltro] = useState("");
+    const [filtro, setFiltro] = useState();
     const [columna, setColumna] = useState("");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -93,22 +93,29 @@ const Empleados = () => {
         fetchData();
     }, []);
 
-    const filterCard = async (termino, columna, page = 1) => {
+    const handleModalIsOpen = (id) => {
+        setModalIsOpen(!modalIsOpen);
+        setEmployeeIdEdit(id);
+    };
+
+    const filterCard = async (termino, columna, pg = 1) => {
         const res = await axios.post(
-            `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${page}`
+            `${config.API_URL}api/employees/filterCard?termino=${termino}&columna=${columna}&page=${pg}`
         );
 
         const { meta, data } = res.data;
+        setPage(pg);
 
         return meta.total;
     };
 
-    const filter = async (filtro, columna, page = 1) => {
+    const filter = async (filtro, columna, pg = 1) => {
         const res = await axios.post(
-            `${config.API_URL}api/employees/filterCard?termino=${filtro}&columna=${columna}&page=${page}`
+            `${config.API_URL}api/employees/filterCard?termino=${filtro}&columna=${columna}&page=${pg}`
         );
         const { data, meta } = res.data;
-
+        setPage(pg);
+        setValue("termino", "");
         setFiltro(filtro);
         setColumna(columna);
         setEmployees(data);
@@ -117,44 +124,52 @@ const Empleados = () => {
         tableRef1.current.scrollTo(0, 0);
     };
 
-    const obtenerEmpleados = async (page = 1) => {
+    const obtenerEmpleados = async (pg = 1) => {
         setCargandoBusqueda(true);
         const res = await axios.get(
-            `${config.API_URL}api/employees/list?page=${page}`
+            `${config.API_URL}api/employees/list?page=${pg}`
         );
         const { data, meta } = res.data;
-        setEmployees(data);
+
+        const sortedEmployees = data.sort((a, b) => b.id - a.id);
+        setEmployees(sortedEmployees);
         setTabla(data);
         setPagination(meta);
         setAllEmployees(meta.total);
         setCargandoBusqueda(false);
+
         tableRef1.current.scrollTo(0, 0);
         tableRef.current.scrollTo(0, 0);
+        setPage(pg);
+        setFiltro();
     };
 
     const submitData = async (data) => {
         setCargandoBusqueda(true);
         if (data.termino) {
+            <div className=""></div>;
             setTermino(data.termino);
         } else {
-            setTermino("");
+            setTermino();
             obtenerEmpleados();
             tableRef.current.scrollTo(0, 0);
         }
         setCargandoBusqueda(false);
     };
 
-    const searchData = async (page = 1) => {
+    const searchData = async (pg = 1) => {
         setCargandoBusqueda(true);
         await axios
             .post(
-                `${config.API_URL}api/employees/search?termino=${termino}&page=${page}`
+                `${config.API_URL}api/employees/search?termino=${termino}&page=${pg}`
             )
             .then((res) => {
                 setEmployees(res.data.data);
                 setPagination(res.data.meta);
             });
         setCargandoBusqueda(false);
+        setPage(pg);
+        setFiltro();
     };
 
     useEffect(() => {
@@ -190,8 +205,8 @@ const Empleados = () => {
         });
     };
     const handlePageChange = ({ selected }) => {
-        if (filtro == "") {
-            if (termino == "") {
+        if (!filtro) {
+            if (!termino) {
                 obtenerEmpleados(selected + 1);
             } else {
                 searchData(selected + 1);
@@ -207,13 +222,21 @@ const Empleados = () => {
     const handlePanelIsOpen = () => {
         setPanelIsOpen(!panelIsOpen);
     };
-    console.log(employeeId);
     return (
         <div className="contenedor-empleados">
-            {employeeIdEdit && (
+            {modalIsOpen && (
                 <NuevoEmpleado
                     employeeIdEdit={employeeIdEdit}
-                    setEmployeeIdEdit={setEmployeeIdEdit}
+                    setModalIsOpen={setModalIsOpen}
+                    modalIsOpen={modalIsOpen}
+                    employees={employees}
+                    setEmployees={setEmployees}
+                    pagination={pagination}
+                    setPagination={setPagination}
+                    termino={termino}
+                    page={page}
+                    filtro={filtro}
+                    columna={columna}
                 />
             )}
             <div
@@ -318,11 +341,7 @@ const Empleados = () => {
                         </form>
                         <button
                             className={rol != 3 ? "btn_add" : "disable-button"}
-                            onClick={() =>
-                                navigate(
-                                    `/menu/recursos_humanos/empleado/crear`
-                                )
-                            }
+                            onClick={()=>handleModalIsOpen(null)}
                         >
                             <FiUserPlus className="icon" />
                             <p className="disable">Agregar</p>
@@ -345,12 +364,12 @@ const Empleados = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedEmployees.map((sortedEmployee, index) => (
-                                <tr key={sortedEmployee.id}>
+                            {employees.map((employee, index) => (
+                                <tr key={employee.id}>
                                     <td
                                         align="center"
                                         onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
+                                            openHandleModal(employee.id)
                                         }
                                     >
                                         <div className="contenedor-imagenTable">
@@ -358,9 +377,9 @@ const Empleados = () => {
                                                 loading="lazy"
                                                 className="img_empleados"
                                                 src={
-                                                    sortedEmployee.imagen
+                                                    employee.imagen
                                                         ? `${config.API_URL}${
-                                                              sortedEmployee.imagen
+                                                              employee.imagen
                                                           }?${Date.now()}`
                                                         : foto_personal
                                                 }
@@ -371,51 +390,50 @@ const Empleados = () => {
                                     <td
                                         className="data data_nombre"
                                         onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
+                                            openHandleModal(employee.id)
                                         }
                                     >
                                         <div className="data_nombre_container">
-                                            <p className="colaborador">{`${sortedEmployee.nombre} ${sortedEmployee.apellido_paterno} ${sortedEmployee.apellido_materno}`}</p>
+                                            <p className="colaborador">{`${employee.nombre} ${employee.apellido_paterno} ${employee.apellido_materno}`}</p>
                                             <p className="dni">
-                                                {sortedEmployee.dni}
+                                                {employee.dni}
                                             </p>
                                         </div>
                                     </td>
                                     <td
                                         className="data data_area_puesto"
                                         onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
+                                            openHandleModal(employee.id)
                                         }
                                     >
                                         <div className="data_nombre_container">
                                             <p className="puesto">
-                                                {sortedEmployee.puesto}
+                                                {employee.puesto}
                                             </p>
                                             <p className="area">
-                                                {sortedEmployee.area}
+                                                {employee.area}
                                             </p>
                                         </div>
                                     </td>
                                     <td
                                         className="data data_sede"
                                         onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
+                                            openHandleModal(employee.id)
                                         }
                                     >
                                         <p className="p_sede_lima">
-                                            {sortedEmployee.sede}
+                                            {employee.sede}
                                         </p>
                                     </td>
                                     <td
                                         className="data data_estado"
                                         onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
+                                            openHandleModal(employee.id)
                                         }
                                     >
                                         <p
                                             className={
-                                                sortedEmployee.estado ==
-                                                "Activo"
+                                                employee.estado == "Activo"
                                                     ? "p_estado_activo"
                                                     : "p_estado_no_activo"
                                             }
@@ -424,9 +442,7 @@ const Empleados = () => {
                                     <td className="data data_opciones">
                                         <button
                                             onClick={() =>
-                                                openHandleModal(
-                                                    sortedEmployee.id
-                                                )
+                                                openHandleModal(employee.id)
                                             }
                                             className="btn_option view"
                                         >
@@ -436,19 +452,14 @@ const Empleados = () => {
                                         <Link
                                             className="btn_option wsp"
                                             target="blank"
-                                            to={`https://wa.me/51${sortedEmployee.celular}`}
+                                            to={`https://wa.me/51${employee.celular}`}
                                         >
                                             <BsWhatsapp className="icon" />
                                         </Link>
 
                                         <button
                                             onClick={() =>
-                                                // navigate(
-                                                //     `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
-                                                // )
-                                                setEmployeeIdEdit(
-                                                    sortedEmployee.id
-                                                )
+                                                handleModalIsOpen(employee.id)
                                             }
                                             className={
                                                 rol != 3
@@ -461,9 +472,7 @@ const Empleados = () => {
 
                                         <button
                                             onClick={() =>
-                                                eliminarEmpleado(
-                                                    sortedEmployee.id
-                                                )
+                                                eliminarEmpleado(employee.id)
                                             }
                                             className={
                                                 rol == 1
@@ -480,20 +489,18 @@ const Empleados = () => {
                     </table>
                     {employees.length < 1 && <ErrorMessage />}
                     <div className="contenedor-general-cards" ref={tableRef}>
-                        {sortedEmployees.map((sortedEmployee, index) => (
+                        {employees.map((employee, index) => (
                             <div
                                 key={index}
                                 className={
-                                    sortedEmployee.estado === "No activo"
+                                    employee.estado === "No activo"
                                         ? "empleado-no-activo contenedor-cards"
                                         : "contenedor-cards"
                                 }
                             >
                                 <div
                                     className="cards cards-employee"
-                                    onClick={() =>
-                                        openHandleModal(sortedEmployee.id)
-                                    }
+                                    onClick={() => openHandleModal(employee.id)}
                                 >
                                     <div className="container">
                                         <div className="contenedor-foto">
@@ -501,8 +508,8 @@ const Empleados = () => {
                                                 <img
                                                     loading="lazy"
                                                     src={
-                                                        sortedEmployee.imagen
-                                                            ? `${config.API_URL}${sortedEmployee.imagen}`
+                                                        employee.imagen
+                                                            ? `${config.API_URL}${employee.imagen}`
                                                             : foto_personal
                                                     }
                                                     alt="foto_personal"
@@ -510,9 +517,9 @@ const Empleados = () => {
                                             </div>
                                         </div>
                                         <div className="datos-principales">
-                                            <p className="datos-principales_nombre">{`${sortedEmployee.nombre} ${sortedEmployee.apellido_paterno}`}</p>
+                                            <p className="datos-principales_nombre">{`${employee.nombre} ${employee.apellido_paterno}`}</p>
                                             <p className="datos-principales_dni">
-                                                {sortedEmployee.dni}
+                                                {employee.dni}
                                             </p>
                                         </div>
                                     </div>
@@ -520,19 +527,19 @@ const Empleados = () => {
                                         <div className="contenedor-datos">
                                             <p className="dato">Celular:</p>
                                             <p className="dato-info">
-                                                {sortedEmployee.celular}
+                                                {employee.celular}
                                             </p>
                                         </div>
                                         <div className="contenedor-datos">
                                             <p className="dato">Área:</p>
                                             <p className="dato-info">
-                                                {sortedEmployee.area}
+                                                {employee.area}
                                             </p>
                                         </div>
                                         <div className="contenedor-datos">
                                             <p className="dato">Estado:</p>
                                             <p className="dato-info">
-                                                {sortedEmployee.estado}
+                                                {employee.estado}
                                             </p>
                                         </div>
                                     </div>
@@ -540,7 +547,7 @@ const Empleados = () => {
                                 <div className="data data_opciones">
                                     <button
                                         onClick={() =>
-                                            openHandleModal(sortedEmployee.id)
+                                            openHandleModal(employee.id)
                                         }
                                         className="btn_option view"
                                     >
@@ -549,15 +556,13 @@ const Empleados = () => {
                                     <Link
                                         className="btn_option wsp"
                                         target="blank"
-                                        to={`https://wa.me/51${sortedEmployee.celular}`}
+                                        to={`https://wa.me/51${employee.celular}`}
                                     >
                                         <BsWhatsapp className="icon" />
                                     </Link>
                                     <button
                                         onClick={() =>
-                                            navigate(
-                                                `/menu/recursos_humanos/empleado/${sortedEmployee.id}/editar`
-                                            )
+                                            handleModalIsOpen(employee.id)
                                         }
                                         className={
                                             rol != 3
@@ -569,7 +574,7 @@ const Empleados = () => {
                                     </button>
                                     <button
                                         onClick={() =>
-                                            eliminarEmpleado(sortedEmployee.id)
+                                            eliminarEmpleado(employee.id)
                                         }
                                         className={
                                             rol == 1
