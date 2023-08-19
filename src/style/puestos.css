@@ -13,6 +13,8 @@
     margin: 0;
     padding: 2rem 0 2rem 0;
     flex-direction: column;
+    min-width: 5rem;
+
 }
 
 .form-table {
