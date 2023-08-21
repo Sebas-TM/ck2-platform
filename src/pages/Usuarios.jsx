@@ -10,12 +10,15 @@ import { config } from "../config";
 import axios from "axios";
 import SpinnerIcono from "../components/SpinnerIcono";
 import ErrorMessage from "../components/ErrorMessage";
+import NuevoUsuario from "../components/NuevoUsuario";
 
 const Usuarios = () => {
     const cookies = new Cookies();
     const rol = cookies.get("rol");
     const [users, setUsers] = useState([]);
     const [tabla, setTabla] = useState([]);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [userIdEdit, setUserIdEdit] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,6 +32,11 @@ const Usuarios = () => {
         const res = await axios.get(`${config.API_URL}api/users/list`);
         setUsers(res.data);
         setTabla(res.data);
+    };
+
+    const handleModalIsOpen = (id) => {
+        setModalIsOpen(!modalIsOpen);
+        setUserIdEdit(id);
     };
     const eliminarUsuario = (userId) => {
         swal({
@@ -102,6 +110,15 @@ const Usuarios = () => {
         <>
             <Toaster position="top-center" richColors />
             <div className="form-group pt-10">
+                {modalIsOpen && (
+                    <NuevoUsuario
+                        userIdEdit={userIdEdit}
+                        setModalIsOpen={setModalIsOpen}
+                        modalIsOpen={modalIsOpen}
+                        setUsers={setUsers}
+                        setTabla={setTabla}
+                    />
+                )}
                 <div className="form-group-header form-group-header_usuarios">
                     <input
                         className="busqueda"
@@ -113,7 +130,7 @@ const Usuarios = () => {
                     />
                     <button
                         className={rol != 3 ? "btn_add" : "disable-button"}
-                        onClick={() => navigate(`/menu/usuarios/crear`)}
+                        onClick={() => handleModalIsOpen(null)}
                     >
                         <FiUserPlus className="icon" />
                         <p className="disable">Agregar</p>
@@ -157,9 +174,7 @@ const Usuarios = () => {
                                 <td className="data data_opciones">
                                     <button
                                         onClick={() =>
-                                            navigate(
-                                                `/menu/usuarios/${user.id}/editar`
-                                            )
+                                            handleModalIsOpen(user.id)
                                         }
                                         className="btn_option edit"
                                     >
@@ -218,11 +233,7 @@ const Usuarios = () => {
                             </div>
                             <div className="data data_opciones">
                                 <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/menu/usuarios/${user.id}/editar`
-                                        )
-                                    }
+                                    onClick={() => handleModalIsOpen(user.id)}
                                     className="btn_option edit"
                                 >
                                     <FiEdit className="icon" />

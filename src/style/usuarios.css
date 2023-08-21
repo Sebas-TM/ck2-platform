@@ -324,10 +324,17 @@
 
 .contenedor-cards {
     margin-bottom: 4rem;
-    width: 25rem;
+    width: 20rem;
     border: 1px solid rgb(233, 230, 230);
     padding: 0 1rem;
     border-radius: 0.8rem;
+}
+
+@media (min-width: 355px) {
+    .contenedor-cards{
+        width: 25rem;
+
+    }
 }
 
 .cards {

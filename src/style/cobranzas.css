@@ -180,8 +180,8 @@
     grid: none;
 }
 
-@media (min-width:400px) {
-    .container_buttons_cobranzas{
+@media (min-width: 400px) {
+    .container_buttons_cobranzas {
         padding: 2rem;
     }
 }
@@ -222,8 +222,6 @@
     font-size: 1.8rem;
 }
 
-
-
 @media (min-width: 769px) {
     .container_buttons_cobranzas {
         display: flex;
@@ -239,7 +237,7 @@
         width: 15rem;
     }
 
-    .uploadExcel p{
+    .uploadExcel p {
         width: 15rem;
     }
 }
@@ -280,8 +278,27 @@
     border-radius: 0.8rem;
     font-family: "Poppins", sans-serif;
     margin-top: 2rem;
+    width: 7.5rem;
 }
 
 .btn_cobranzas:hover {
     background-color: #bd1e2b;
+}
+
+/* Formulario */
+
+.formInputCobranza {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.formInputCobranza .input-group select {
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(220, 220, 220);
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
 }

@@ -20,6 +20,7 @@ const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
     const [rows, setRows] = useState([]);
     const [active, setActive] = useState(0);
+    const [page, setPage] = useState();
     const {
         register,
         setValue,
@@ -119,17 +120,18 @@ const Cobranzas = () => {
         }
     };
 
-    const consultarDatos = async (page) => {
+    const consultarDatos = async (pg = 1) => {
         setCargandoConsulta(true);
         const res = await axios.get(
-            `${config.API_URL}api/cobranzas/list?page=${page}`
+            `${config.API_URL}api/cobranzas/list?page=${pg}`
         );
         const { data, meta } = res.data;
         setDataCobranzas(data);
         setPagination(meta);
         setCargandoConsulta(false);
+        setPage(pg)
     };
-
+    
     const eliminarDatos = () => {
         swal({
             text: "¿Deseas eliminar todos los registros?",
@@ -145,9 +147,9 @@ const Cobranzas = () => {
             }
         });
     };
-    const submitData = (info) => {
-        console.log(info);
-    };
+    // const submitData = (info) => {
+    //     console.log(info);
+    // };
     const handlePageChange = ({ selected }) => {
         consultarDatos(selected + 1);
         tableRef.current.scrollTo(0, 0);
@@ -205,7 +207,7 @@ const Cobranzas = () => {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit(submitData)}>
+            {/* <form onSubmit={handleSubmit(submitData)}> */}
                 <table
                     cellSpacing="0"
                     cellPadding="0"
@@ -231,12 +233,10 @@ const Cobranzas = () => {
                                 item={item}
                                 index={i}
                                 key={i}
-                                // data={info}
-                                register={register}
-                                errors={errors}
-                                setValue={setValue}
                                 active={active}
                                 setActive={setActive}
+                                consultarDatos = {consultarDatos}
+                                page={page}
                             />
                         ))}
                     </tbody>
@@ -256,7 +256,7 @@ const Cobranzas = () => {
                     previousLinkClassName="page-num"
                     nextLinkClassName="page-num"
                 />
-            </form>
+            {/* </form> */}
         </div>
     );
 };

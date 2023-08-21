@@ -341,7 +341,7 @@ const Empleados = () => {
                         </form>
                         <button
                             className={rol != 3 ? "btn_add" : "disable-button"}
-                            onClick={()=>handleModalIsOpen(null)}
+                            onClick={() => handleModalIsOpen(null)}
                         >
                             <FiUserPlus className="icon" />
                             <p className="disable">Agregar</p>
