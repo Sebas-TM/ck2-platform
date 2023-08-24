@@ -14,6 +14,8 @@ const BodyTableCobranzas = ({
     setActive,
     consultarDatos,
     page,
+    filterByDate,
+    filterDate,
 }) => {
     const {
         agente,
@@ -120,7 +122,11 @@ const BodyTableCobranzas = ({
                 })
                 .catch((e) => console.log(e));
 
-            consultarDatos(page);
+            if (filterDate) {
+                filterByDate(filterDate, page);
+            } else {
+                consultarDatos(page);
+            }
         } else {
             console.log("No se puede actualizar");
         }
@@ -246,7 +252,9 @@ const BodyTableCobranzas = ({
                                     >
                                         <option value="">--Seleccione--</option>
                                         <option value="ACTIVO">ACTIVO</option>
-                                        <option value="SUSPENDIDO">SUSPENDIDO</option>
+                                        <option value="SUSPENDIDO">
+                                            SUSPENDIDO
+                                        </option>
                                         <option value="DE BAJA">DE BAJA</option>
                                     </select>
                                 </div>
@@ -588,7 +596,7 @@ const BodyTableCobranzas = ({
                                 <div className="input-group">
                                     <label htmlFor="sot">SOT</label>
                                     <input
-                                        disabled={false}
+                                        disabled={true}
                                         type="text"
                                         id="sot"
                                         name="sot"

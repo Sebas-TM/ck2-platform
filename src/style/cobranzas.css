@@ -5,7 +5,7 @@
 }
 
 .tabla-cobranzas {
-    margin: 5rem auto 0 auto;
+    margin: 3rem auto 0 auto;
     max-height: 70rem;
     text-align: center;
     font-size: 1.2rem;
@@ -52,7 +52,6 @@
 
 .border-red {
     border-left: 2px solid #f82b3c;
-    font-weight: bold;
     color: #f82b3c;
 }
 
@@ -92,7 +91,7 @@
     background-color: #39a739;
 }
 .accordion-title .cobranza_estado_suspendido {
-    background-color: #d3d32b;
+    background-color: #e59a11;
 }
 
 .accordion-title .cobranza_estado_de_baja {
@@ -301,4 +300,103 @@
     border: 1px solid rgb(220, 220, 220);
     font-family: "Poppins", sans-serif;
     font-size: 1.2rem;
+}
+
+/* Filtros */
+.filters {
+    margin-top: 3rem;
+}
+
+.filterByDate {
+    gap: 2rem;
+    width: 70%;
+    margin: auto;
+}
+
+@media (min-width: 768px) {
+    .filterByDate {
+        display: flex;
+        align-items: center;
+        width: auto;
+        margin: initial;
+    }
+}
+
+.filterByDate label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.filterByDate label p {
+    font-size: 1.2rem;
+}
+
+.filterByDate input {
+    font-family: "Poppins", sans-serif;
+    border: 2px solid rgb(235, 235, 235);
+    padding: 0 1rem;
+    outline: none;
+    border-radius: 0.5rem;
+}
+.filterByDate button {
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    background-color: #676966;
+    color: white;
+    border: none;
+    width: 7rem;
+    height: 3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.filterByDate button:hover {
+    background-color: #858784;
+}
+
+.filterByDate .btn_borrar_filtro {
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    background-color: #d63636;
+    color: white;
+    border: none;
+    font-size: 1.3rem;
+    /* width: 7rem; */
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filerByDate_subcontenedor_1 {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filerByDate_subcontenedor_2 {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: center;
+    gap: 1rem;
+}
+
+@media (min-width:768px){
+    .filerByDate_subcontenedor_1 {
+        
+        flex-direction: row;
+    }
+    
+    .filerByDate_subcontenedor_2 {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0;
+    }
 }

@@ -13,6 +13,7 @@ import { RiFileExcel2Fill } from "react-icons/ri";
 import { FaSave, FaFileExport } from "react-icons/fa";
 import { ImDownload2 } from "react-icons/im";
 import { AiFillDelete } from "react-icons/ai";
+import { FiX } from "react-icons/fi";
 import SpinnerContenido from "../components/SpinnerContenido";
 import SpinnerIcono from "../components/SpinnerIcono";
 
@@ -21,6 +22,7 @@ const Cobranzas = () => {
     const [rows, setRows] = useState([]);
     const [active, setActive] = useState(0);
     const [page, setPage] = useState();
+    const [filterDate, setFilterDate] = useState();
     const {
         register,
         setValue,
@@ -37,6 +39,7 @@ const Cobranzas = () => {
     const tableRef = useRef(null);
     const [cargandoConsulta, setCargandoConsulta] = useState(false);
     const [cargandoGuardar, setCargandoGuardar] = useState(false);
+    const [cargandoFilterDate, setCargandoFilterDate] = useState(false);
 
     const handleFile = async (e) => {
         const file = e.target.files[0];
@@ -101,7 +104,7 @@ const Cobranzas = () => {
     const dataExcel = transformData(rows);
     const guardarDatos = async () => {
         if (dataExcel.length > 0) {
-            console.log(dataExcel);
+            // console.log(dataExcel);
             setCargandoGuardar(true);
             await axios
                 .post(`${config.API_URL}api/cobranzas/insert`, dataExcel, {
@@ -112,7 +115,7 @@ const Cobranzas = () => {
                 })
                 .then(() => toast.success("Datos registrados"))
                 .catch((res) => {
-                    toast.success(res.status)
+                    toast.success(res.status);
                 });
             setCargandoGuardar(false);
         } else {
@@ -121,17 +124,21 @@ const Cobranzas = () => {
     };
 
     const consultarDatos = async (pg = 1) => {
-        setCargandoConsulta(true);
         const res = await axios.get(
             `${config.API_URL}api/cobranzas/list?page=${pg}`
         );
         const { data, meta } = res.data;
         setDataCobranzas(data);
         setPagination(meta);
-        setCargandoConsulta(false);
-        setPage(pg)
+        setPage(pg);
     };
-    
+
+    const onClickConsultarDatos = async () => {
+        setCargandoConsulta(true);
+        await consultarDatos();
+        setCargandoConsulta(false);
+    };
+
     const eliminarDatos = () => {
         swal({
             text: "¿Deseas eliminar todos los registros?",
@@ -147,11 +154,64 @@ const Cobranzas = () => {
             }
         });
     };
-    // const submitData = (info) => {
-    //     console.log(info);
-    // };
+    const filterByDate = async (info, pg = 1) => {
+        setCargandoFilterDate(true);
+        await axios
+            .post(
+                `${config.API_URL}api/cobranzas/filterByDate?page=${pg}`,
+                info,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            .then((res) => {
+                const { data, meta } = res.data;
+                setDataCobranzas(data);
+                setPagination(meta);
+                setPage(1);
+                setFilterDate(info);
+                setPage(pg);
+            })
+            .catch((e) => console.log(e));
+        setCargandoFilterDate(false);
+    };
+    const borrarFilterByDate = async () => {
+        setFilterDate(null);
+        await consultarDatos();
+        setValue("from_date", "");
+        setValue("to_date", "");
+    };
+
+    const handleExport = async () => {
+        console.log("Exportando...");
+        try {
+            const response = await axios.post(
+                `${config.API_URL}api/cobranzas/export-to-excel`,
+                dataCobranzas,
+                {
+                    responseType: "blob",
+                }
+            );
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "cobranzas.xlsx";
+            a.click();
+            console.log("Exportado!!!");
+        } catch (error) {
+            console.error("Error exporting data:", error);
+            console.log("no se exportó!!!");
+        }
+    };
+
     const handlePageChange = ({ selected }) => {
-        consultarDatos(selected + 1);
+        if (!filterDate) {
+            return consultarDatos(selected + 1);
+        }
+        filterByDate(filterDate, selected + 1);
         tableRef.current.scrollTo(0, 0);
     };
     return (
@@ -183,7 +243,10 @@ const Cobranzas = () => {
                             <FaSave className="icon_button_cobranza " />
                         )}
                     </button>
-                    <button className="button_load" onClick={consultarDatos}>
+                    <button
+                        className="button_load"
+                        onClick={onClickConsultarDatos}
+                    >
                         Consultar
                         {cargandoConsulta ? (
                             <SpinnerIcono />
@@ -195,68 +258,108 @@ const Cobranzas = () => {
                         Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
                     </button>
-                    <button
-                        className="button_save"
-                        onClick={() => {
-                            console.log("Exportar datos");
-                        }}
-                    >
+                    <button className="button_save" onClick={handleExport}>
                         Exportar
                         <FaFileExport className="icon_button_cobranza" />
                     </button>
                 </div>
             </div>
-
-            {/* <form onSubmit={handleSubmit(submitData)}> */}
-                <table
-                    cellSpacing="0"
-                    cellPadding="0"
-                    className="tabla tabla-cobranzas"
-                    ref={tableRef}
+            <div className="filters">
+                <form
+                    className="filterByDate"
+                    onSubmit={handleSubmit(filterByDate)}
                 >
-                    <thead>
-                        <tr>
-                            <th className="columnId-cobranzas">#</th>
-                            <th>Asesor</th>
-                            <th>Titular</th>
-                            <th>DOC</th>
-                            <th>Celular 1</th>
-                            <th>Estado</th>
-                            <th>SEC</th>
-                            <th className="columnButton-cobranzas"></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {dataCobranzas.map((item, i) => (
-                            <BodyTableCobranzas
-                                item={item}
-                                index={i}
-                                key={i}
-                                active={active}
-                                setActive={setActive}
-                                consultarDatos = {consultarDatos}
-                                page={page}
+                    <div className="filerByDate_subcontenedor_1">
+                        <label htmlFor="from_date">
+                            <p>Desde:</p>
+                            <input
+                                type="date"
+                                name="from_date"
+                                id="from_date"
+                                {...register("from_date", {
+                                    required: true,
+                                })}
                             />
-                        ))}
-                    </tbody>
-                </table>
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel=">"
-                    previousLabel="<"
-                    pageCount={pagination.last_page}
-                    pageRangeDisplayed={3}
-                    marginPagesDisplayed={3}
-                    onPageChange={handlePageChange}
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    activeLinkClassName="page-num"
-                    pageLinkClassName="page-num"
-                    previousLinkClassName="page-num"
-                    nextLinkClassName="page-num"
-                />
-            {/* </form> */}
+                        </label>
+                        <label htmlFor="to_date">
+                            <p>Hasta:</p>
+                            <input
+                                type="date"
+                                name="to_date"
+                                id="to_date"
+                                {...register("to_date", {
+                                    required: true,
+                                })}
+                            />
+                        </label>
+                    </div>
+                    <div className="filerByDate_subcontenedor_2">
+                        <button>
+                            {cargandoFilterDate ? <SpinnerIcono /> : "Buscar"}
+                        </button>
+                        {filterDate && (
+                            <p
+                                className="btn_borrar_filtro"
+                                onClick={borrarFilterByDate}
+                            >
+                                <FiX />
+                                Borrar filtro
+                            </p>
+                        )}
+                    </div>
+                </form>
+            </div>
+
+            <table
+                cellSpacing="0"
+                cellPadding="0"
+                className="tabla tabla-cobranzas"
+                ref={tableRef}
+            >
+                <thead>
+                    <tr>
+                        <th className="columnId-cobranzas">#</th>
+                        <th>Asesor</th>
+                        <th>Titular</th>
+                        <th>DOC</th>
+                        <th>Celular 1</th>
+                        <th>Estado</th>
+                        <th>SEC</th>
+                        <th className="columnButton-cobranzas"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {dataCobranzas.map((item, i) => (
+                        <BodyTableCobranzas
+                            item={item}
+                            index={i}
+                            key={i}
+                            active={active}
+                            setActive={setActive}
+                            consultarDatos={consultarDatos}
+                            page={page}
+                            filterByDate={filterByDate}
+                            filterDate={filterDate}
+                        />
+                    ))}
+                </tbody>
+            </table>
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                previousLabel="<"
+                pageCount={pagination.last_page}
+                pageRangeDisplayed={3}
+                marginPagesDisplayed={3}
+                onPageChange={handlePageChange}
+                containerClassName="pagination"
+                activeClassName="active"
+                activeLinkClassName="page-num"
+                pageLinkClassName="page-num"
+                previousLinkClassName="page-num"
+                nextLinkClassName="page-num"
+            />
         </div>
     );
 };
