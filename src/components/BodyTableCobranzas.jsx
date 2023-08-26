@@ -14,7 +14,7 @@ const BodyTableCobranzas = ({
     setActive,
     consultarDatos,
     page,
-    filterByDate,
+    filterByDateFunction,
     filterDate,
 }) => {
     const {
@@ -62,7 +62,7 @@ const BodyTableCobranzas = ({
         formState: { errors },
         handleSubmit,
     } = useForm();
-    const [cargandoIcono, setCargandoIcono] = useState(false);
+    const [cargandoUpdateRow, setCargandoUpdateRow] = useState(false);
     const handleRowIsOpen = (id) => {
         setActive(id === active ? 0 : id);
 
@@ -112,7 +112,7 @@ const BodyTableCobranzas = ({
     };
 
     const submitData = async (info) => {
-        setCargandoIcono(true);
+        setCargandoUpdateRow(true);
         if (id) {
             await axios
                 .post(`${config.API_URL}api/cobranzas/update/${id}`, info, {
@@ -123,14 +123,14 @@ const BodyTableCobranzas = ({
                 .catch((e) => console.log(e));
 
             if (filterDate) {
-                filterByDate(filterDate, page);
+                filterByDateFunction(filterDate, page);
             } else {
                 consultarDatos(page);
             }
         } else {
             console.log("No se puede actualizar");
         }
-        setCargandoIcono(false);
+        setCargandoUpdateRow(false);
     };
 
     return (
@@ -655,7 +655,7 @@ const BodyTableCobranzas = ({
                                 }`}
                             >
                                 <button className=" btn_cobranzas">
-                                    {cargandoIcono ? (
+                                    {cargandoUpdateRow ? (
                                         <SpinnerIcono />
                                     ) : (
                                         "Guardar"

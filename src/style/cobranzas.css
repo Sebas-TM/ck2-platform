@@ -309,7 +309,6 @@
 
 .filterByDate {
     gap: 2rem;
-    width: 70%;
     margin: auto;
 }
 
@@ -366,12 +365,16 @@
     color: white;
     border: none;
     font-size: 1.3rem;
-    /* width: 7rem; */
+    transition: all 0.3s ease;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.filterByDate .btn_borrar_filtro:hover {
+    background-color: #ff5656;
 }
 
 .filerByDate_subcontenedor_1 {
@@ -388,12 +391,11 @@
     gap: 1rem;
 }
 
-@media (min-width:768px){
+@media (min-width: 768px) {
     .filerByDate_subcontenedor_1 {
-        
         flex-direction: row;
     }
-    
+
     .filerByDate_subcontenedor_2 {
         display: flex;
         gap: 1rem;

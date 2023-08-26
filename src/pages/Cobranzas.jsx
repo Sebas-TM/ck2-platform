@@ -1,7 +1,7 @@
 import "../style/cobranzas.css";
 import { useState, useRef } from "react";
 import { utils as XLSXUtils, readFile as XLSXRead } from "xlsx";
-import BodyTableCobranzas from "../components/bodyTableCobranzas";
+import BodyTableCobranzas from "../components/BodyTableCobranzas";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { config } from "../config";
@@ -16,7 +16,8 @@ import { AiFillDelete } from "react-icons/ai";
 import { FiX } from "react-icons/fi";
 import SpinnerContenido from "../components/SpinnerContenido";
 import SpinnerIcono from "../components/SpinnerIcono";
-
+import { CSVLink } from "react-csv";
+import ErrorMessage from "../components/ErrorMessage";
 const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
     const [rows, setRows] = useState([]);
@@ -154,8 +155,13 @@ const Cobranzas = () => {
             }
         });
     };
-    const filterByDate = async (info, pg = 1) => {
+
+    const filterByDate = async (info) => {
         setCargandoFilterDate(true);
+        await filterByDateFunction(info, 1);
+        setCargandoFilterDate(false);
+    };
+    const filterByDateFunction = async (info, pg = 1) => {
         await axios
             .post(
                 `${config.API_URL}api/cobranzas/filterByDate?page=${pg}`,
@@ -175,7 +181,6 @@ const Cobranzas = () => {
                 setPage(pg);
             })
             .catch((e) => console.log(e));
-        setCargandoFilterDate(false);
     };
     const borrarFilterByDate = async () => {
         setFilterDate(null);
@@ -211,7 +216,7 @@ const Cobranzas = () => {
         if (!filterDate) {
             return consultarDatos(selected + 1);
         }
-        filterByDate(filterDate, selected + 1);
+        filterByDateFunction(filterDate, selected + 1);
         tableRef.current.scrollTo(0, 0);
     };
     return (
@@ -258,10 +263,16 @@ const Cobranzas = () => {
                         Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
                     </button>
-                    <button className="button_save" onClick={handleExport}>
+                    {/* <button className="button_save">
                         Exportar
                         <FaFileExport className="icon_button_cobranza" />
-                    </button>
+                    </button> */}
+                    <CSVLink data={dataCobranzas} filename={"cobranzas.csv"}>
+                        <button className="button_save">
+                            Exportar
+                            <FaFileExport className="icon_button_cobranza" />
+                        </button>
+                    </CSVLink>
                 </div>
             </div>
             <div className="filters">
@@ -309,7 +320,6 @@ const Cobranzas = () => {
                     </div>
                 </form>
             </div>
-
             <table
                 cellSpacing="0"
                 cellPadding="0"
@@ -339,12 +349,13 @@ const Cobranzas = () => {
                             setActive={setActive}
                             consultarDatos={consultarDatos}
                             page={page}
-                            filterByDate={filterByDate}
+                            filterByDateFunction={filterByDateFunction}
                             filterDate={filterDate}
                         />
                     ))}
                 </tbody>
             </table>
+            {dataCobranzas.length < 1 && <ErrorMessage />}
             <ReactPaginate
                 breakLabel="..."
                 nextLabel=">"
