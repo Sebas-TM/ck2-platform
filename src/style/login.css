@@ -90,12 +90,12 @@
 .contenedor-dos {
     background-color: white;
     width: 0%;
-    display: flex;
     align-items: center;
     justify-content: center;
+    display: none;
 }
 .subcontenedor-dos img {
-    width: 100%;
+    /* width: 100%; */
 }
 
 .contenedor-rojo {
@@ -158,6 +158,8 @@
     }
     .contenedor-dos {
         width: 60%;
+        display: flex;
+
         height: 100vh;
     }
     .subcontenedor-dos {
@@ -205,14 +207,14 @@
     font-size: 1rem;
 }
 
-.texto-siguenos-769px{
+.texto-siguenos-769px {
     margin-top: 8rem;
     position: initial;
     transform: translateX(0%);
 }
 
-@media (min-width:769px){
-    .texto-siguenos-769px{
+@media (min-width: 769px) {
+    .texto-siguenos-769px {
         display: none;
     }
 }

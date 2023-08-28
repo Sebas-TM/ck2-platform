@@ -197,12 +197,7 @@ const BodyTableCobranzas = ({
                                 }`}
                             >
                                 <div className="input-group">
-                                    <Toaster
-                                        position="top-center"
-                                        richColors
-                                        style={{ textTransform: "none" }}
-                                    />
-
+                                    
                                     <label htmlFor="agente">Agente</label>
                                     <input
                                         disabled={true}

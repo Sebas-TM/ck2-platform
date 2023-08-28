@@ -267,7 +267,7 @@ const Cobranzas = () => {
                         Exportar
                         <FaFileExport className="icon_button_cobranza" />
                     </button> */}
-                    <CSVLink data={dataCobranzas} filename={"cobranzas.csv"}>
+                    <CSVLink data={dataCobranzas} filename={"cobranzas.csv"} >
                         <button className="button_save">
                             Exportar
                             <FaFileExport className="icon_button_cobranza" />

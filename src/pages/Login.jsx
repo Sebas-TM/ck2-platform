@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { loginUser } from "../services/users";
 import { useNavigate, Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
-import login from "../image/Login.png";
+import login from "../image/robots.png";
 import SpinnerIcono from "../components/SpinnerIcono";
 
 const cookies = new Cookies();
