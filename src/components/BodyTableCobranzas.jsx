@@ -14,7 +14,7 @@ const BodyTableCobranzas = ({
     setActive,
     consultarDatos,
     page,
-    filterByDateFunction,
+    searchAndFilterFunction,
     filterDate,
 }) => {
     const {
@@ -123,7 +123,7 @@ const BodyTableCobranzas = ({
                 .catch((e) => console.log(e));
 
             if (filterDate) {
-                filterByDateFunction(filterDate, page);
+                searchAndFilterFunction(filterDate, page);
             } else {
                 consultarDatos(page);
             }

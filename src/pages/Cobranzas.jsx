@@ -120,7 +120,7 @@ const Cobranzas = () => {
                 });
             setCargandoGuardar(false);
         } else {
-            console.log("No hay datos para cargar");
+            toast.error("No se ha seleccionado ningún archivo");
         }
     };
 
@@ -156,15 +156,15 @@ const Cobranzas = () => {
         });
     };
 
-    const filterByDate = async (info) => {
+    const searchAndFilter = async (info) => {
         setCargandoFilterDate(true);
-        await filterByDateFunction(info, 1);
+        await searchAndFilterFunction(info, 1);
         setCargandoFilterDate(false);
     };
-    const filterByDateFunction = async (info, pg = 1) => {
+    const searchAndFilterFunction = async (info, pg = 1) => {
         await axios
             .post(
-                `${config.API_URL}api/cobranzas/filterByDate?page=${pg}`,
+                `${config.API_URL}api/cobranzas/search?page=${pg}`,
                 info,
                 {
                     headers: {
@@ -187,6 +187,7 @@ const Cobranzas = () => {
         await consultarDatos();
         setValue("from_date", "");
         setValue("to_date", "");
+        setValue("termino", "");
     };
 
     const handleExport = async () => {
@@ -216,7 +217,7 @@ const Cobranzas = () => {
         if (!filterDate) {
             return consultarDatos(selected + 1);
         }
-        filterByDateFunction(filterDate, selected + 1);
+        searchAndFilterFunction(filterDate, selected + 1);
         tableRef.current.scrollTo(0, 0);
     };
     return (
@@ -267,7 +268,7 @@ const Cobranzas = () => {
                         Exportar
                         <FaFileExport className="icon_button_cobranza" />
                     </button> */}
-                    <CSVLink data={dataCobranzas} filename={"cobranzas.csv"} >
+                    <CSVLink data={dataCobranzas} filename={"cobranzas.csv"}>
                         <button className="button_save">
                             Exportar
                             <FaFileExport className="icon_button_cobranza" />
@@ -278,7 +279,7 @@ const Cobranzas = () => {
             <div className="filters">
                 <form
                     className="filterByDate"
-                    onSubmit={handleSubmit(filterByDate)}
+                    onSubmit={handleSubmit(searchAndFilter)}
                 >
                     <div className="filerByDate_subcontenedor_1">
                         <label htmlFor="from_date">
@@ -304,7 +305,10 @@ const Cobranzas = () => {
                             />
                         </label>
                     </div>
-                    <div className="filerByDate_subcontenedor_2">
+                    <div className="filterByDate_subcontenedor_2">
+                        <input type="text" placeholder="Buscar..." name="termino" id="termino"  {...register("termino")}/>
+                    </div>
+                    <div className="filerByDate_subcontenedor_3">
                         <button>
                             {cargandoFilterDate ? <SpinnerIcono /> : "Buscar"}
                         </button>
@@ -349,7 +353,7 @@ const Cobranzas = () => {
                             setActive={setActive}
                             consultarDatos={consultarDatos}
                             page={page}
-                            filterByDateFunction={filterByDateFunction}
+                            searchAndFilterFunction={searchAndFilterFunction}
                             filterDate={filterDate}
                         />
                     ))}
