@@ -53,11 +53,7 @@
     }
 }
 
-@media (min-width: 1300px) {
-    .form-group-header {
-        /* width: 100rem; */
-    }
-}
+
 
 @media (min-width: 769px) {
     .form-group-header_usuarios {
@@ -184,11 +180,6 @@
     margin: 0rem auto 0 auto;
 }
 
-@media (min-width: 1300px) {
-    .tabla-empleados {
-        /* width: 104rem; */
-    }
-}
 
 .tabla-empleados tbody tr td {
     /* height: 11rem; */
