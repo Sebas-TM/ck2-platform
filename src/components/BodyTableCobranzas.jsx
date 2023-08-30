@@ -172,18 +172,16 @@ const BodyTableCobranzas = ({
             </tr>
 
             <tr
-                className={`accordion-content ${
-                    active === id ? "show_tr " : ""
+                className={`accordion-content  ${
+                    active === id ? "show_tr border-red" : ""
                 }`}
             >
                 <td colSpan={8}>
                     <form
                         onSubmit={handleSubmit(submitData)}
-                        className={`formInputCobranza ${
-                            active === id ? "border-red" : ""
-                        }`}
+                        className="formInputCobranza"
                     >
-                        <div className={active === id ? "border-red" : ""}>
+                        <div className={active === id ? "" : ""}>
                             <div
                                 className={`subcontenedor_td ${
                                     active === id ? "show" : ""

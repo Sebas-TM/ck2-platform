@@ -162,7 +162,6 @@
 
 .tabla tbody tr {
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 .tabla tbody tr:hover {
