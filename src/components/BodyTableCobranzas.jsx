@@ -195,7 +195,6 @@ const BodyTableCobranzas = ({
                                 }`}
                             >
                                 <div className="input-group">
-                                    
                                     <label htmlFor="agente">Agente</label>
                                     <input
                                         disabled={true}
@@ -396,12 +395,32 @@ const BodyTableCobranzas = ({
                                     <label htmlFor="estado_pago">
                                         Estado de pago
                                     </label>
-                                    <input
-                                        type="text"
+                                    <select
                                         id="estado_pago"
                                         name="estado_pago"
                                         {...register("estado_pago")}
-                                    />
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        <option value="PAGÓ MES 1">
+                                            PAGÓ MES 1
+                                        </option>
+                                        <option value="PAGÓ MES 2">
+                                            PAGÓ MES 2
+                                        </option>
+                                        <option value="PAGÓ MES 3">
+                                            PAGÓ MES 3
+                                        </option>
+                                        <option value="PAGÓ MES 4">
+                                            PAGÓ MES 4
+                                        </option>
+                                        <option value="PAGÓ MES 5">
+                                            PAGÓ MES 5
+                                        </option>
+                                        <option value="PAGÓ MES 6">
+                                            PAGÓ MES 6
+                                        </option>
+                                        <option value="NO PAGÓ">NO PAGÓ</option>
+                                    </select>
                                 </div>
                                 <div className="input-group">
                                     <label htmlFor="fecha_pago_mes_1">

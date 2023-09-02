@@ -242,9 +242,28 @@
 }
 .button_save {
     background-color: #676966;
+    width: auto;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 1rem;
 }
+
 .button_save:hover {
     background-color: #858784;
+}
+
+@media (min-width: 769px) {
+    .button_save {
+        width: 15rem;
+    }
 }
 
 .button_load {
@@ -334,7 +353,7 @@
 .filterByDate input {
     font-family: "Poppins", sans-serif;
     border: 2px solid rgb(235, 235, 235);
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     outline: none;
     border-radius: 0.5rem;
 }
@@ -391,7 +410,7 @@
     margin-top: 2rem;
 }
 
-.filterByDate_subcontenedor_2 input{
+.filterByDate_subcontenedor_2 input {
     height: 2.2rem;
     width: 30rem;
 }

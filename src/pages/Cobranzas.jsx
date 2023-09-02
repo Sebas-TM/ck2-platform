@@ -31,6 +31,7 @@ const Cobranzas = () => {
         handleSubmit,
     } = useForm();
     const [dataCobranzas, setDataCobranzas] = useState([]);
+    const [dataCobranzasExcel, setDataCobranzasExcel] = useState([]);
     const [pagination, setPagination] = useState({
         current_page: 1,
         last_page: 1,
@@ -105,7 +106,6 @@ const Cobranzas = () => {
     const dataExcel = transformData(rows);
     const guardarDatos = async () => {
         if (dataExcel.length > 0) {
-            // console.log(dataExcel);
             setCargandoGuardar(true);
             await axios
                 .post(`${config.API_URL}api/cobranzas/insert`, dataExcel, {
@@ -163,15 +163,11 @@ const Cobranzas = () => {
     };
     const searchAndFilterFunction = async (info, pg = 1) => {
         await axios
-            .post(
-                `${config.API_URL}api/cobranzas/search?page=${pg}`,
-                info,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            )
+            .post(`${config.API_URL}api/cobranzas/search?page=${pg}`, info, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
             .then((res) => {
                 const { data, meta } = res.data;
                 setDataCobranzas(data);
@@ -188,29 +184,6 @@ const Cobranzas = () => {
         setValue("from_date", "");
         setValue("to_date", "");
         setValue("termino", "");
-    };
-
-    const handleExport = async () => {
-        console.log("Exportando...");
-        try {
-            const response = await axios.post(
-                `${config.API_URL}api/cobranzas/export-to-excel`,
-                dataCobranzas,
-                {
-                    responseType: "blob",
-                }
-            );
-
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "cobranzas.xlsx";
-            a.click();
-            console.log("Exportado!!!");
-        } catch (error) {
-            console.error("Error exporting data:", error);
-            console.log("no se exportó!!!");
-        }
     };
 
     const handlePageChange = ({ selected }) => {
@@ -264,15 +237,33 @@ const Cobranzas = () => {
                         Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
                     </button>
-                    {/* <button className="button_save">
+                    <CSVLink
+                        data={dataCobranzasExcel}
+                        filename={"cobranzas.csv"}
+                        className="button_save"
+                        asyncOnClick={true}
+                        onClick={(event, done) => {
+                            axios
+                                .post(
+                                    `${config.API_URL}api/cobranzas/search?allData=1`,
+                                    filterDate,
+                                    {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                    }
+                                )
+                                .then((res) => {
+                                    setDataCobranzasExcel(res.data);
+                                })
+                                .then(() => {
+                                    done();
+                                })
+                                .catch((e) => console.log(e));
+                        }}
+                    >
                         Exportar
                         <FaFileExport className="icon_button_cobranza" />
-                    </button> */}
-                    <CSVLink data={dataCobranzas} filename={"cobranzas.csv"}>
-                        <button className="button_save">
-                            Exportar
-                            <FaFileExport className="icon_button_cobranza" />
-                        </button>
                     </CSVLink>
                 </div>
             </div>
@@ -281,6 +272,25 @@ const Cobranzas = () => {
                     className="filterByDate"
                     onSubmit={handleSubmit(searchAndFilter)}
                 >
+                    <div className="filterByDate_subcontenedor">
+                        <label htmlFor="date_filter">
+                            <p>Filtrar por fecha:</p>
+                            <select
+                                name="date_filter"
+                                id="date_filter"
+                                {...register("date_filter")}
+                            >
+                                <option value="today">Hoy</option>
+                                <option value="yesterday">Ayer</option>
+                                <option value="this_week">Esta semana</option>
+                                <option value="this_month">Este mes</option>
+                                <option value="last_month">
+                                    El mes pasado
+                                </option>
+                                <option value="this_year">Este año</option>
+                            </select>
+                        </label>
+                    </div>
                     <div className="filerByDate_subcontenedor_1">
                         <label htmlFor="from_date">
                             <p>Desde:</p>
@@ -288,9 +298,7 @@ const Cobranzas = () => {
                                 type="date"
                                 name="from_date"
                                 id="from_date"
-                                {...register("from_date", {
-                                    required: true,
-                                })}
+                                {...register("from_date")}
                             />
                         </label>
                         <label htmlFor="to_date">
@@ -299,14 +307,18 @@ const Cobranzas = () => {
                                 type="date"
                                 name="to_date"
                                 id="to_date"
-                                {...register("to_date", {
-                                    required: true,
-                                })}
+                                {...register("to_date")}
                             />
                         </label>
                     </div>
                     <div className="filterByDate_subcontenedor_2">
-                        <input type="text" placeholder="Buscar..." name="termino" id="termino"  {...register("termino")}/>
+                        <input
+                            type="text"
+                            placeholder="Buscar..."
+                            name="termino"
+                            id="termino"
+                            {...register("termino")}
+                        />
                     </div>
                     <div className="filerByDate_subcontenedor_3">
                         <button>

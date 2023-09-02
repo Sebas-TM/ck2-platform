@@ -376,6 +376,10 @@ const Empleados = () => {
                                             <img
                                                 loading="lazy"
                                                 className="img_empleados"
+                                                onError={e => {
+                                                    e.target.src = foto_personal;
+                                                  }}
+                                
                                                 src={
                                                     employee.imagen
                                                         ? `${config.API_URL}${
