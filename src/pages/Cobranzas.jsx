@@ -105,6 +105,7 @@ const Cobranzas = () => {
 
     const dataExcel = transformData(rows);
     const guardarDatos = async () => {
+        console.log(dataExcel);
         if (dataExcel.length > 0) {
             setCargandoGuardar(true);
             await axios
@@ -175,12 +176,18 @@ const Cobranzas = () => {
                 setPage(1);
                 setFilterDate(info);
                 setPage(pg);
+                if (info.date_filter) {
+                    setValue("from_date", meta.from_date);
+                    setValue("to_date", meta.to_date);
+                }
             })
             .catch((e) => console.log(e));
+
     };
     const borrarFilterByDate = async () => {
         setFilterDate(null);
         await consultarDatos();
+        setValue("date_filter", "");
         setValue("from_date", "");
         setValue("to_date", "");
         setValue("termino", "");
@@ -272,67 +279,79 @@ const Cobranzas = () => {
                     className="filterByDate"
                     onSubmit={handleSubmit(searchAndFilter)}
                 >
-                    <div className="filterByDate_subcontenedor">
-                        <label htmlFor="date_filter">
-                            <p>Filtrar por fecha:</p>
-                            <select
-                                name="date_filter"
-                                id="date_filter"
-                                {...register("date_filter")}
-                            >
-                                <option value="today">Hoy</option>
-                                <option value="yesterday">Ayer</option>
-                                <option value="this_week">Esta semana</option>
-                                <option value="this_month">Este mes</option>
-                                <option value="last_month">
-                                    El mes pasado
-                                </option>
-                                <option value="this_year">Este año</option>
-                            </select>
-                        </label>
+                    <div className="formFilter_subcontainer">
+                        <div className="filterByDate_subcontenedor">
+                            <label htmlFor="date_filter">
+                                <p>Filtrar por fecha:</p>
+                                <select
+                                    className="date_filter"
+                                    name="date_filter"
+                                    id="date_filter"
+                                    {...register("date_filter")}
+                                >
+                                    <option value="">Personalizada</option>
+                                    <option value="today">Hoy</option>
+                                    <option value="yesterday">Ayer</option>
+                                    <option value="this_week">
+                                        Esta semana
+                                    </option>
+                                    <option value="this_month">Este mes</option>
+                                    <option value="last_month">
+                                        El mes pasado
+                                    </option>
+                                    <option value="this_year">Este año</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div className="filerByDate_subcontenedor_1">
+                            <label htmlFor="from_date">
+                                <p>Desde:</p>
+                                <input
+                                    type="date"
+                                    name="from_date"
+                                    id="from_date"
+                                    {...register("from_date")}
+                                />
+                            </label>
+                            <label htmlFor="to_date">
+                                <p>Hasta:</p>
+                                <input
+                                    type="date"
+                                    name="to_date"
+                                    id="to_date"
+                                    {...register("to_date")}
+                                />
+                            </label>
+                        </div>
                     </div>
-                    <div className="filerByDate_subcontenedor_1">
-                        <label htmlFor="from_date">
-                            <p>Desde:</p>
+                    <div className="formFilter_subcontainer_2">
+                        <div className="filterByDate_subcontenedor_2">
                             <input
-                                type="date"
-                                name="from_date"
-                                id="from_date"
-                                {...register("from_date")}
+                                type="text"
+                                placeholder="Buscar..."
+                                name="termino"
+                                id="termino"
+                                {...register("termino")}
                             />
-                        </label>
-                        <label htmlFor="to_date">
-                            <p>Hasta:</p>
-                            <input
-                                type="date"
-                                name="to_date"
-                                id="to_date"
-                                {...register("to_date")}
-                            />
-                        </label>
-                    </div>
-                    <div className="filterByDate_subcontenedor_2">
-                        <input
-                            type="text"
-                            placeholder="Buscar..."
-                            name="termino"
-                            id="termino"
-                            {...register("termino")}
-                        />
-                    </div>
-                    <div className="filerByDate_subcontenedor_3">
-                        <button>
-                            {cargandoFilterDate ? <SpinnerIcono /> : "Buscar"}
-                        </button>
-                        {filterDate && (
-                            <p
-                                className="btn_borrar_filtro"
-                                onClick={borrarFilterByDate}
-                            >
-                                <FiX />
-                                Borrar filtro
-                            </p>
-                        )}
+                        </div>
+                        <div className="filerByDate_subcontenedor_3">
+                            <button>
+                                {cargandoFilterDate ? (
+                                    <SpinnerIcono />
+                                ) : (
+                                    "Buscar"
+                                )}
+                            </button>
+                            {filterDate && (
+                                <p
+                                    className="btn_borrar_filtro"
+                                    onClick={borrarFilterByDate}
+                                >
+                                    <FiX />
+                                    Borrar filtro
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </form>
             </div>
