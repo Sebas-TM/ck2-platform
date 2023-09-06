@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import ModuloCard from '../components/ModuloCard';
-import area_rrhh from '../image/portada_rrhh.jpg'
+import area_rrhh from '../image/rrhh.svg'
+import area_cobranzas from '../image/cobranza.svg'
 import { Link } from "react-router-dom";
 import '../style/modulos.css'
 const Modulos = () => {
@@ -13,7 +14,7 @@ const Modulos = () => {
                 <ModuloCard imagen={area_rrhh} texto={'Gestión de Talento Humano'} />
             </Link>
             <Link to='/menu/cobranzas'>
-                <ModuloCard imagen={area_rrhh} texto={'Cobranzas'} />
+                <ModuloCard imagen={area_cobranzas} texto={'Cobranzas'} />
             </Link>
             {/* <Link>
                 <ModuloCard imagen={area_rrhh} texto={'Administración'} />

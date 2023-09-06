@@ -42,6 +42,7 @@ const Cobranzas = () => {
     const [cargandoConsulta, setCargandoConsulta] = useState(false);
     const [cargandoGuardar, setCargandoGuardar] = useState(false);
     const [cargandoFilterDate, setCargandoFilterDate] = useState(false);
+    const csvLinkRef = useRef();
 
     const handleFile = async (e) => {
         const file = e.target.files[0];
@@ -182,7 +183,6 @@ const Cobranzas = () => {
                 }
             })
             .catch((e) => console.log(e));
-
     };
     const borrarFilterByDate = async () => {
         setFilterDate(null);
@@ -199,6 +199,46 @@ const Cobranzas = () => {
         }
         searchAndFilterFunction(filterDate, selected + 1);
         tableRef.current.scrollTo(0, 0);
+    };
+
+    const fetchAllDataToExport = async () => {
+        if (filterDate) {
+            await axios
+                .post(
+                    `${config.API_URL}api/cobranzas/search?allData=1`,
+                    filterDate,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                .then((res) => setDataCobranzasExcel(res.data))
+                .catch((e) => console.log(e));
+        } else {
+            await axios
+                .get(`${config.API_URL}api/cobranzas/listAll`)
+                .then((res) => {
+                    setDataCobranzasExcel(res.data);
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
+    const exportDataToExcel = async () => {
+        await fetchAllDataToExport();
+        swal({
+            text: `Se exportarán los registros`,
+            buttons: ["Cancelar", "Aceptar"],
+        }).then((res) => {
+            if (res) {
+                try {
+                    csvLinkRef.current.link.click();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        });
     };
     return (
         <div className="contenedorCobranzas">
@@ -244,34 +284,16 @@ const Cobranzas = () => {
                         Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
                     </button>
+                    <button className="button_save" onClick={exportDataToExcel}>
+                        Exportar
+                        <FaFileExport className="icon_button_cobranza" />
+                    </button>
                     <CSVLink
                         data={dataCobranzasExcel}
                         filename={"cobranzas.csv"}
-                        className="button_save"
-                        asyncOnClick={true}
-                        onClick={(event, done) => {
-                            axios
-                                .post(
-                                    `${config.API_URL}api/cobranzas/search?allData=1`,
-                                    filterDate,
-                                    {
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                    }
-                                )
-                                .then((res) => {
-                                    setDataCobranzasExcel(res.data);
-                                })
-                                .then(() => {
-                                    done();
-                                })
-                                .catch((e) => console.log(e));
-                        }}
-                    >
-                        Exportar
-                        <FaFileExport className="icon_button_cobranza" />
-                    </CSVLink>
+                        className="button_save_hidden"
+                        ref={csvLinkRef}
+                    ></CSVLink>
                 </div>
             </div>
             <div className="filters">

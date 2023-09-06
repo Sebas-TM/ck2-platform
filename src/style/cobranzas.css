@@ -260,6 +260,10 @@
     background-color: #858784;
 }
 
+.button_save_hidden{
+    display: hidden;
+}
+
 @media (min-width: 769px) {
     .button_save {
         width: 15rem;

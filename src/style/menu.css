@@ -20,8 +20,8 @@
     /* flex-direction: column; */
     align-items: center;
     justify-content: space-between;
-    padding: .5rem 2rem;
-    transition: height .5s ease;
+    padding: 0.5rem 2rem;
+    transition: height 0.5s ease;
     border-bottom: 2px solid rgb(233, 230, 230);
 }
 
@@ -35,12 +35,10 @@
     cursor: pointer;
 }
 
-
 .subcontenedor-header {
     display: flex;
     align-items: center;
 }
-
 
 .contenedor-logo-menu {
     display: flex;
@@ -62,8 +60,7 @@
     display: none;
 }
 
-
-@media (min-width:769px) {
+@media (min-width: 769px) {
     .logo2 {
         display: none;
     }
@@ -77,7 +74,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
     font-size: 1.5rem;
 }
 
@@ -106,17 +103,17 @@
 .img-usuario {
     max-width: 100%;
     /* max-height: 100%; */
-    object-fit: contain;     
+    object-fit: contain;
 }
 
 .texto_header {
     /* margin-right: 1rem; */
     font-size: 1.5rem;
     color: black;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 
-@media (min-width:769px) {
+@media (min-width: 769px) {
     .texto_header:hover {
         transform: scale(1.1);
     }
@@ -131,7 +128,6 @@
 .list:nth-last-of-type(1) {
     border: none;
     font-size: 1.5rem;
-
 }
 
 .icono-li {
@@ -139,14 +135,12 @@
     margin-right: 1rem;
 }
 
-
-
 .disable,
 .disable-button {
     display: none;
 }
 
-@media (min-width:769px) {
+@media (min-width: 769px) {
     .disable {
         display: flex;
     }
@@ -162,22 +156,31 @@
 
 .contenedor-menu__user {
     position: absolute;
-    top: 6.5rem;
+    top: 6rem;
     right: 3rem;
-    background-color: #f82b3c;
-    padding: 1rem 2rem;
-    border-radius: 1.2rem;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0 0 1.2rem 1.2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    height: 0;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
+.contenedor-menu__user.show {
+    padding: 1rem 2rem;
+    height: auto;
+    overflow: initial;
+    background-color: #f82b3c;
+}
 .list_user .texto_header {
     color: white;
     cursor: pointer;
 }
 
-@media (min-width:769px) {
+@media (min-width: 769px) {
     .disable_user {
         display: none;
     }
