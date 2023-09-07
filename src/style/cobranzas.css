@@ -12,6 +12,7 @@
     text-transform: uppercase;
     max-width: 147rem;
     border-collapse: collapse;
+    display: block;
 }
 
 .tabla-cobranzas thead th {
@@ -196,7 +197,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
     border-radius: 1rem;
 }
 
@@ -204,7 +205,7 @@
     background-color: #676966;
     padding: 2rem 0rem;
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     align-items: center;
     justify-content: center;
     color: white;

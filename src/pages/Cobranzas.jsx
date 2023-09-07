@@ -251,8 +251,8 @@ const Cobranzas = () => {
                 <div className="container_buttons_cobranzas">
                     <label className="uploadExcel" htmlFor="uploadExcel">
                         <p>
-                            <span>Subir archivo</span>
                             <RiFileExcel2Fill className="icon_button_cobranza" />
+                            <span>Subir archivo</span>
                         </p>
                         <input
                             type="file"
@@ -262,31 +262,31 @@ const Cobranzas = () => {
                         />
                     </label>
                     <button className="button_save" onClick={guardarDatos}>
-                        Guardar
                         {cargandoGuardar ? (
                             <SpinnerIcono />
                         ) : (
                             <FaSave className="icon_button_cobranza " />
                         )}
+                        Guardar
                     </button>
                     <button
                         className="button_load"
                         onClick={onClickConsultarDatos}
                     >
-                        Consultar
                         {cargandoConsulta ? (
                             <SpinnerIcono />
                         ) : (
                             <ImDownload2 className="icon_button_cobranza" />
                         )}
+                        Consultar
                     </button>
                     <button className="button_delete" onClick={eliminarDatos}>
-                        Eliminar
                         <AiFillDelete className="icon_button_cobranza" />
+                        Eliminar
                     </button>
                     <button className="button_save" onClick={exportDataToExcel}>
-                        Exportar
                         <FaFileExport className="icon_button_cobranza" />
+                        Exportar
                     </button>
                     <CSVLink
                         data={dataCobranzasExcel}
