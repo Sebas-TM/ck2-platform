@@ -133,6 +133,20 @@ const BodyTableCobranzas = ({
         setCargandoUpdateRow(false);
     };
 
+    const copiarAlPortapapeles = () => {
+        navigator.clipboard
+            .writeText(nro_documento)
+            .then(() => {
+                // toast.success(`Se copió en el portapapeles: ${nro_documento}`)
+                toast.message(nro_documento, {
+                    description: "Copiado",
+                });
+            })
+            .catch((error) => {
+                console.error("Error al copiar el texto: ", error);
+            });
+    };
+
     return (
         <>
             <tr className="accordion-title" onClick={() => handleRowIsOpen(id)}>
@@ -142,6 +156,7 @@ const BodyTableCobranzas = ({
                 <td align="start">
                     <p className="accordion-title-nro_documento">
                         {nro_documento}
+                        <button onClick={copiarAlPortapapeles}>Copiar</button>
                     </p>
                     <p className="accordion-title-tipo_documento">{tipo_doc}</p>
                 </td>

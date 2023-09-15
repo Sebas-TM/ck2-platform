@@ -164,25 +164,33 @@ const Cobranzas = () => {
         setCargandoFilterDate(false);
     };
     const searchAndFilterFunction = async (info, pg = 1) => {
-        await axios
-            .post(`${config.API_URL}api/cobranzas/search?page=${pg}`, info, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-            .then((res) => {
-                const { data, meta } = res.data;
-                setDataCobranzas(data);
-                setPagination(meta);
-                setPage(1);
-                setFilterDate(info);
-                setPage(pg);
-                if (info.date_filter) {
-                    setValue("from_date", meta.from_date);
-                    setValue("to_date", meta.to_date);
-                }
-            })
-            .catch((e) => console.log(e));
+        if (info.date_filter) {
+            await axios
+                .post(
+                    `${config.API_URL}api/cobranzas/search?page=${pg}`,
+                    info,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                .then((res) => {
+                    const { data, meta } = res.data;
+                    setDataCobranzas(data);
+                    setPagination(meta);
+                    setPage(1);
+                    setFilterDate(info);
+                    setPage(pg);
+                    if (info.date_filter) {
+                        setValue("from_date", meta.from_date);
+                        setValue("to_date", meta.to_date);
+                    }
+                })
+                .catch((e) => console.log(e));
+        } else {
+            await consultarDatos();
+        }
     };
     const borrarFilterByDate = async () => {
         setFilterDate(null);

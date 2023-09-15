@@ -16,6 +16,7 @@ import {
     FiSearch,
     FiUsers,
     FiChevronDown,
+    FiX,
 } from "react-icons/fi";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { FiGrid } from "react-icons/fi";
@@ -323,6 +324,10 @@ const Empleados = () => {
                             className="form-buscar-empleados"
                             onSubmit={handleSubmit(submitData)}
                         >
+                            <p className="btn_add">
+                                <FiX />
+                                Borrar filtro
+                            </p>
                             <input
                                 className="busqueda"
                                 type="text"
@@ -376,10 +381,10 @@ const Empleados = () => {
                                             <img
                                                 loading="lazy"
                                                 className="img_empleados"
-                                                onError={e => {
-                                                    e.target.src = foto_personal;
-                                                  }}
-                                
+                                                onError={(e) => {
+                                                    e.target.src =
+                                                        foto_personal;
+                                                }}
                                                 src={
                                                     employee.imagen
                                                         ? `${config.API_URL}${
