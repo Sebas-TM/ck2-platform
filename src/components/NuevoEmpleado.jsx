@@ -236,7 +236,7 @@ const NuevoEmpleado = ({
                     console.log(error);
 
                     setCargandoSubmit(false);
-                    setModalIsOpen(false);
+                    // setModalIsOpen(false);
                     await getEmployees();
                 });
         }

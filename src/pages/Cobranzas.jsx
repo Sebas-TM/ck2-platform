@@ -19,6 +19,7 @@ import SpinnerIcono from "../components/SpinnerIcono";
 import { CSVLink } from "react-csv";
 import ErrorMessage from "../components/ErrorMessage";
 import { useDebounce } from "../utils/useDebounce";
+import MessageDialogCobranza from "../components/MessageDialogCobranza";
 const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
     const [rows, setRows] = useState([]);
@@ -45,6 +46,7 @@ const Cobranzas = () => {
         total: 0,
     });
     const tableRef = useRef(null);
+    const [cargando, setCargando] = useState(false);
     const [cargandoConsulta, setCargandoConsulta] = useState(false);
     const [cargandoGuardar, setCargandoGuardar] = useState(false);
     const [handleInputDate, setHandleInputDate] = useState(true);
@@ -153,7 +155,13 @@ const Cobranzas = () => {
     // };
 
     useEffect(() => {
-        searchAndFilter(filterDate);
+        const loadInfoAtBegining = async () => {
+            setCargando(true);
+            await searchAndFilter(filterDate);
+            setCargando(false);
+        };
+
+        loadInfoAtBegining();
     }, []);
 
     const eliminarDatos = () => {
@@ -276,6 +284,8 @@ const Cobranzas = () => {
 
     return (
         <div className="contenedorCobranzas">
+            {cargando && <Spinner />}
+            <MessageDialogCobranza/>
             <Toaster position="top-center" richColors />
             <div className="header_cobranza">
                 <div className="title">
@@ -391,6 +401,32 @@ const Cobranzas = () => {
                                     id="to_date"
                                     {...register("to_date")}
                                 />
+                            </label>
+                        </div>
+                        <div className="filterByDate_subcontenedor_0">
+                            <label htmlFor="date_filter">
+                                <p>Campaña:</p>
+                                <select
+                                    className="campana_filter"
+                                    name="campana_filter"
+                                    id="campana_filter"
+                                    {...register("campana_filter")}
+                                    onChange={(e) => {
+                                        handleInputChange(
+                                            "campana_filter",
+                                            e.target.value
+                                        );
+                                    }}
+                                >
+                                    <option value="">Todas</option>
+                                    <option value="CLARO_HFC">CLARO_HFC</option>
+                                    <option value="CLARO_TRUJILLO">
+                                        CLARO_TRUJILLO
+                                    </option>
+                                    <option value="CLARO_HFC_EMPRESAS">
+                                        CLARO_HFC_EMPRESAS
+                                    </option>
+                                </select>
                             </label>
                         </div>
                     </div>

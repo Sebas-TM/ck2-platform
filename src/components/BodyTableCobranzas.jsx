@@ -68,6 +68,7 @@ const BodyTableCobranzas = ({
     const handleRowIsOpen = (id) => {
         setActive(id === active ? 0 : id);
 
+        setValue("campana", campana);
         setValue("agente", agente);
         setValue("supervisor", supervisor);
         setValue("fecha", fecha);
@@ -757,6 +758,16 @@ const BodyTableCobranzas = ({
                                         <SpinnerIcono />
                                     ) : (
                                         "Eliminar"
+                                    )}
+                                </div>
+                                <div
+                                    className=" btn_cobranzas btn_delete"
+                                    // onClick={() => deleteRow(id)}
+                                >
+                                    {cargandoDeleteRow ? (
+                                        <SpinnerIcono />
+                                    ) : (
+                                        "Mensaje"
                                     )}
                                 </div>
                             </div>

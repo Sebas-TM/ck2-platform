@@ -42,7 +42,7 @@
 
 .tabla-cobranzas tbody tr td {
     height: auto;
-    padding: 0.8rem .5rem;
+    padding: 0.8rem 0.5rem;
 }
 
 .tabla-cobranzas tbody .accordion-content td {
@@ -353,18 +353,19 @@
     font-size: 1.2rem;
 }
 
-.btn_save {
+.btn_delete {
     background-color: #676966;
+    text-transform: none;
 }
-.btn_save:hover {
+.btn_delete:hover {
     background-color: #858784;
 }
-.btn_delete {
+.btn_save {
     background-color: #d63636;
     text-transform: none;
 }
 
-.btn_delete:hover {
+.btn_save:hover {
     background-color: #ff5656;
 }
 
@@ -403,10 +404,11 @@
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1250px) {
     .filterByDate {
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
 }
 
@@ -430,7 +432,7 @@
 .filterByDate button {
     font-family: "Poppins", sans-serif;
     cursor: pointer;
-    background-color: #676966;
+    background-color: #d63636;
     color: white;
     border: none;
     width: 7rem;
@@ -444,13 +446,14 @@
 }
 
 .filterByDate button:hover {
-    background-color: #858784;
+    background-color: #ff5656;
 }
 
 .filterByDate .btn_borrar_filtro {
     font-family: "Poppins", sans-serif;
     cursor: pointer;
-    background-color: #d63636;
+    background-color: #676966;
+
     color: white;
     border: none;
     font-size: 1.3rem;
@@ -463,7 +466,7 @@
 }
 
 .filterByDate .btn_borrar_filtro:hover {
-    background-color: #ff5656;
+    background-color: #858784;
 }
 
 @media (min-width: 768px) {
@@ -479,6 +482,11 @@
     margin-top: 1rem;
 }
 
+.filterByDate_subcontenedor_0,
+.filterByDate_subcontenedor_1 {
+    margin-top: 1rem;
+}
+
 @media (min-width: 407px) {
     .filerByDate_subcontenedor_1 {
         display: flex;
@@ -486,6 +494,10 @@
         align-items: center;
     }
     .filerByDate_subcontenedor_1 label {
+        margin-top: 0rem;
+    }
+    .filterByDate_subcontenedor_0,
+    .filterByDate_subcontenedor_1 {
         margin-top: 0rem;
     }
 }
@@ -530,7 +542,8 @@
 .filterByDate_subcontenedor {
     font-family: "Poppins", sans-serif;
 }
-.date_filter {
+.date_filter,
+.campana_filter {
     font-family: "Poppins", sans-serif;
     border: 2px solid rgb(235, 235, 235);
     padding: 0.5rem 1rem;

@@ -1,0 +1,94 @@
+.messageDialog {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* filter: blur(5px); */
+    position: fixed;
+    top: 0;
+    z-index: 3;
+    left: 0;
+}
+
+.messageDialogCobranza_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* border-radius: 2rem; */
+    z-index: 3;
+    background-color: white;
+    /* height: 30rem; */
+    display: flex;
+}
+
+.messageDialogCobranza_container .subcontainer_1 {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+    padding: 3rem 2rem;
+}
+
+.messageDialogCobranza_container .subcontainer_2 {
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.messageDialogCobranza_container .input_group,
+.messageDialogCobranza_container .button_group {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.messageDialogCobranza_container label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+}
+
+.messageDialog input,
+.messageDialog button {
+    width: 20rem;
+    padding: 0.5rem 1rem;
+    font-family: "Poppins", sans-serif;
+    border-radius: .5rem;
+}
+
+.messageDialog input {
+    border: 1px solid gray;
+    outline: none;
+}
+
+.button_group .send,
+.button_group .cancel {
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.button_group .send {
+    background-color: #d63636;
+}
+
+.button_group .send:hover {
+    background-color: #ff5656;
+}
+
+.button_group .cancel {
+    background-color: #676966;
+}
+
+.button_group .cancel:hover {
+    background-color: #858784;
+}
+
+.messageDialogCobranza_container .subcontainer_2 p{
+    font-size: 1.5rem;
+    text-align: justify;
+}
