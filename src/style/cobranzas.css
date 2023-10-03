@@ -6,7 +6,7 @@
 
 .tabla-cobranzas {
     margin: 3rem auto 0 auto;
-    max-height: 70rem;
+    max-height: 80rem;
     text-align: center;
     font-size: 1.2rem;
     text-transform: uppercase;
@@ -42,7 +42,7 @@
 
 .tabla-cobranzas tbody tr td {
     height: auto;
-    padding: .8rem 0;
+    padding: 0.8rem .5rem;
 }
 
 .tabla-cobranzas tbody .accordion-content td {
@@ -122,7 +122,7 @@
     background-color: #dfdfdf;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 
 .accordion-title-nro_documento button:hover {
@@ -130,13 +130,11 @@
     color: white;
 }
 
-
 .container_btn_cobranzas {
     padding: 1rem;
 }
 
 .accordion-content .btn_cobranzas {
-    padding: 18rem 1rem;
     border-radius: 0.5rem;
     font-family: "Poppins", sans-serif;
 }
@@ -162,6 +160,13 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+@media (min-width: 860px) {
+    .header_cobranza {
+        flex-direction: row;
+        justify-content: space-between;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -207,6 +212,8 @@
     -moz-box-shadow: 0px 0px 4px -2px rgba(0, 0, 0, 0.75);
     border-radius: 1rem;
     padding: 1rem;
+    padding-bottom: 0rem;
+
     display: grid;
     grid-template-columns: 2fr;
     grid: none;
@@ -215,6 +222,7 @@
 @media (min-width: 400px) {
     .container_buttons_cobranzas {
         padding: 2rem;
+        padding-bottom: 0rem;
     }
 }
 .container_buttons_cobranzas button {
@@ -230,13 +238,13 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     height: 3.5rem;
 }
 
 .uploadExcel {
     background-color: #676966;
-    padding: .25rem 0rem;
+    padding: 0.25rem 0rem;
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -245,7 +253,7 @@
     cursor: pointer;
     font-size: 1.2rem;
     transition: all 0.3s ease;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     width: auto;
     height: 3.5rem;
 }
@@ -256,7 +264,7 @@
     font-size: 1.8rem;
 }
 
-.uploadExcel p{
+.uploadExcel p {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -267,6 +275,8 @@
     .container_buttons_cobranzas {
         display: flex;
         justify-content: center;
+        padding: 2rem;
+        align-items: center;
     }
     .container_buttons_cobranzas button {
         width: 15rem;
@@ -327,11 +337,10 @@
 
 .btn_cobranzas {
     margin: auto;
-    height: 3.4rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     border: none;
-    background-color: #e62838;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -341,10 +350,22 @@
     font-family: "Poppins", sans-serif;
     margin-top: 2rem;
     width: 7.5rem;
+    font-size: 1.2rem;
 }
 
-.btn_cobranzas:hover {
-    background-color: #bd1e2b;
+.btn_save {
+    background-color: #676966;
+}
+.btn_save:hover {
+    background-color: #858784;
+}
+.btn_delete {
+    background-color: #d63636;
+    text-transform: none;
+}
+
+.btn_delete:hover {
+    background-color: #ff5656;
 }
 
 /* Formulario */

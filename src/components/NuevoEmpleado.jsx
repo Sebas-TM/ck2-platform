@@ -125,7 +125,7 @@ const NuevoEmpleado = ({
     };
     useEffect(() => {
         const fetchData = async () => {
-            setCargandoContenido(true)
+            setCargandoContenido(true);
             if (employeeIdEdit) {
                 try {
                     await obtenerAreas();
@@ -140,7 +140,7 @@ const NuevoEmpleado = ({
                 await obtenerPuestos();
                 await obtenerEmpleados();
             }
-            setCargandoContenido(false)
+            setCargandoContenido(false);
         };
 
         fetchData();
@@ -225,15 +225,16 @@ const NuevoEmpleado = ({
                         },
                     }
                 )
-                .then(async () => {
-                    toast.success("Datos actualizados!");
+                .then(async (res) => {
+                    toast.success("Datos actualizados correctamente!");
                     await getEmployees();
                     setCargandoSubmit(false);
                     setModalIsOpen(false);
                 })
                 .catch(async (error) => {
-                    // toast.error(error.response.data.message);
+                    toast.error(error.response.data.message);
                     console.log(error);
+
                     setCargandoSubmit(false);
                     setModalIsOpen(false);
                     await getEmployees();

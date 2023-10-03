@@ -1,5 +1,5 @@
 import "../style/cobranzas.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { utils as XLSXUtils, readFile as XLSXRead } from "xlsx";
 import BodyTableCobranzas from "../components/BodyTableCobranzas";
 import { useForm } from "react-hook-form";
@@ -18,12 +18,18 @@ import SpinnerContenido from "../components/SpinnerContenido";
 import SpinnerIcono from "../components/SpinnerIcono";
 import { CSVLink } from "react-csv";
 import ErrorMessage from "../components/ErrorMessage";
+import { useDebounce } from "../utils/useDebounce";
 const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
     const [rows, setRows] = useState([]);
     const [active, setActive] = useState(0);
     const [page, setPage] = useState();
-    const [filterDate, setFilterDate] = useState();
+    const [filterDate, setFilterDate] = useState({
+        date_filter: "today",
+        from_date: "",
+        to_date: "",
+        termino: "",
+    });
     const {
         register,
         setValue,
@@ -41,6 +47,7 @@ const Cobranzas = () => {
     const tableRef = useRef(null);
     const [cargandoConsulta, setCargandoConsulta] = useState(false);
     const [cargandoGuardar, setCargandoGuardar] = useState(false);
+    const [handleInputDate, setHandleInputDate] = useState(true);
     const [cargandoFilterDate, setCargandoFilterDate] = useState(false);
     const csvLinkRef = useRef();
 
@@ -64,49 +71,51 @@ const Cobranzas = () => {
     const transformData = (data) => {
         return data.map((item) => {
             return {
-                agente: item[0] ? item[0] : "",
-                supervisor: item[1] ? item[1] : "",
-                fecha: item[2] ? item[2] : "",
-                titular_nombres_apellidos: item[3] ? item[3] : "",
-                tipo_doc: item[4] ? item[4] : "",
-                nro_documento: item[5] ? item[5] : "",
-                celular_grabacion_legal: item[6] ? item[6] : "",
-                celular_adicional_1: item[7] ? item[7] : "",
-                celular_adicional_2: item[8] ? item[8] : "",
-                producto_play: item[9] ? item[9] : "",
-                producto: item[10] ? item[10] : "",
-                plan_telefono: item[11] ? item[11] : "",
-                plan_internet: item[12] ? item[12] : "",
-                plan_cable: item[13] ? item[13] : "",
-                tipo_venta: item[14] ? item[14] : "",
-                precio_total: item[15] ? item[15] : 0,
-                sot: item[16] ? item[16] : 0,
-                sec: item[17] ? item[17] : 0,
-                contrato: item[18] ? item[18] : 0,
-                estado: item[19] ? item[19] : "",
-                ciclo_facturacion: item[20] ? item[20] : 0,
-                fecha_emision: item[21] ? item[21] : "",
-                vencimiento_facturas: item[22] ? item[22] : "",
-                factura: item[23] ? item[23] : "",
-                pago: item[24] ? item[24] : "",
-                estado_pago: item[25] ? item[25] : "",
-                fecha_pago_mes_1: item[26] ? item[26] : "",
-                fecha_pago_mes_2: item[27] ? item[27] : "",
-                fecha_pago_mes_3: item[28] ? item[28] : "",
-                seguimiento_recibo: item[29] ? item[29] : "",
-                customerId: item[30] ? item[30] : 0,
-                comentario_llamada: item[31] ? item[31] : "",
-                observacion: item[32] ? item[32] : "",
-                motivo_no_pago_1: item[33] ? item[33] : "",
-                fecha_gestion: item[34] ? item[34] : "",
-                medio_pago: item[35] ? item[35] : "",
+                campana: item[0] ? item[0] : "",
+                agente: item[1] ? item[1] : "",
+                supervisor: item[2] ? item[2] : "",
+                fecha: item[3] ? item[3] : "",
+                titular_nombres_apellidos: item[4] ? item[4] : "",
+                tipo_doc: item[5] ? item[5] : "",
+                nro_documento: item[6] ? item[6] : "",
+                celular_grabacion_legal: item[7] ? item[7] : "",
+                celular_adicional_1: item[8] ? item[8] : "",
+                celular_adicional_2: item[9] ? item[9] : "",
+                producto_play: item[10] ? item[10] : "",
+                producto: item[11] ? item[11] : "",
+                plan_telefono: item[12] ? item[12] : "",
+                plan_internet: item[13] ? item[13] : "",
+                plan_cable: item[14] ? item[14] : "",
+                tipo_venta: item[15] ? item[15] : "",
+                precio_total: item[16] ? item[16] : 0,
+                sot: item[17] ? item[17] : 0,
+                sec: item[18] ? item[18] : 0,
+                contrato: item[19] ? item[19] : 0,
+                estado: item[20] ? item[20] : "",
+                ciclo_facturacion: item[21] ? item[21] : 0,
+                fecha_emision: item[22] ? item[22] : "",
+                vencimiento_facturas: item[23] ? item[23] : "",
+                factura: item[24] ? item[24] : "",
+                pago: item[25] ? item[25] : "",
+                estado_pago: item[26] ? item[26] : "",
+                fecha_pago_mes_1: item[27] ? item[27] : "",
+                fecha_pago_mes_2: item[28] ? item[28] : "",
+                fecha_pago_mes_3: item[29] ? item[29] : "",
+                seguimiento_recibo: item[30] ? item[30] : "",
+                customerId: item[31] ? item[31] : 0,
+                comentario_llamada: item[32] ? item[32] : "",
+                observacion: item[33] ? item[33] : "",
+                motivo_no_pago_1: item[34] ? item[34] : "",
+                fecha_gestion: item[35] ? item[35] : "",
+                medio_pago: item[36] ? item[36] : "",
             };
         });
     };
 
     const dataExcel = transformData(rows);
     const guardarDatos = async () => {
-        console.log(dataExcel);
+        // console.log(dataExcel);
+
         if (dataExcel.length > 0) {
             setCargandoGuardar(true);
             await axios
@@ -120,6 +129,7 @@ const Cobranzas = () => {
                 .catch((res) => {
                     toast.success(res.status);
                 });
+
             setCargandoGuardar(false);
         } else {
             toast.error("No se ha seleccionado ningún archivo");
@@ -136,11 +146,15 @@ const Cobranzas = () => {
         setPage(pg);
     };
 
-    const onClickConsultarDatos = async () => {
-        setCargandoConsulta(true);
-        await consultarDatos();
-        setCargandoConsulta(false);
-    };
+    // const onClickConsultarDatos = async () => {
+    //     setCargandoConsulta(true);
+    //     await consultarDatos();
+    //     setCargandoConsulta(false);
+    // };
+
+    useEffect(() => {
+        searchAndFilter(filterDate);
+    }, []);
 
     const eliminarDatos = () => {
         swal({
@@ -164,18 +178,16 @@ const Cobranzas = () => {
         setCargandoFilterDate(false);
     };
     const searchAndFilterFunction = async (info, pg = 1) => {
-        if (info.date_filter) {
-            await axios
-                .post(
-                    `${config.API_URL}api/cobranzas/search?page=${pg}`,
-                    info,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                )
-                .then((res) => {
+        await axios
+            .post(`${config.API_URL}api/cobranzas/search?page=${pg}`, info, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                if (res.data.message) {
+                    setDataCobranzas(res.data.message);
+                } else {
                     const { data, meta } = res.data;
                     setDataCobranzas(data);
                     setPagination(meta);
@@ -183,15 +195,15 @@ const Cobranzas = () => {
                     setFilterDate(info);
                     setPage(pg);
                     if (info.date_filter) {
+                        setValue("date_filter", meta.date_filter);
                         setValue("from_date", meta.from_date);
                         setValue("to_date", meta.to_date);
                     }
-                })
-                .catch((e) => console.log(e));
-        } else {
-            await consultarDatos();
-        }
+                }
+            })
+            .catch((e) => console.log(e));
     };
+
     const borrarFilterByDate = async () => {
         setFilterDate(null);
         await consultarDatos();
@@ -248,6 +260,20 @@ const Cobranzas = () => {
             }
         });
     };
+
+    const debounceValue = useDebounce(filterDate, 500);
+
+    useEffect(() => {
+        searchAndFilter(filterDate);
+    }, [debounceValue]);
+
+    const handleInputChange = (name, value) => {
+        setFilterDate({
+            ...filterDate,
+            [name]: value,
+        });
+    };
+
     return (
         <div className="contenedorCobranzas">
             <Toaster position="top-center" richColors />
@@ -277,7 +303,7 @@ const Cobranzas = () => {
                         )}
                         Guardar
                     </button>
-                    <button
+                    {/* <button
                         className="button_load"
                         onClick={onClickConsultarDatos}
                     >
@@ -287,11 +313,11 @@ const Cobranzas = () => {
                             <ImDownload2 className="icon_button_cobranza" />
                         )}
                         Consultar
-                    </button>
-                    <button className="button_delete" onClick={eliminarDatos}>
+                    </button> */}
+                    {/* <button className="button_delete" onClick={eliminarDatos}>
                         <AiFillDelete className="icon_button_cobranza" />
                         Eliminar
-                    </button>
+                    </button> */}
                     <button className="button_save" onClick={exportDataToExcel}>
                         <FaFileExport className="icon_button_cobranza" />
                         Exportar
@@ -318,6 +344,18 @@ const Cobranzas = () => {
                                     name="date_filter"
                                     id="date_filter"
                                     {...register("date_filter")}
+                                    onChange={(e) => {
+                                        if (e.target.value == "") {
+                                            setHandleInputDate(false);
+                                        } else {
+                                            setHandleInputDate(true);
+                                        }
+
+                                        handleInputChange(
+                                            "date_filter",
+                                            e.target.value
+                                        );
+                                    }}
                                 >
                                     <option value="">Personalizada</option>
                                     <option value="today">Hoy</option>
@@ -337,6 +375,7 @@ const Cobranzas = () => {
                             <label htmlFor="from_date">
                                 <p>Desde:</p>
                                 <input
+                                    disabled={handleInputDate}
                                     type="date"
                                     name="from_date"
                                     id="from_date"
@@ -346,6 +385,7 @@ const Cobranzas = () => {
                             <label htmlFor="to_date">
                                 <p>Hasta:</p>
                                 <input
+                                    disabled={handleInputDate}
                                     type="date"
                                     name="to_date"
                                     id="to_date"
@@ -362,6 +402,12 @@ const Cobranzas = () => {
                                 name="termino"
                                 id="termino"
                                 {...register("termino")}
+                                onChange={(e) => {
+                                    handleInputChange(
+                                        "termino",
+                                        e.target.value
+                                    );
+                                }}
                             />
                         </div>
                         <div className="filerByDate_subcontenedor_3">
@@ -372,7 +418,7 @@ const Cobranzas = () => {
                                     "Buscar"
                                 )}
                             </button>
-                            {filterDate && (
+                            {/* {filterDate && (
                                 <p
                                     className="btn_borrar_filtro"
                                     onClick={borrarFilterByDate}
@@ -380,7 +426,7 @@ const Cobranzas = () => {
                                     <FiX />
                                     Borrar filtro
                                 </p>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </form>
@@ -397,9 +443,9 @@ const Cobranzas = () => {
                         <th>Asesor</th>
                         <th>Titular</th>
                         <th>DOC</th>
-                        <th>Celular 1</th>
+                        <th>Celular</th>
                         <th>Estado</th>
-                        <th>SEC</th>
+                        <th>Campaña</th>
                         <th className="columnButton-cobranzas"></th>
                     </tr>
                 </thead>

@@ -93,10 +93,11 @@
     align-items: center;
     font-family: "Poppins", sans-serif;
     gap: 1rem;
+    font-size: 1.2rem;
 }
 
 .btn_add:hover {
-    background-color: #bd1e2b;
+    background-color: #ff5656;
 }
 .tabla {
     margin-top: 5rem;

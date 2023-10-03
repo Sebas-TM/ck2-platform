@@ -35,6 +35,7 @@ import { useForm } from "react-hook-form";
 import VerEmpleado from "../components/VerEmpleado";
 import SpinnerIcono from "../components/SpinnerIcono";
 import NuevoEmpleado from "../components/NuevoEmpleado";
+import { useDebounce } from "../utils/useDebounce";
 
 const cookies = new Cookies();
 
@@ -54,6 +55,14 @@ const Empleados = () => {
     const [employeeIdEdit, setEmployeeIdEdit] = useState();
     const [panelIsOpen, setPanelIsOpen] = useState(false);
     const navigate = useNavigate();
+    const [activeEmployees, setActiveEmployees] = useState(0);
+    const [sedeLima, setSedeLima] = useState(0);
+    const [sedeTrujillo, setSedeTrujillo] = useState(0);
+    const [asesor, setAsesor] = useState(0);
+    const [filtro, setFiltro] = useState();
+    const [columna, setColumna] = useState("");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [buttonBorrarFiltro, setButtonBorrarFiltro] = useState(false);
     const {
         register,
         setValue,
@@ -71,14 +80,6 @@ const Empleados = () => {
         per_page: 10,
         total: 0,
     });
-
-    const [activeEmployees, setActiveEmployees] = useState(0);
-    const [sedeLima, setSedeLima] = useState(0);
-    const [sedeTrujillo, setSedeTrujillo] = useState(0);
-    const [asesor, setAsesor] = useState(0);
-    const [filtro, setFiltro] = useState();
-    const [columna, setColumna] = useState("");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -145,10 +146,12 @@ const Empleados = () => {
         setFiltro();
     };
 
+    const debounceValue = useDebounce(termino, 500);
+
     const submitData = async (data) => {
         setCargandoBusqueda(true);
         if (data.termino) {
-            <div className=""></div>;
+            // <div className=""></div>;
             setTermino(data.termino);
         } else {
             setTermino();
@@ -162,7 +165,7 @@ const Empleados = () => {
         setCargandoBusqueda(true);
         await axios
             .post(
-                `${config.API_URL}api/employees/search?termino=${termino}&page=${pg}`
+                `${config.API_URL}api/employees/search?termino=${debounceValue}&page=${pg}`
             )
             .then((res) => {
                 setEmployees(res.data.data);
@@ -179,9 +182,9 @@ const Empleados = () => {
             tableRef.current.scrollTo(0, 0);
             tableRef1.current.scrollTo(0, 0);
         } else {
-            return () => {};
+            obtenerEmpleados();
         }
-    }, [termino]);
+    }, [debounceValue]);
 
     const eliminarEmpleado = (employeeId) => {
         swal({
@@ -223,6 +226,7 @@ const Empleados = () => {
     const handlePanelIsOpen = () => {
         setPanelIsOpen(!panelIsOpen);
     };
+
     return (
         <div className="contenedor-empleados">
             {modalIsOpen && (
@@ -270,21 +274,36 @@ const Empleados = () => {
             <div className="form-group form-group-empleados">
                 <div className="empleados-data-card-contenedor">
                     <div className="empleados-data-card">
-                        <button onClick={() => filter("activo", "estado", 1)}>
+                        <button
+                            onClick={() => {
+                                filter("activo", "estado", 1);
+                                setButtonBorrarFiltro(true);
+                            }}
+                        >
                             <EmpleadoDataCard
                                 icono={<FiUsers />}
                                 dato={activeEmployees}
                                 descripcion={"Colaboradores Activos"}
                             />
                         </button>
-                        <button onClick={() => filter("Lima", "sede", 1)}>
+                        <button
+                            onClick={() => {
+                                filter("Lima", "sede", 1);
+                                setButtonBorrarFiltro(true);
+                            }}
+                        >
                             <EmpleadoDataCard
                                 icono={<FiUsers />}
                                 dato={sedeLima}
                                 descripcion={"Colaboradores Lima"}
                             />
                         </button>
-                        <button onClick={() => filter("Trujillo", "sede", 1)}>
+                        <button
+                            onClick={() => {
+                                filter("Trujillo", "sede", 1);
+                                setButtonBorrarFiltro(true);
+                            }}
+                        >
                             <EmpleadoDataCard
                                 icono={<FiUsers />}
                                 dato={sedeTrujillo}
@@ -292,7 +311,10 @@ const Empleados = () => {
                             />
                         </button>
                         <button
-                            onClick={() => filter("asesor(a)", "puesto", 1)}
+                            onClick={() => {
+                                filter("asesor(a)", "puesto", 1);
+                                setButtonBorrarFiltro(true);
+                            }}
                         >
                             <EmpleadoDataCard
                                 icono={<TfiHeadphoneAlt />}
@@ -324,17 +346,26 @@ const Empleados = () => {
                             className="form-buscar-empleados"
                             onSubmit={handleSubmit(submitData)}
                         >
-                            <p className="btn_add">
-                                <FiX />
-                                Borrar filtro
-                            </p>
+                            {buttonBorrarFiltro && (
+                                <p
+                                    className="btn_add"
+                                    onClick={() => {
+                                        obtenerEmpleados();
+                                        setButtonBorrarFiltro(false);
+                                    }}
+                                >
+                                    <FiX />
+                                    Borrar filtro
+                                </p>
+                            )}
                             <input
                                 className="busqueda"
                                 type="text"
-                                id="termino"
+                                id="termino"    
                                 name="termino"
                                 {...register("termino")}
                                 placeholder="Buscar..."
+                                onChange={(e) => setTermino(e.target.value)}
                             />
                             <button className="btn_add" type="submit">
                                 {cargandoBusqueda ? (
@@ -369,131 +400,138 @@ const Empleados = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {employees.map((employee, index) => (
-                                <tr key={employee.id}>
-                                    <td
-                                        align="center"
-                                        onClick={() =>
-                                            openHandleModal(employee.id)
-                                        }
-                                    >
-                                        <div className="contenedor-imagenTable">
-                                            <img
-                                                loading="lazy"
-                                                className="img_empleados"
-                                                onError={(e) => {
-                                                    e.target.src =
-                                                        foto_personal;
-                                                }}
-                                                src={
-                                                    employee.imagen
-                                                        ? `${config.API_URL}${
-                                                              employee.imagen
-                                                          }?${Date.now()}`
-                                                        : foto_personal
-                                                }
-                                                alt="foto_personal"
-                                            />
-                                        </div>
-                                    </td>
-                                    <td
-                                        className="data data_nombre"
-                                        onClick={() =>
-                                            openHandleModal(employee.id)
-                                        }
-                                    >
-                                        <div className="data_nombre_container">
-                                            <p className="colaborador">{`${employee.nombre} ${employee.apellido_paterno} ${employee.apellido_materno}`}</p>
-                                            <p className="dni">
-                                                {employee.dni}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td
-                                        className="data data_area_puesto"
-                                        onClick={() =>
-                                            openHandleModal(employee.id)
-                                        }
-                                    >
-                                        <div className="data_nombre_container">
-                                            <p className="puesto">
-                                                {employee.puesto}
-                                            </p>
-                                            <p className="area">
-                                                {employee.area}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td
-                                        className="data data_sede"
-                                        onClick={() =>
-                                            openHandleModal(employee.id)
-                                        }
-                                    >
-                                        <p className="p_sede_lima">
-                                            {employee.sede}
-                                        </p>
-                                    </td>
-                                    <td
-                                        className="data data_estado"
-                                        onClick={() =>
-                                            openHandleModal(employee.id)
-                                        }
-                                    >
-                                        <p
-                                            className={
-                                                employee.estado == "Activo"
-                                                    ? "p_estado_activo"
-                                                    : "p_estado_no_activo"
-                                            }
-                                        ></p>
-                                    </td>
-                                    <td className="data data_opciones">
-                                        <button
+                            {employees.length > 0 &&
+                                employees.map((employee, index) => (
+                                    <tr key={employee.id}>
+                                        <td
+                                            align="center"
                                             onClick={() =>
                                                 openHandleModal(employee.id)
                                             }
-                                            className="btn_option view"
                                         >
-                                            <FiEye className="icon" />
-                                        </button>
-
-                                        <Link
-                                            className="btn_option wsp"
-                                            target="blank"
-                                            to={`https://wa.me/51${employee.celular}`}
-                                        >
-                                            <BsWhatsapp className="icon" />
-                                        </Link>
-
-                                        <button
+                                            <div className="contenedor-imagenTable">
+                                                <img
+                                                    loading="lazy"
+                                                    className="img_empleados"
+                                                    onError={(e) => {
+                                                        e.target.src =
+                                                            foto_personal;
+                                                    }}
+                                                    src={
+                                                        employee.imagen
+                                                            ? `${
+                                                                  config.API_URL
+                                                              }${
+                                                                  employee.imagen
+                                                              }?${Date.now()}`
+                                                            : foto_personal
+                                                    }
+                                                    alt="foto_personal"
+                                                />
+                                            </div>
+                                        </td>
+                                        <td
+                                            className="data data_nombre"
                                             onClick={() =>
-                                                handleModalIsOpen(employee.id)
-                                            }
-                                            className={
-                                                rol != 3
-                                                    ? "btn_option edit"
-                                                    : "disable-button"
+                                                openHandleModal(employee.id)
                                             }
                                         >
-                                            <FiEdit className="icon" />
-                                        </button>
-
-                                        <button
+                                            <div className="data_nombre_container">
+                                                <p className="colaborador">{`${employee.nombre} ${employee.apellido_paterno} ${employee.apellido_materno}`}</p>
+                                                <p className="dni">
+                                                    {employee.dni}
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td
+                                            className="data data_area_puesto"
                                             onClick={() =>
-                                                eliminarEmpleado(employee.id)
-                                            }
-                                            className={
-                                                rol == 1
-                                                    ? "btn_option delete"
-                                                    : "disable-button"
+                                                openHandleModal(employee.id)
                                             }
                                         >
-                                            <FiTrash className="icon" />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                                            <div className="data_nombre_container">
+                                                <p className="puesto">
+                                                    {employee.puesto}
+                                                </p>
+                                                <p className="area">
+                                                    {employee.area}
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td
+                                            className="data data_sede"
+                                            onClick={() =>
+                                                openHandleModal(employee.id)
+                                            }
+                                        >
+                                            <p className="p_sede_lima">
+                                                {employee.sede}
+                                            </p>
+                                        </td>
+                                        <td
+                                            className="data data_estado"
+                                            onClick={() =>
+                                                openHandleModal(employee.id)
+                                            }
+                                        >
+                                            <p
+                                                className={
+                                                    employee.estado == "Activo"
+                                                        ? "p_estado_activo"
+                                                        : "p_estado_no_activo"
+                                                }
+                                            ></p>
+                                        </td>
+                                        <td className="data data_opciones">
+                                            <button
+                                                onClick={() =>
+                                                    openHandleModal(employee.id)
+                                                }
+                                                className="btn_option view"
+                                            >
+                                                <FiEye className="icon" />
+                                            </button>
+
+                                            <Link
+                                                className="btn_option wsp"
+                                                target="blank"
+                                                to={`https://wa.me/51${employee.celular}`}
+                                            >
+                                                <BsWhatsapp className="icon" />
+                                            </Link>
+
+                                            <button
+                                                onClick={() =>
+                                                    handleModalIsOpen(
+                                                        employee.id
+                                                    )
+                                                }
+                                                className={
+                                                    rol != 3
+                                                        ? "btn_option edit"
+                                                        : "disable-button"
+                                                }
+                                            >
+                                                <FiEdit className="icon" />
+                                            </button>
+
+                                            <button
+                                                onClick={() =>
+                                                    eliminarEmpleado(
+                                                        employee.id
+                                                    )
+                                                }
+                                                className={
+                                                    rol == 1
+                                                        ? "btn_option delete"
+                                                        : "disable-button"
+                                                }
+                                            >
+                                                <FiTrash className="icon" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                     {employees.length < 1 && <ErrorMessage />}

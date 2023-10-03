@@ -18,6 +18,7 @@ const BodyTableCobranzas = ({
     filterDate,
 }) => {
     const {
+        campana,
         agente,
         supervisor,
         fecha,
@@ -63,6 +64,7 @@ const BodyTableCobranzas = ({
         handleSubmit,
     } = useForm();
     const [cargandoUpdateRow, setCargandoUpdateRow] = useState(false);
+    const [cargandoDeleteRow, setCargandoDeleteRow] = useState(false);
     const handleRowIsOpen = (id) => {
         setActive(id === active ? 0 : id);
 
@@ -147,12 +149,42 @@ const BodyTableCobranzas = ({
             });
     };
 
+    const deleteRow = (id) => {
+        swal({
+            text: "¿Deseas eliminar el registro?",
+            buttons: ["No", "Si"],
+        }).then((res) => {
+            if (res) {
+                try {
+                    axios.delete(`${config.API_URL}api/cobranzas/delete/${id}`);
+                    if (filterDate) {
+                        searchAndFilterFunction(filterDate, page);
+                    } else {
+                        consultarDatos(page);
+                    }
+                    toast.success("El registro fue eliminado correctamente");
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    };
+
     return (
         <>
-            <tr className="accordion-title" onClick={() => handleRowIsOpen(id)}>
-                <td className={active === id ? "border-red" : ""}>{id}</td>
-                <td align="start">{agente}</td>
-                <td align="start">{titular_nombres_apellidos}</td>
+            <tr className="accordion-title">
+                <td
+                    className={active === id ? "border-red" : ""}
+                    onClick={() => handleRowIsOpen(id)}
+                >
+                    {id}
+                </td>
+                <td align="start" onClick={() => handleRowIsOpen(id)}>
+                    {agente}
+                </td>
+                <td align="start" onClick={() => handleRowIsOpen(id)}>
+                    {titular_nombres_apellidos}
+                </td>
                 <td align="start">
                     <p className="accordion-title-nro_documento">
                         {nro_documento}
@@ -160,8 +192,10 @@ const BodyTableCobranzas = ({
                     </p>
                     <p className="accordion-title-tipo_documento">{tipo_doc}</p>
                 </td>
-                <td>{celular_grabacion_legal}</td>
-                <td>
+                <td onClick={() => handleRowIsOpen(id)}>
+                    {celular_grabacion_legal}
+                </td>
+                <td onClick={() => handleRowIsOpen(id)}>
                     <p
                         className={
                             estado === "ACTIVO"
@@ -176,8 +210,8 @@ const BodyTableCobranzas = ({
                         {estado ? estado : "No revisado"}
                     </p>
                 </td>
-                <td>{sec}</td>
-                <td>
+                <td onClick={() => handleRowIsOpen(id)}>{campana}</td>
+                <td onClick={() => handleRowIsOpen(id)}>
                     <FiChevronDown
                         className={`icon_flecha_cobranzas ${
                             active === id ? "rotate" : ""
@@ -582,12 +616,39 @@ const BodyTableCobranzas = ({
                                     <label htmlFor="comentario_llamada">
                                         Comentario de la llamada
                                     </label>
-                                    <input
+                                    <select
                                         type="text"
                                         id="comentario_llamada"
                                         name="comentario_llamada"
                                         {...register("comentario_llamada")}
-                                    />
+                                    >
+                                        <option value="">--Seleccione--</option>
+                                        <option value="APAGADO">APAGADO</option>
+                                        <option value="BUZON DE VOZ">
+                                            BUZÓN DE VOZ
+                                        </option>
+                                        <option value="CLIENTE CORTA LA LLAMADA">
+                                            CLIENTE CORTA LA LLAMADA
+                                        </option>
+                                        <option value="COMPROMISO DE PAGO">
+                                            COMPROMISO DE PAGO
+                                        </option>
+                                        <option value="PROBLEMAS CON RECIBO">
+                                            PROBLEMAS CON RECIBO
+                                        </option>
+                                        <option value="PROBLEMAS ECONOMICOS">
+                                            PROBLEMAS ECONÓMICOS
+                                        </option>
+                                        <option value="PROBLEMAS TECNICOS">
+                                            PROBLEMAS TÉCNICOS
+                                        </option>
+                                        <option value="TITULAR AUSENTE">
+                                            TITULAR AUSENTE
+                                        </option>
+                                        <option value="VOLVER A COMUNICARSE">
+                                            VOLVER A COMUNICARSE
+                                        </option>
+                                    </select>
                                 </div>
                                 <div className="input-group">
                                     <label htmlFor="observacion">
@@ -681,13 +742,23 @@ const BodyTableCobranzas = ({
                                     active === id ? "show" : ""
                                 }`}
                             >
-                                <button className=" btn_cobranzas">
+                                <button className=" btn_cobranzas btn_save">
                                     {cargandoUpdateRow ? (
                                         <SpinnerIcono />
                                     ) : (
                                         "Guardar"
                                     )}
                                 </button>
+                                <div
+                                    className=" btn_cobranzas btn_delete"
+                                    onClick={() => deleteRow(id)}
+                                >
+                                    {cargandoDeleteRow ? (
+                                        <SpinnerIcono />
+                                    ) : (
+                                        "Eliminar"
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </form>
