@@ -11,15 +11,11 @@ import ReactPaginate from "react-paginate";
 import Spinner from "../components/Spinner";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { FaSave, FaFileExport } from "react-icons/fa";
-import { ImDownload2 } from "react-icons/im";
-import { AiFillDelete } from "react-icons/ai";
-import { FiX } from "react-icons/fi";
-import SpinnerContenido from "../components/SpinnerContenido";
+import { FiSearch } from "react-icons/fi";
 import SpinnerIcono from "../components/SpinnerIcono";
 import { CSVLink } from "react-csv";
 import ErrorMessage from "../components/ErrorMessage";
 import { useDebounce } from "../utils/useDebounce";
-import MessageDialogCobranza from "../components/MessageDialogCobranza";
 const Cobranzas = () => {
     const [fileName, setFileName] = useState(null);
     const [rows, setRows] = useState([]);
@@ -282,10 +278,12 @@ const Cobranzas = () => {
         });
     };
 
+  
+
     return (
         <div className="contenedorCobranzas">
             {cargando && <Spinner />}
-            <MessageDialogCobranza/>
+            
             <Toaster position="top-center" richColors />
             <div className="header_cobranza">
                 <div className="title">
@@ -451,7 +449,7 @@ const Cobranzas = () => {
                                 {cargandoFilterDate ? (
                                     <SpinnerIcono />
                                 ) : (
-                                    "Buscar"
+                                    <FiSearch/>
                                 )}
                             </button>
                             {/* {filterDate && (

@@ -137,6 +137,7 @@
 .accordion-content .btn_cobranzas {
     border-radius: 0.5rem;
     font-family: "Poppins", sans-serif;
+    font-size: 1.5rem;
 }
 
 .accordion-content .subcontenedor_td {
@@ -337,7 +338,7 @@
 
 .btn_cobranzas {
     margin: auto;
-    height: 4rem;
+    height: 3.4rem;
     display: flex;
     align-items: center;
     border: none;
@@ -349,8 +350,7 @@
     border-radius: 0.8rem;
     font-family: "Poppins", sans-serif;
     margin-top: 2rem;
-    width: 7.5rem;
-    font-size: 1.2rem;
+    width: 4rem;
 }
 
 .btn_delete {
@@ -435,7 +435,7 @@
     background-color: #d63636;
     color: white;
     border: none;
-    width: 7rem;
+    width: 4rem;
     height: 3.4rem;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
@@ -443,6 +443,7 @@
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
+    font-size: 1.6rem;
 }
 
 .filterByDate button:hover {

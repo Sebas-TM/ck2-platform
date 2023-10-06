@@ -50,6 +50,9 @@
     display: flex;
     flex-direction: column;
     font-size: 1.2rem;
+    text-transform: none;
+    color: black;
+    text-align: start;
 }
 
 .messageDialog input,
@@ -57,7 +60,7 @@
     width: 20rem;
     padding: 0.5rem 1rem;
     font-family: "Poppins", sans-serif;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
 }
 
 .messageDialog input {
@@ -71,9 +74,20 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 20rem;
+    /* padding: 0.5rem 0rem; */
+    font-family: "Poppins", sans-serif;
+    border-radius: 0.5rem;
+    text-transform: none;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
 }
 .button_group .send {
     background-color: #d63636;
+    gap: 1rem;
 }
 
 .button_group .send:hover {
@@ -88,7 +102,17 @@
     background-color: #858784;
 }
 
-.messageDialogCobranza_container .subcontainer_2 p{
+.messageDialogCobranza_container .subcontainer_2 .message {
     font-size: 1.5rem;
     text-align: justify;
+    background-color: #e9e6e6;
+    padding: 2rem;
+    font-family: "Poppins", sans-serif;
+    text-transform: none;
+    color: black;
+}
+
+.message span {
+    font-weight: bold;
+    color: #d63636;
 }

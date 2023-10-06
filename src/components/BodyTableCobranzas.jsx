@@ -1,11 +1,14 @@
 import { useState } from "react";
 import "../style/cobranzas.css";
-import { FiChevronDown } from "react-icons/fi";
 import { config } from "../config";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import SpinnerIcono from "./SpinnerIcono";
 import { useForm } from "react-hook-form";
+import MessageDialogCobranza from "./MessageDialogCobranza";
+import { AiFillDelete, AiFillMessage } from "react-icons/ai";
+import { FaSave } from "react-icons/fa";
+import { FiChevronDown } from "react-icons/fi";
 const BodyTableCobranzas = ({
     item,
     index,
@@ -65,6 +68,8 @@ const BodyTableCobranzas = ({
     } = useForm();
     const [cargandoUpdateRow, setCargandoUpdateRow] = useState(false);
     const [cargandoDeleteRow, setCargandoDeleteRow] = useState(false);
+    const [messageDialogIsOpen, setMessageDialogIsOpen] = useState(false);
+
     const handleRowIsOpen = (id) => {
         setActive(id === active ? 0 : id);
 
@@ -747,7 +752,8 @@ const BodyTableCobranzas = ({
                                     {cargandoUpdateRow ? (
                                         <SpinnerIcono />
                                     ) : (
-                                        "Guardar"
+                                        <FaSave />
+                                        // "Guardar"
                                     )}
                                 </button>
                                 <div
@@ -757,19 +763,32 @@ const BodyTableCobranzas = ({
                                     {cargandoDeleteRow ? (
                                         <SpinnerIcono />
                                     ) : (
-                                        "Eliminar"
+                                        // "Eliminar"
+                                        <AiFillDelete />
                                     )}
                                 </div>
                                 <div
                                     className=" btn_cobranzas btn_delete"
-                                    // onClick={() => deleteRow(id)}
+                                    onClick={() => setMessageDialogIsOpen(true)}
                                 >
                                     {cargandoDeleteRow ? (
                                         <SpinnerIcono />
                                     ) : (
-                                        "Mensaje"
+                                        // "Mensaje"
+                                        <AiFillMessage />
                                     )}
                                 </div>
+                                {messageDialogIsOpen && (
+                                    <MessageDialogCobranza
+                                        messageDialogIsOpen={
+                                            messageDialogIsOpen
+                                        }
+                                        setMessageDialogIsOpen={
+                                            setMessageDialogIsOpen
+                                        }
+                                        celular={celular_grabacion_legal}
+                                    />
+                                )}
                             </div>
                         </div>
                     </form>

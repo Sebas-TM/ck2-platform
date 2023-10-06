@@ -1,47 +1,76 @@
 import "../style/MessageDialogCobranza.css";
 import { useEffect, useState } from "react";
-const MessageDialogCobranza = () => {
-    const [nombre, setNombre] = useState("_____________");
-    const [monto, setMonto] = useState("_____________");
-    const [customerId, setCustomerId] = useState("_____________");
-    const [fecha_venc, setFecha_venc] = useState("_____________");
-    const [message, setMessage] = useState(
-        `¡Hola ${nombre}! Recuerda que tienes una factura vencida por falta pago de tu Servicio Hogar Claro, tu monto es de S/ ${monto} soles, puedes realizar tu pago en agentes y desde la Web/App de tu banco con tu código de pago H${customerId}. Verifique sus datos antes de realizar su pago. Tu fecha de vencimiento fue el ${fecha_venc}, cancela tu recibo y evita pagos de reconexión u morosidad. Descarga https://play.google.com/store/apps/details?id=com.claro.pe.miclaro y entérate de todos tus consumos y beneficios.`
-    );
-    console.log(nombre);
+import { Link } from "react-router-dom";
+import { BsWhatsapp } from "react-icons/bs";
+const MessageDialogCobranza = ({
+    messageDialogIsOpen,
+    setMessageDialogIsOpen,
+    celular,
+}) => {
+    const [fields, setFields] = useState({
+        cliente: "_____________",
+        monto: "_____________",
+        customerId: "_____________",
+        fecha_venc: "_____________",
+    });
+    const [message, setMessage] = useState("");
+
+    const getMessage = () => {
+        const parrafo = document.querySelector(".message");
+        if (parrafo) {
+            const texto = parrafo.textContent;
+            setMessage(texto);
+        }
+    };
+
+    const celularFormated = celular.replace(/\s+/g, "");
 
     useEffect(() => {
-        setMessage(
-            `¡Hola ${nombre}! Recuerda que tienes una factura vencida por falta pago de tu Servicio Hogar Claro, tu monto es de S/ ${monto} soles, puedes realizar tu pago en agentes y desde la Web/App de tu banco con tu código de pago H${customerId}. Verifique sus datos antes de realizar su pago. Tu fecha de vencimiento fue el ${fecha_venc}, cancela tu recibo y evita pagos de reconexión u morosidad. Descarga https://play.google.com/store/apps/details?id=com.claro.pe.miclaro y entérate de todos tus consumos y beneficios.`
-        );
-    }, [nombre || monto || customerId || fecha_venc]);
+        getMessage();
+    }, [fields]);
+
     return (
         <div className="messageDialog">
             <div className="messageDialogCobranza_container">
                 <div className="subcontainer_1">
                     <div className="input_group">
-                        <label htmlFor="nombre">
+                        <label htmlFor="cliente">
                             Nombre de cliente:
                             <input
-                                id="nombre"
+                                id="cliente"
                                 type="text"
-                                onChange={(e) => setNombre(e.target.value)}
+                                onChange={(e) => {
+                                    setFields({
+                                        ...fields,
+                                        cliente: e.target.value,
+                                    });
+                                }}
                             />
                         </label>
-                        <label htmlFor="precio">
+                        <label htmlFor="monto">
                             Monto a pagar:
                             <input
-                                id="precio"
+                                id="monto"
                                 type="text"
-                                onChange={(e) => setMonto(e.target.value)}
+                                onChange={(e) =>
+                                    setFields({
+                                        ...fields,
+                                        monto: e.target.value,
+                                    })
+                                }
                             />
                         </label>
-                        <label htmlFor="customerId">
+                        <label htmlFor="customer_Id">
                             Customer ID:
                             <input
-                                id="customerId"
+                                id="customer_Id"
                                 type="text"
-                                onChange={(e) => setCustomerId(e.target.value)}
+                                onChange={(e) =>
+                                    setFields({
+                                        ...fields,
+                                        customerId: e.target.value,
+                                    })
+                                }
                             />
                         </label>
                         <label htmlFor="fecha_venc">
@@ -49,17 +78,47 @@ const MessageDialogCobranza = () => {
                             <input
                                 id="fecha_venc"
                                 type="text"
-                                onChange={(e) => setFecha_venc(e.target.value)}
+                                onChange={(e) =>
+                                    setFields({
+                                        ...fields,
+                                        fecha_venc: e.target.value,
+                                    })
+                                }
                             />
                         </label>
                     </div>
                     <div className="button_group">
-                        <button className="send">Enviar</button>
-                        <button className="cancel">Cancelar</button>
+                        <Link
+                            target="blank"
+                            to={`https://wa.me/51${celularFormated}?text=${message}`}
+                            className="send"
+                        >
+                            <BsWhatsapp />
+                            Enviar
+                        </Link>
+                        <button
+                            className="cancel"
+                            onClick={() => setMessageDialogIsOpen(false)}
+                        >
+                            Cancelar
+                        </button>
                     </div>
                 </div>
                 <div className="subcontainer_2">
-                    <p className="message">{message}</p>
+                    <p className="message">
+                        ¡Hola <span>{fields.cliente}</span>! Recuerda que tienes
+                        una factura vencida por falta pago de tu Servicio Hogar
+                        Claro, tu monto es de S/ <span>{fields.monto}</span>{" "}
+                        soles, puedes realizar tu pago en agentes y desde la
+                        Web/App de tu banco con tu código de pago H
+                        <span>{fields.customerId}</span>.<br></br> Verifique sus
+                        datos antes de realizar su pago. Tu fecha de vencimiento
+                        fue el <span>{fields.fecha_venc}</span>, cancela tu
+                        recibo y evita pagos de reconexión u morosidad.<br></br>{" "}
+                        Descarga
+                        https://play.google.com/store/apps/details?id=com.claro.pe.miclaro
+                        y entérate de todos tus consumos y beneficios.
+                    </p>
                 </div>
             </div>
         </div>
