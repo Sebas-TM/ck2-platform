@@ -1,7 +1,6 @@
 import '../style/formulario.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { FiChevronLeft } from "react-icons/fi";
-import { Toaster, toast } from 'sonner';
 import { useEffect, useState } from "react"
 import { getAreas } from '../services/areas';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
@@ -26,7 +25,6 @@ const FormularioEmpleado = ({ employee }) => {
     }, [])
     return (
         <div className='contenedor-form'>
-            {/* <Toaster /> */}
             <div className='contenedor-form-header'>
                 <button onClick={() => navigate(-1)} className='btn_regresar'>
                     <FiChevronLeft />

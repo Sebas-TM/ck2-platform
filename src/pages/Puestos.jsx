@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../config";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import Spinner from "../components/Spinner";
 import { FiEdit, FiTrash, FiChevronLeft } from "react-icons/fi";
 import Cookies from "universal-cookie";
@@ -104,7 +104,6 @@ const Puestos = () => {
     };
     return (
         <>
-            <Toaster position="top-center" richColors />
             {cargando && <Spinner />}
             <div className="form-group form-group-table">
                 <div className="form-group-header form-group-header-table">

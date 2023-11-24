@@ -1,11 +1,8 @@
 import "../style/nuevoUsuario.css";
 import "../style/formulario.css";
-import { FiChevronLeft } from "react-icons/fi";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Spinner from "./Spinner";
 import { BiImageAdd, BiImage } from "react-icons/bi";
 import { config } from "../config";
 import axios from "axios";
@@ -145,14 +142,6 @@ const NuevoEmpleado = ({
 
         fetchData();
     }, [employeeIdEdit]);
-
-    // useEffect(()=>{
-    //     if(employeeIdEdit){
-    //         setCargandoContenido(true)
-    //     } else{
-    //         setCargandoContenido(false)
-    //     }
-    // },[])
 
     const submitData = async (data) => {
         setCargandoSubmit(true);

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, redirect, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getArea, postArea, updateArea } from "../services/areas";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import Spinner from "./Spinner";
 import SpinnerIcono from "./SpinnerIcono";
 import axios from "axios";
@@ -65,7 +65,6 @@ const NuevaArea = () => {
     return (
         <section className="contenedor_nuevo-dato">
             {cargando && <Spinner />}
-            <Toaster position="top-center" richColors />
             <div className="contenedor-form">
                 <div className="contenedor-form-header">
                     <button

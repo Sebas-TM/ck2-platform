@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import { FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import swal from "sweetalert";
-import Spinner from "../components/Spinner";
 import { config } from "../config";
 import axios from "axios";
-import SpinnerIcono from "../components/SpinnerIcono";
 import ErrorMessage from "../components/ErrorMessage";
 import NuevoUsuario from "../components/NuevoUsuario";
 
@@ -108,7 +106,6 @@ const Usuarios = () => {
 
     return (
         <>
-            <Toaster position="top-center" richColors />
             <div className="form-group pt-10">
                 {modalIsOpen && (
                     <NuevoUsuario

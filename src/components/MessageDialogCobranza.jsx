@@ -6,12 +6,13 @@ const MessageDialogCobranza = ({
     messageDialogIsOpen,
     setMessageDialogIsOpen,
     celular,
+    dataToSendToCustomer,
 }) => {
     const [fields, setFields] = useState({
-        cliente: "_____________",
-        monto: "_____________",
-        customerId: "_____________",
-        fecha_venc: "_____________",
+        cliente: dataToSendToCustomer.cliente,
+        monto: dataToSendToCustomer.pago,
+        customerId: dataToSendToCustomer.customer_id,
+        fecha_venc: dataToSendToCustomer.fecha_vencimiento,
     });
     const [message, setMessage] = useState("");
 
@@ -29,6 +30,7 @@ const MessageDialogCobranza = ({
         getMessage();
     }, [fields]);
 
+
     return (
         <div className="messageDialog">
             <div className="messageDialogCobranza_container">
@@ -45,6 +47,7 @@ const MessageDialogCobranza = ({
                                         cliente: e.target.value,
                                     });
                                 }}
+                                defaultValue={dataToSendToCustomer.cliente} 
                             />
                         </label>
                         <label htmlFor="monto">
@@ -58,6 +61,7 @@ const MessageDialogCobranza = ({
                                         monto: e.target.value,
                                     })
                                 }
+                                defaultValue={dataToSendToCustomer.pago}        
                             />
                         </label>
                         <label htmlFor="customer_Id">
@@ -71,6 +75,7 @@ const MessageDialogCobranza = ({
                                         customerId: e.target.value,
                                     })
                                 }
+                                defaultValue={dataToSendToCustomer.customer_id}
                             />
                         </label>
                         <label htmlFor="fecha_venc">
@@ -83,6 +88,9 @@ const MessageDialogCobranza = ({
                                         ...fields,
                                         fecha_venc: e.target.value,
                                     })
+                                }
+                                defaultValue={
+                                    dataToSendToCustomer.fecha_vencimiento
                                 }
                             />
                         </label>

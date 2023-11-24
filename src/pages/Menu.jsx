@@ -6,6 +6,7 @@ import { config } from "../config";
 import logo_texto from "../image/logo_texto_ver2.png";
 import logo from "../image/logo_ver2.png";
 import foto_usuario from "../image/foto_personal.webp";
+import { Toaster } from "sonner";
 
 const cookies = new Cookies();
 
@@ -51,6 +52,7 @@ const Menu = () => {
     return (
         <div>
             <header className="contenedor-header">
+                <Toaster richColors position="top-center" />
                 <div className="header">
                     <ul className="subcontenedor-header">
                         <Link to="/menu" className="contenedor-logo-menu">

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FiEdit, FiTrash, FiPlus, FiChevronLeft } from "react-icons/fi";
 import "../style/areas.css";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import swal from "sweetalert";
 import Spinner from "../components/Spinner";
 import SpinnerIcono from "../components/SpinnerIcono";
@@ -110,7 +110,6 @@ const Areas = () => {
 
     return (
         <>
-            <Toaster position="top-center" richColors />
             {cargando && <Spinner />}
 
             <div className="form-group form-group-table">

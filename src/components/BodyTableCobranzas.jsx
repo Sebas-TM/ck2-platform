@@ -2,13 +2,14 @@ import { useState } from "react";
 import "../style/cobranzas.css";
 import { config } from "../config";
 import axios from "axios";
-import { Toaster, toast } from "sonner";
 import SpinnerIcono from "./SpinnerIcono";
 import { useForm } from "react-hook-form";
 import MessageDialogCobranza from "./MessageDialogCobranza";
 import { AiFillDelete, AiFillMessage } from "react-icons/ai";
 import { FaSave } from "react-icons/fa";
 import { FiChevronDown } from "react-icons/fi";
+import { toast } from "sonner";
+import { deleteRow, updateRowCobranzas } from "../services/cobranzas";
 const BodyTableCobranzas = ({
     item,
     index,
@@ -17,7 +18,7 @@ const BodyTableCobranzas = ({
     setActive,
     consultarDatos,
     page,
-    searchAndFilterFunction,
+    searchAndFilter,
     filterDate,
 }) => {
     const {
@@ -69,6 +70,12 @@ const BodyTableCobranzas = ({
     const [cargandoUpdateRow, setCargandoUpdateRow] = useState(false);
     const [cargandoDeleteRow, setCargandoDeleteRow] = useState(false);
     const [messageDialogIsOpen, setMessageDialogIsOpen] = useState(false);
+    const [dataToSendToCustomer, setDataToSendToCustomer] = useState({
+        cliente: "",
+        pago: "",
+        customer_id: 0,
+        fecha_vencimiento: "",
+    });
 
     const handleRowIsOpen = (id) => {
         setActive(id === active ? 0 : id);
@@ -122,19 +129,13 @@ const BodyTableCobranzas = ({
     const submitData = async (info) => {
         setCargandoUpdateRow(true);
         if (id) {
-            await axios
-                .post(`${config.API_URL}api/cobranzas/update/${id}`, info, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                .catch((e) => console.log(e));
-
+            await updateRowCobranzas(id, info);
             if (filterDate) {
-                searchAndFilterFunction(filterDate, page);
+                searchAndFilter(filterDate, page);
             } else {
                 consultarDatos(page);
             }
+            setCargandoUpdateRow(false);
         } else {
             console.log("No se puede actualizar");
         }
@@ -155,22 +156,18 @@ const BodyTableCobranzas = ({
             });
     };
 
-    const deleteRow = (id) => {
+    const openModalToDelete = (id) => {
         swal({
             text: "¿Deseas eliminar el registro?",
             buttons: ["No", "Si"],
-        }).then((res) => {
+        }).then(async (res) => {
             if (res) {
                 try {
-                    axios.delete(`${config.API_URL}api/cobranzas/delete/${id}`);
-                    if (filterDate) {
-                        searchAndFilterFunction(filterDate, page);
-                    } else {
-                        consultarDatos(page);
-                    }
-                    toast.success("El registro fue eliminado correctamente");
-                } catch (e) {
-                    console.log(e);
+                    await deleteRow(id);
+                    await searchAndFilter(filterDate, page);
+                } catch (error) {
+                    console.log(error);
+                    throw error;
                 }
             }
         });
@@ -758,7 +755,7 @@ const BodyTableCobranzas = ({
                                 </button>
                                 <div
                                     className=" btn_cobranzas btn_delete"
-                                    onClick={() => deleteRow(id)}
+                                    onClick={() => openModalToDelete(id)}
                                 >
                                     {cargandoDeleteRow ? (
                                         <SpinnerIcono />
@@ -769,7 +766,15 @@ const BodyTableCobranzas = ({
                                 </div>
                                 <div
                                     className=" btn_cobranzas btn_delete"
-                                    onClick={() => setMessageDialogIsOpen(true)}
+                                    onClick={() => {
+                                        setMessageDialogIsOpen(true);
+                                        setDataToSendToCustomer({
+                                            cliente: titular_nombres_apellidos,
+                                            pago: pago,
+                                            customer_id: customerId,
+                                            fecha_vencimiento: "",
+                                        });
+                                    }}
                                 >
                                     {cargandoDeleteRow ? (
                                         <SpinnerIcono />
@@ -787,6 +792,9 @@ const BodyTableCobranzas = ({
                                             setMessageDialogIsOpen
                                         }
                                         celular={celular_grabacion_legal}
+                                        dataToSendToCustomer={
+                                            dataToSendToCustomer
+                                        }
                                     />
                                 )}
                             </div>

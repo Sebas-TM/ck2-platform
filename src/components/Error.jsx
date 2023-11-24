@@ -1,11 +1,8 @@
-import {Toaster, toast} from 'sonner'
+import { toast } from "sonner";
 
-const Error = ({children}) => {
+const Error = ({ children }) => {
+    toast.error(children);
+    return <></>;
+};
 
-    toast.error(children)
-  return (
-    <></>
-  )
-}
-
-export default Error
+export default Error;

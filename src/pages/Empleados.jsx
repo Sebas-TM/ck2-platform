@@ -6,7 +6,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { BsWhatsapp } from "react-icons/bs";
 import {
     FiUserPlus,
@@ -332,7 +332,6 @@ const Empleados = () => {
                         employeeId={employeeId}
                     />
                 )}
-                <Toaster position="top-center" richColors />
 
                 <div className="container_form_table_pagination">
                     <div
@@ -361,7 +360,7 @@ const Empleados = () => {
                             <input
                                 className="busqueda"
                                 type="text"
-                                id="termino"    
+                                id="termino"
                                 name="termino"
                                 {...register("termino")}
                                 placeholder="Buscar..."

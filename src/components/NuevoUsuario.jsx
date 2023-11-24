@@ -1,6 +1,6 @@
 import "../style/nuevoUsuario.css";
 import { FiChevronLeft } from "react-icons/fi";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { postUser, getUser, updateUser } from "../services/users";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -107,7 +107,7 @@ const NuevoUsuario = ({
             }
         }
         obtenerUsuarios();
-        setModalIsOpen(false)
+        setModalIsOpen(false);
     };
 
     useEffect(() => {
